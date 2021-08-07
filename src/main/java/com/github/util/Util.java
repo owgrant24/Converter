@@ -1,5 +1,7 @@
 package com.github.util;
 
+import com.github.controller.MainController;
+import com.github.entity.Extension;
 import com.github.entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,11 +9,11 @@ import org.zeroturnaround.exec.ProcessExecutor;
 import org.zeroturnaround.exec.ProcessResult;
 import org.zeroturnaround.exec.StartedProcess;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -28,49 +30,76 @@ import java.util.concurrent.Future;
  * https://trofimovdigital.ru/blog/convert-video-with-ffmpeg
  */
 public class Util {
+    private Thread thread;
     private final static Logger logger = LoggerFactory.getLogger(Util.class);
 
+    private final MainController mainController;
+
     public static final Set<Process> PROCESSES = new HashSet<>();
-    public static List<Task> taskList = new ArrayList<>();
+    public static List<Task> list = new ArrayList<>();
+    public static Queue<Task> taskArrayDeque = new ArrayDeque<>();
+    public static Extension[] extension = Extension.values();
+
+
     private static String ffmpeg = "D:/ffmpeg.exe";
+//    private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
 
 
-    public static void startTask(List<Task> taskList, String param) {
-        logger.debug("Задание стартовало: " + taskList);
-        Thread thread = new Thread(() ->
-                taskList.forEach(task -> {
-                    if (!Thread.interrupted()) {
-                        try {
-                            logger.debug("Взял в работу: " + task.getName());
-                            String parameters =
-                                    ffmpeg + " -i " + "\"" + task.getFile().getPath() + "\""
-                                            + " "
-                                            + param
-                                            + " \"" + task.getFile().getName().replaceFirst("[.][^.]+$", "") + ".mp4" + "\"";
-                            StartedProcess startedProcess = new ProcessExecutor()
-                                    .command("cmd.exe", "/C", parameters)
-                                    .readOutput(true)
-                                    .start();
-                            Process process = startedProcess.getProcess();
-                            PROCESSES.add(process);
-                            Future<ProcessResult> future = startedProcess.getFuture();
+    public Util(MainController mainController) {
+        this.mainController = mainController;
+    }
 
-                            logger.debug("Информация о проведенной работе: \n" + future.get().outputUTF8());
-                            logger.debug("Работу выполнил над: " + task.getName());
-                            PROCESSES.remove(process);
-                            task.setStatus("Done");
 
-                        } catch (IOException e) {
-                            logger.info("Ошибка IOException: " + e.getMessage());
-                        } catch (ExecutionException e) {
-                            logger.info("Ошибка ExecutionException: " + e.getMessage());
-                        } catch (InterruptedException e) {
-                            logger.info("Ошибка InterruptedException: " + e.getMessage());
+    public void startTask(String param) {
+        logger.debug("Задание стартовало: " + taskArrayDeque);
+        thread = new Thread(() -> {
+            Task current;
+            while ((current = taskArrayDeque.poll()) != null) {
+                if (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        logger.debug("Взял в работу: " + current.getName());
+                        String hideBanner = " -hide_banner";
+                        String input = " -i \"" + current.getFile().getPath() + "\" ";
+
+                        Path outputParent = Path.of(current.getFile().getParent() + "/converted/");
+                        if (!outputParent.toFile().exists()) {
+                            Files.createDirectory(outputParent);
                         }
+
+                        String output = " \"" + outputParent + File.separator + current.getName().replaceFirst("[.][^.]+$", "")
+                                + "." + mainController.getOutput_file_extension_choice_box().getValue().toString() + "\"";
+                        String parameters = ffmpeg + hideBanner + input + param + output;
+                        StartedProcess startedProcess = new ProcessExecutor()
+                                .command("cmd.exe", "/C", parameters)
+                                .readOutput(true)
+                                .start();
+                        Process process = startedProcess.getProcess();
+                        PROCESSES.add(process);
+                        Future<ProcessResult> future = startedProcess.getFuture();
+
+                        String status = future.get().outputUTF8();
+                        mainController.getLog_text_area().appendText(status);
+                        logger.debug("Информация о проведенной работе: \n" + status);
+                        logger.debug("Работу выполнил над: " + current.getName());
+                        PROCESSES.remove(process);
+                        current.setStatus("Done");
+                        mainController.getTask_table().refresh();
+
+                    } catch (IOException e) {
+                        logger.info("Ошибка IOException: " + e.getMessage());
+                    } catch (ExecutionException e) {
+                        logger.info("Ошибка ExecutionException: " + e.getMessage());
+                    } catch (InterruptedException e) {
+                        logger.info("Ошибка InterruptedException: " + e.getMessage());
                     }
-                }));
+                }
+            }
+        });
         thread.start();
 
+    }
 
+    public void stop() {
+        thread.interrupt();
     }
 }
