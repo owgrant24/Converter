@@ -100,6 +100,9 @@ public class Util {
     }
 
     public void stop() {
-        thread.interrupt();
+        if (!thread.isInterrupted()) {
+            thread.interrupt();
+        }
+
     }
 }

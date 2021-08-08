@@ -14,13 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.github.util.Util.list;
 
 public class MainController {
     private final static Logger logger = LoggerFactory.getLogger(MainController.class);
-
     private final Util util;
 
     @FXML
@@ -42,8 +43,6 @@ public class MainController {
     @FXML
     private Button start_button;
     @FXML
-    private Button stop_button;
-    @FXML
     private Button stop_all_button;
     @FXML
     private Button add_files_button;
@@ -58,18 +57,20 @@ public class MainController {
     @FXML
     private TextArea log_text_area;
     @FXML
-    private ProgressIndicator indicator;
-    @FXML
     private ChoiceBox<Extension> output_file_extension_choice_box;
 
     private ObservableList<Task> observableList;
 
-
-    private FileChooser fileChooser;
+    private final FileChooser fileChooser;
 
     public MainController() {
         util = new Util(this);
         fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(
+                        "video", "*.mkv", "*.mp4", "*.m2v", "*.avi", "*.mpg", "*.ts", "*.flv"),
+                new FileChooser.ExtensionFilter(
+                        "all", "*.*"));
     }
 
     public ChoiceBox<Extension> getOutput_file_extension_choice_box() {
@@ -152,26 +153,15 @@ public class MainController {
         /**
          * Старт выбранных файлов из таблицы
          */
-        start_button.setOnAction(event -> {
-            ObservableList<Task> selectedItems = task_table.getSelectionModel().getSelectedItems();
-            Util.taskArrayDeque.addAll(selectedItems);
-            if (!param_field.getText().isBlank()) {
-                util.startTask(param_field.getText());
-            }
-
-        });
+        start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
         /**
          * Старт всех файлов из таблицы
          */
-        start_all_button.setOnAction(event -> {
-            ObservableList<Task> allItems = task_table.getItems();
-            Util.taskArrayDeque.addAll(allItems);
-            if (!param_field.getText().isBlank()) {
-                util.startTask(param_field.getText());
-            }
-        });
+        start_all_button.setOnAction(event -> start(task_table.getItems()));
 
         stop_all_button.setOnAction(event -> {
+            task_table.getItems().filtered(task -> task.getStatus().equals("In process")).forEach(task -> task.setStatus("")); // FIXME
+            task_table.refresh();
             util.stop();
             Util.PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
             Util.taskArrayDeque.clear();
@@ -182,8 +172,16 @@ public class MainController {
         clear_completed_button.setOnAction(
                 event -> task_table.getItems().removeIf(task -> task.getStatus().equals("Done"))
         );
+    }
 
-
+    private void start(ObservableList<Task> items) {
+        List<Task> tasks = new ArrayList<>(items.filtered(task -> !task.getStatus().equals("In process")));
+        task_table.refresh();
+        items.forEach(task -> task.setStatus("In process"));
+        Util.taskArrayDeque.addAll(tasks);
+        if (!param_field.getText().isBlank() && param_field.getText().matches("[a-zA-Z\\s\\d]+")) {     // TODO regex проверить бы
+            util.startTask(param_field.getText());
+        }
     }
 }
 

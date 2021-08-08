@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -73,7 +72,6 @@
                         <Button fx:id="start_all_button" layoutX="426.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
                         <Button fx:id="remove_all_files_button" layoutX="426.0" layoutY="87.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove all files" />
                         <Button fx:id="clear_completed_button" layoutX="426.0" layoutY="234.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Clear completed " />
-                        <ProgressIndicator fx:id="indicator" disable="true" layoutX="389.0" layoutY="14.0" prefHeight="25.0" prefWidth="25.0" />
                         <Label layoutX="14.0" text="Parameters" />
                         <Label layoutX="15.0" layoutY="47.0" text="Output file extension" />
                         <ChoiceBox fx:id="output_file_extension_choice_box" layoutX="14.0" layoutY="61.0" prefHeight="25.0" prefWidth="60.0" />
