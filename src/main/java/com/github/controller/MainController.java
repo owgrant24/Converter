@@ -179,7 +179,7 @@ public class MainController {
         task_table.refresh();
         items.forEach(task -> task.setStatus("In process"));
         Util.taskArrayDeque.addAll(tasks);
-        if (!param_field.getText().isBlank() && param_field.getText().matches("[a-zA-Z\\s\\d]+")) {     // TODO regex проверить бы
+        if (!param_field.getText().isBlank() && !(param_field.getText().matches("[a-zA-Z\\s\\d]+"))) {     // TODO regex проверить бы
             util.startTask(param_field.getText());
         }
     }
