@@ -41,8 +41,8 @@ public class Util {
     public static Extension[] extension = Extension.values();
 
 
-    private static String ffmpeg = "D:/ffmpeg.exe";
-//    private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
+//    private static String ffmpeg = "D:/ffmpeg.exe";
+    private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
 
 
     public Util(MainController mainController) {
