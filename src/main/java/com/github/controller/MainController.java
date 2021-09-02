@@ -106,10 +106,10 @@ public class MainController {
         initializeTable();
         initializeButton();
         initializeMenu();
-        initializeOutputFileExtensionChoiseBox();
+        initializeOutputFileExtensionChoiceBox();
     }
 
-    private void initializeOutputFileExtensionChoiseBox() {
+    private void initializeOutputFileExtensionChoiceBox() {
         output_file_extension_choice_box.getItems().setAll(FXCollections.observableArrayList(Util.extension));
         output_file_extension_choice_box.setValue(Extension.MP4);
     }
@@ -147,20 +147,17 @@ public class MainController {
     }
 
     private void actionStartAllItems() {
-        if (task_table.getItems().size() > 0){
-            start_all_button.setOnAction(event -> start(task_table.getItems()));
-        }
+        start_all_button.setOnAction(event -> start(task_table.getItems()));
     }
 
     private void actionStartSelectedItem() {
-        if (task_table.getSelectionModel().getSelectedItems().size() > 0) {
-            start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
-        }
+        start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
     }
 
     private void actionClearCompleted() {
         clear_completed_button.setOnAction(
-                event -> task_table.getItems().removeIf(task -> task.getStatus().equals("Done"))
+                event -> task_table.getItems()
+                        .removeIf(task -> task.getStatus().equals("Done"))
         );
     }
 
@@ -210,11 +207,13 @@ public class MainController {
     }
 
     private void start(ObservableList<Task> items) {
-        List<Task> tasks = new ArrayList<>(items.filtered(task -> !task.getStatus().equals("In process")));
-        task_table.refresh();
-        items.forEach(task -> task.setStatus("In process"));
-        Util.taskArrayDeque.addAll(tasks);
-        if (!param_field.getText().isBlank() && !(param_field.getText().matches("[a-zA-Z\\s\\d]+"))) {     // TODO regex проверить бы
+        if (items.size() > 0
+                && !(param_field.getText().isBlank())
+                && !(param_field.getText().matches("[a-zA-Z\\s\\d]+"))) {     // TODO regex проверить бы
+            List<Task> tasks = new ArrayList<>(items.filtered(task -> !task.getStatus().equals("In process")));
+            task_table.refresh();
+            items.forEach(task -> task.setStatus("In process"));
+            Util.taskArrayDeque.addAll(tasks);
             util.startTask(param_field.getText());
         } else {
             logger.info("Error");

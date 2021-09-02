@@ -4,7 +4,6 @@ public enum Extension {
     MP4("mp4"),
     MKV("mkv"),
     AVI("avi"),
-    MPG("mpg"),
     M2V("m2v"),
     MP3("mp3"),
     WAV("wav"),
