@@ -101,18 +101,6 @@ public class MainController {
 
     @FXML
     void initialize() {
-        // Поддержка выбора нескольких строк через Ctrl, Shift
-        task_table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        task_table.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
-        task_table.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            if(event.getDragboard().hasFiles()){
-                List<File> files = db.getFiles();
-                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
-                observableList = getObservableList(util.getList());
-                task_table.setItems(observableList);
-            }
-        });
         initializeTable();
         initializeButton();
         initializeMenu();
@@ -132,6 +120,18 @@ public class MainController {
     }
 
     private void initializeTable() {
+        // Поддержка выбора нескольких строк через Ctrl, Shift
+        task_table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        task_table.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
+        task_table.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if(event.getDragboard().hasFiles()){
+                List<File> files = db.getFiles();
+                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
+                observableList = getObservableList(util.getList());
+                task_table.setItems(observableList);
+            }
+        });
         filename_column.setCellValueFactory(new PropertyValueFactory<>("name"));
         status_column.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
