@@ -66,6 +66,7 @@ public class Util {
                 if (!Thread.currentThread().isInterrupted()) {
                     try {
                         logger.debug("Взял в работу: " + current.getName());
+                        current.setStatus("In process");
                         String input = " -i \"" + current.getFile().getPath() + "\" ";
 
                         Path outputParent = Path.of(current.getFile().getParent() + "/converted/");

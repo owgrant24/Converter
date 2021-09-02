@@ -135,12 +135,13 @@ public class MainController {
 
     private void actionCancelAllItems() {
         stop_all_button.setOnAction(event -> {
-            task_table.getItems().filtered(task -> task.getStatus().equals("In process"))
-                    .forEach(task -> task.setStatus("")); // FIXME
-            task_table.refresh();
+            util.getTaskArrayDeque().clear();
             util.cancel();
             Util.PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
-            util.getTaskArrayDeque().clear();
+            task_table.getItems()
+                    .filtered(task -> !task.getStatus().equals("Done"))
+                    .forEach(task -> task.setStatus(""));
+            task_table.refresh();
         });
     }
 
@@ -208,9 +209,14 @@ public class MainController {
         if (items.size() > 0
                 && !(param_field.getText().isBlank())
         ) {
-            List<Task> tasks = new ArrayList<>(items.filtered(task -> !task.getStatus().equals("In process")));
+            List<Task> tasks = new ArrayList<>(
+                    items.filtered(
+                            task -> !task.getStatus().equals("In queue")
+                                    && !task.getStatus().equals("In process")
+                    )
+            );
             task_table.refresh();
-            items.forEach(task -> task.setStatus("In process"));
+            items.forEach(task -> task.setStatus("In queue"));
             util.getTaskArrayDeque().addAll(tasks);
             util.startTask(param_field.getText());
         } else {
