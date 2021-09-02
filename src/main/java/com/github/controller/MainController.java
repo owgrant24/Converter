@@ -17,8 +17,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.util.Util.list;
-
 
 public class MainController {
 
@@ -110,7 +108,7 @@ public class MainController {
     }
 
     private void initializeOutputFileExtensionChoiceBox() {
-        output_file_extension_choice_box.getItems().setAll(FXCollections.observableArrayList(Util.extension));
+        output_file_extension_choice_box.getItems().setAll(FXCollections.observableArrayList(Extension.values()));
         output_file_extension_choice_box.setValue(Extension.MP4);
     }
 
@@ -142,7 +140,7 @@ public class MainController {
             task_table.refresh();
             util.cancel();
             Util.PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
-            Util.taskArrayDeque.clear();
+            util.getTaskArrayDeque().clear();
         });
     }
 
@@ -164,9 +162,9 @@ public class MainController {
     private void actionRemoveAllFilesFromTable() {
         remove_all_files_button.setOnAction(event -> {
             if (task_table.getItems().size() > 0) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\"" + list);
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\"" + util.getList());
                 task_table.getItems().clear();
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": " + list);
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": " + util.getList());
                 task_table.refresh();
             }
         });
@@ -176,9 +174,9 @@ public class MainController {
         remove_files_button.setOnAction(event -> {
             // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
             if (task_table.getSelectionModel().getSelectedItems().size() > 0) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\"" + list);
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\"" + util.getList());
                 task_table.getItems().removeAll(List.copyOf(task_table.getSelectionModel().getSelectedItems()));
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": " + list);
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": " + util.getList());
                 task_table.refresh();
             } else {
                 logger.debug("Не выбрано ни одного файла");
@@ -192,16 +190,16 @@ public class MainController {
 
             List<File> files = fileChooser.showOpenMultipleDialog(root_layout.getScene().getWindow());
             if (files != null) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": " + list);
-                files.forEach(file -> list.add(new Task(file.getName(), file, "")));
+                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": " + util.getList());
+                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
                 // Запоминаем последний путь
                 if (files.size() > 0) {
                     fileChooser.setInitialDirectory(new File(files.get(0).getParent()));
                 }
 
-                observableList = getObservableList(list);
+                observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
-                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": " + list);
+                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": " + util.getList());
             }
         });
     }
@@ -209,11 +207,11 @@ public class MainController {
     private void start(ObservableList<Task> items) {
         if (items.size() > 0
                 && !(param_field.getText().isBlank())
-                && !(param_field.getText().matches("[a-zA-Z\\s\\d]+"))) {     // TODO regex проверить бы
+        ) {
             List<Task> tasks = new ArrayList<>(items.filtered(task -> !task.getStatus().equals("In process")));
             task_table.refresh();
             items.forEach(task -> task.setStatus("In process"));
-            Util.taskArrayDeque.addAll(tasks);
+            util.getTaskArrayDeque().addAll(tasks);
             util.startTask(param_field.getText());
         } else {
             logger.info("Error");

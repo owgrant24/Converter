@@ -38,20 +38,25 @@ public class Util {
     private final MainController mainController;
 
     public static final Set<Process> PROCESSES = new HashSet<>();
-    public static List<Task> list = new ArrayList<>();
-    public static Queue<Task> taskArrayDeque = new ArrayDeque<>();
-    public static Extension[] extension = Extension.values();
+    private List<Task> list = new ArrayList<>();
+    private Queue<Task> taskArrayDeque = new ArrayDeque<>();
     private final String hideBanner = " -hide_banner";
 
-
-    //    private static String ffmpeg = "D:/ffmpeg.exe";
-    private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
+    private static String ffmpeg = "D:/ffmpeg.exe";
+    // private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
 
 
     public Util(MainController mainController) {
         this.mainController = mainController;
     }
 
+    public List<Task> getList() {
+        return list;
+    }
+
+    public Queue<Task> getTaskArrayDeque() {
+        return taskArrayDeque;
+    }
 
     public void startTask(String param) {
         logger.debug("Задание стартовало: " + taskArrayDeque);
