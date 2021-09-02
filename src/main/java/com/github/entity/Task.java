@@ -3,7 +3,9 @@ package com.github.entity;
 import java.io.File;
 import java.util.Objects;
 
+
 public class Task {
+
     private String name;
     private File file;
     private String status;
@@ -45,8 +47,12 @@ public class Task {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Task task = (Task) o;
 
@@ -64,4 +70,5 @@ public class Task {
                 "name='" + name + '\'' +
                 '}';
     }
+
 }

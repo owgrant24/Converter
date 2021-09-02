@@ -148,9 +148,8 @@ public class MainController {
 
     private void actionCancelAllItems() {
         stop_all_button.setOnAction(event -> {
-            util.getTaskArrayDeque().clear();
+            util.getTasks().clear();
             util.cancel();
-            Util.PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
             task_table.getItems()
                     .filtered(task -> !task.getStatus().equals("Done"))
                     .forEach(task -> task.setStatus(""));
@@ -229,7 +228,7 @@ public class MainController {
             );
             task_table.refresh();
             items.forEach(task -> task.setStatus("In queue"));
-            util.getTaskArrayDeque().addAll(tasks);
+            util.getTasks().addAll(tasks);
             util.startTask(param_field.getText());
         } else {
             logger.info("Error");

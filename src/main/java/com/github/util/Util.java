@@ -1,7 +1,6 @@
 package com.github.util;
 
 import com.github.controller.MainController;
-import com.github.entity.Extension;
 import com.github.entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -38,50 +38,51 @@ public class Util {
     private final MainController mainController;
 
     public static final Set<Process> PROCESSES = new HashSet<>();
-    private List<Task> list = new ArrayList<>();
-    private Queue<Task> taskArrayDeque = new ArrayDeque<>();
-    private final String hideBanner = " -hide_banner";
+    private List<Task> list;
+    private Queue<Task> tasks;
+    private final String hideBanner = "-hide_banner";
 
-    private static String ffmpeg = "D:/ffmpeg.exe";
-    // private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
+    // private static String ffmpeg = "D:/ffmpeg.exe";
+    private static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
 
 
     public Util(MainController mainController) {
         this.mainController = mainController;
+        this.tasks = new ConcurrentLinkedQueue<>();
+        this.list = new ArrayList<>();
+
     }
 
     public List<Task> getList() {
         return list;
     }
 
-    public Queue<Task> getTaskArrayDeque() {
-        return taskArrayDeque;
+    public Queue<Task> getTasks() {
+        return tasks;
     }
 
     public void startTask(String param) {
-        logger.debug("Задание стартовало: " + taskArrayDeque);
+        logger.debug("Задание стартовало: " + tasks);
         thread = new Thread(() -> {
             Task current;
-            while ((current = taskArrayDeque.poll()) != null) {
+            while ((current = tasks.poll()) != null) {
                 if (!Thread.currentThread().isInterrupted()) {
                     try {
                         logger.debug("Взял в работу: " + current.getName());
                         current.setStatus("In process");
-                        String input = " -i \"" + current.getFile().getPath() + "\" ";
+                        String input = "\"" + current.getFile().getPath() + "\" ";
 
                         Path outputParent = Path.of(current.getFile().getParent() + "/converted/");
                         if (!outputParent.toFile().exists()) {
                             Files.createDirectory(outputParent);
                         }
 
-                        String output = " \"" + outputParent + File.separator + current.getName().replaceFirst(
-                                "[.][^.]+$",
-                                ""
-                        )
+                        String output = " \"" + outputParent + File.separator
+                                + current.getName().replaceFirst("[.][^.]+$", "")
                                 + "." + mainController.getOutput_file_extension_choice_box().getValue().toString() + "\"";
-                        String parameters = ffmpeg + hideBanner + input + param + output;
+                        String parameters = input + param + output;
                         StartedProcess startedProcess = new ProcessExecutor()
-                                .command("cmd.exe", "/C", parameters)
+                                .command(ffmpeg.getAbsolutePath(), hideBanner, "-i", parameters)
                                 .readOutput(true)
                                 .start();
                         Process process = startedProcess.getProcess();
@@ -114,7 +115,7 @@ public class Util {
         if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
-
+        PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
     }
 
 }
