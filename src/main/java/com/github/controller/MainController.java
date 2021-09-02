@@ -147,11 +147,15 @@ public class MainController {
     }
 
     private void actionStartAllItems() {
-        start_all_button.setOnAction(event -> start(task_table.getItems()));
+        if (task_table.getItems().size() > 0){
+            start_all_button.setOnAction(event -> start(task_table.getItems()));
+        }
     }
 
     private void actionStartSelectedItem() {
-        start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
+        if (task_table.getSelectionModel().getSelectedItems().size() > 0) {
+            start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
+        }
     }
 
     private void actionClearCompleted() {
@@ -212,6 +216,8 @@ public class MainController {
         Util.taskArrayDeque.addAll(tasks);
         if (!param_field.getText().isBlank() && !(param_field.getText().matches("[a-zA-Z\\s\\d]+"))) {     // TODO regex проверить бы
             util.startTask(param_field.getText());
+        } else {
+            logger.info("Error");
         }
     }
 
