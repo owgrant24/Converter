@@ -17,6 +17,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+
 /**
  * ffmpeg [опции источника] -i [источник] [основные опции] [кодеки] [преемник]
  * <p>
@@ -30,6 +31,7 @@ import java.util.concurrent.Future;
  * https://trofimovdigital.ru/blog/convert-video-with-ffmpeg
  */
 public class Util {
+
     private Thread thread;
     private final static Logger logger = LoggerFactory.getLogger(Util.class);
 
@@ -39,9 +41,10 @@ public class Util {
     public static List<Task> list = new ArrayList<>();
     public static Queue<Task> taskArrayDeque = new ArrayDeque<>();
     public static Extension[] extension = Extension.values();
+    private final String hideBanner = " -hide_banner";
 
 
-//    private static String ffmpeg = "D:/ffmpeg.exe";
+    //    private static String ffmpeg = "D:/ffmpeg.exe";
     private static String ffmpeg = "./ffmpeg/ffmpeg.exe";
 
 
@@ -58,7 +61,6 @@ public class Util {
                 if (!Thread.currentThread().isInterrupted()) {
                     try {
                         logger.debug("Взял в работу: " + current.getName());
-                        String hideBanner = " -hide_banner";
                         String input = " -i \"" + current.getFile().getPath() + "\" ";
 
                         Path outputParent = Path.of(current.getFile().getParent() + "/converted/");
@@ -66,7 +68,10 @@ public class Util {
                             Files.createDirectory(outputParent);
                         }
 
-                        String output = " \"" + outputParent + File.separator + current.getName().replaceFirst("[.][^.]+$", "")
+                        String output = " \"" + outputParent + File.separator + current.getName().replaceFirst(
+                                "[.][^.]+$",
+                                ""
+                        )
                                 + "." + mainController.getOutput_file_extension_choice_box().getValue().toString() + "\"";
                         String parameters = ffmpeg + hideBanner + input + param + output;
                         StartedProcess startedProcess = new ProcessExecutor()
@@ -96,13 +101,14 @@ public class Util {
             }
         });
         thread.start();
-
     }
 
-    public void stop() {
-        if (!thread.isInterrupted()) {
+    public void cancel() {
+
+        if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
 
     }
+
 }

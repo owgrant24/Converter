@@ -36,6 +36,11 @@
                       <MenuItem fx:id="libx265_menu_item" mnemonicParsing="false" text="-c:v libx265" />
                     </items>
                   </Menu>
+                  <Menu mnemonicParsing="false" text="other">
+                    <items>
+                      <MenuItem fx:id="copy_menu_item" mnemonicParsing="false" text="-c copy" />
+                    </items>
+                  </Menu>
               </items>
             </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -66,7 +71,7 @@
                         </TableView>
                         <Button fx:id="start_button" layoutX="426.0" layoutY="124.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />
                         <TextField fx:id="param_field" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="363.0" />
-                        <Button fx:id="stop_all_button" layoutX="426.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Stop all" />
+                        <Button fx:id="stop_all_button" layoutX="426.0" layoutY="200.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cancel all" />
                         <Button fx:id="add_files_button" layoutX="426.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Add files" />
                         <Button fx:id="remove_files_button" layoutX="426.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove files" />
                         <Button fx:id="start_all_button" layoutX="426.0" layoutY="164.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
