@@ -8,6 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import org.slf4j.Logger;
@@ -101,10 +103,21 @@ public class MainController {
     void initialize() {
         // Поддержка выбора нескольких строк через Ctrl, Shift
         task_table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        task_table.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
+        task_table.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if(event.getDragboard().hasFiles()){
+                List<File> files = db.getFiles();
+                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
+                observableList = getObservableList(util.getList());
+                task_table.setItems(observableList);
+            }
+        });
         initializeTable();
         initializeButton();
         initializeMenu();
         initializeOutputFileExtensionChoiceBox();
+
     }
 
     private void initializeOutputFileExtensionChoiceBox() {
@@ -197,7 +210,6 @@ public class MainController {
                 if (files.size() > 0) {
                     fileChooser.setInitialDirectory(new File(files.get(0).getParent()));
                 }
-
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
                 logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": " + util.getList());
