@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
+
 public class Main extends Application {
-    private final static Logger logger = LoggerFactory.getLogger(Main.class);
+
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -22,7 +24,7 @@ public class Main extends Application {
         try {
             primaryStage.getIcons().add(new Image("/images/icon.png"));
         } catch (Exception e) {
-            logger.info("Иконка исчезла");
+            logger.error("Иконка исчезла");
         }
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -37,4 +39,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }

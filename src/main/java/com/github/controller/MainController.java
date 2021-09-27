@@ -22,7 +22,7 @@ import java.util.List;
 
 public class MainController {
 
-    private final static Logger logger = LoggerFactory.getLogger(MainController.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private final Util util;
 
     @FXML
@@ -58,13 +58,15 @@ public class MainController {
     @FXML
     private Button clear_completed_button;
     @FXML
+    private Button clear_log_button;
+    @FXML
     private TextArea log_text_area;
     @FXML
     private ChoiceBox<Extension> output_file_extension_choice_box;
 
     private ObservableList<Task> observableList;
 
-    private final FileChooser fileChooser;
+    private FileChooser fileChooser;
 
     public MainController() {
         util = new Util(this);
@@ -72,15 +74,14 @@ public class MainController {
     }
 
     private FileChooser getFileChooser() {
-        final FileChooser fileChooser;
-        fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
+        FileChooser localFileChooser = new FileChooser();
+        localFileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(
                         "video", "*.mkv", "*.mp4", "*.m2v", "*.avi", "*.mpg", "*.ts", "*.flv"),
                 new FileChooser.ExtensionFilter(
                         "all", "*.*")
         );
-        return fileChooser;
+        return localFileChooser;
     }
 
     public ChoiceBox<Extension> getOutput_file_extension_choice_box() {
@@ -122,18 +123,22 @@ public class MainController {
     private void initializeTable() {
         // Поддержка выбора нескольких строк через Ctrl, Shift
         task_table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        addDragAndDrop();
+        filename_column.setCellValueFactory(new PropertyValueFactory<>("name"));
+        status_column.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    private void addDragAndDrop() {
         task_table.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
         task_table.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
-            if(event.getDragboard().hasFiles()){
+            if (event.getDragboard().hasFiles()) {
                 List<File> files = db.getFiles();
-                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
+                files.stream().sorted().forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
             }
         });
-        filename_column.setCellValueFactory(new PropertyValueFactory<>("name"));
-        status_column.setCellValueFactory(new PropertyValueFactory<>("status"));
     }
 
     private void initializeButton() {
@@ -144,6 +149,7 @@ public class MainController {
         actionStartAllItems();
         actionCancelAllItems();
         actionClearCompleted();
+        actionClearLog();
     }
 
     private void actionCancelAllItems() {
@@ -172,12 +178,18 @@ public class MainController {
         );
     }
 
+    private void actionClearLog() {
+        clear_log_button.setOnAction(
+                event -> log_text_area.clear()
+        );
+    }
+
     private void actionRemoveAllFilesFromTable() {
         remove_all_files_button.setOnAction(event -> {
-            if (task_table.getItems().size() > 0) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\"" + util.getList());
+            if (!task_table.getItems().isEmpty()) {
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}", util.getList());
                 task_table.getItems().clear();
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": " + util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}", util.getList());
                 task_table.refresh();
             }
         });
@@ -186,10 +198,10 @@ public class MainController {
     private void actionRemoveSelectedFilesFromTable() {
         remove_files_button.setOnAction(event -> {
             // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
-            if (task_table.getSelectionModel().getSelectedItems().size() > 0) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\"" + util.getList());
+            if (!task_table.getSelectionModel().getSelectedItems().isEmpty()) {
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", util.getList());
                 task_table.getItems().removeAll(List.copyOf(task_table.getSelectionModel().getSelectedItems()));
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": " + util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}", util.getList());
                 task_table.refresh();
             } else {
                 logger.debug("Не выбрано ни одного файла");
@@ -203,23 +215,21 @@ public class MainController {
 
             List<File> files = fileChooser.showOpenMultipleDialog(root_layout.getScene().getWindow());
             if (files != null) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": " + util.getList());
+                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", util.getList());
                 files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
                 // Запоминаем последний путь
-                if (files.size() > 0) {
+                if (!files.isEmpty()) {
                     fileChooser.setInitialDirectory(new File(files.get(0).getParent()));
                 }
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
-                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": " + util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}", util.getList());
             }
         });
     }
 
     private void start(ObservableList<Task> items) {
-        if (items.size() > 0
-                && !(param_field.getText().isBlank())
-        ) {
+        if (!items.isEmpty() && !(param_field.getText().isBlank())) {
             List<Task> tasks = new ArrayList<>(
                     items.filtered(
                             task -> !task.getStatus().equals("In queue")

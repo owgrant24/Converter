@@ -33,16 +33,15 @@ import java.util.concurrent.Future;
 public class Util {
 
     private Thread thread;
-    private final static Logger logger = LoggerFactory.getLogger(Util.class);
+    private static final Logger logger = LoggerFactory.getLogger(Util.class);
 
     private final MainController mainController;
 
     public static final Set<Process> PROCESSES = new HashSet<>();
     private List<Task> list;
     private Queue<Task> tasks;
-    private final String hideBanner = "-hide_banner";
+    private String hideBanner = "-hide_banner";
 
-    // private static String ffmpeg = "D:/ffmpeg.exe";
     private static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
 
 
@@ -62,13 +61,13 @@ public class Util {
     }
 
     public void startTask(String param) {
-        logger.debug("Задание стартовало: " + tasks);
+        logger.debug("Задание стартовало: {}", tasks);
         thread = new Thread(() -> {
             Task current;
             while ((current = tasks.poll()) != null) {
                 if (!Thread.currentThread().isInterrupted()) {
                     try {
-                        logger.debug("Взял в работу: " + current.getName());
+                        logger.debug("Взял в работу: {}", current.getName());
                         current.setStatus("In process");
                         String input = "\"" + current.getFile().getPath() + "\" ";
 
@@ -91,18 +90,18 @@ public class Util {
 
                         String status = future.get().outputUTF8();
                         mainController.getLog_text_area().appendText(status);
-                        logger.debug("Информация о проведенной работе: \n" + status);
-                        logger.debug("Работу выполнил над: " + current.getName());
+                        logger.debug("Информация о проведенной работе: {}\n", status);
+                        logger.debug("Работу выполнил над: {}", current.getName());
                         PROCESSES.remove(process);
                         current.setStatus("Done");
                         mainController.getTask_table().refresh();
 
                     } catch (IOException e) {
-                        logger.info("Ошибка IOException: " + e.getMessage());
+                        logger.info("Ошибка IOException: {}", e.getMessage());
                     } catch (ExecutionException e) {
-                        logger.info("Ошибка ExecutionException: " + e.getMessage());
+                        logger.info("Ошибка ExecutionException: {}", e.getMessage());
                     } catch (InterruptedException e) {
-                        logger.info("Ошибка InterruptedException: " + e.getMessage());
+                        logger.info("Ошибка InterruptedException: {}", e.getMessage());
                     }
                 }
             }
