@@ -234,6 +234,7 @@ public class MainController {
                     items.filtered(
                             task -> !task.getStatus().equals("In queue")
                                     && !task.getStatus().equals("In process")
+                                    && !task.getStatus().equals("Done")
                     )
             );
             task_table.refresh();
