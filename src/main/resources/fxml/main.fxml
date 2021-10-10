@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="root_layout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.MainController">
+<BorderPane fx:id="rootLayout" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.MainController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -28,17 +28,17 @@
               <items>
                   <Menu mnemonicParsing="false" text="H264">
                     <items>
-                      <MenuItem fx:id="libx264_menu_item" mnemonicParsing="false" text="-c:v libx264" />
+                      <MenuItem fx:id="libx264MenuItem" mnemonicParsing="false" text="-c:v libx264" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="H265">
                     <items>
-                      <MenuItem fx:id="libx265_menu_item" mnemonicParsing="false" text="-c:v libx265" />
+                      <MenuItem fx:id="libx265MenuItem" mnemonicParsing="false" text="-c:v libx265" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="other">
                     <items>
-                      <MenuItem fx:id="copy_menu_item" mnemonicParsing="false" text="-c copy" />
+                      <MenuItem fx:id="copyMenuItem" mnemonicParsing="false" text="-c copy" />
                     </items>
                   </Menu>
               </items>
@@ -63,26 +63,26 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="346.0" prefWidth="538.0">
                      <children>
-                        <TableView fx:id="task_table" layoutX="15.0" layoutY="73.0" prefHeight="283.0" prefWidth="496.0">
+                        <TableView fx:id="taskTable" layoutX="15.0" layoutY="73.0" prefHeight="283.0" prefWidth="496.0">
                           <columns>
-                            <TableColumn fx:id="filename_column" maxWidth="329.0" prefWidth="329.0" text="Filename" />
-                            <TableColumn fx:id="status_column" maxWidth="248.0" prefWidth="85.0" text="Status" />
-                              <TableColumn fx:id="time_column" prefWidth="79.0" text="Time" />
+                            <TableColumn fx:id="filenameColumn" maxWidth="329.0" prefWidth="329.0" text="Filename" />
+                            <TableColumn fx:id="statusColumn" maxWidth="248.0" prefWidth="85.0" text="Status" />
+                              <TableColumn fx:id="timeColumn" prefWidth="79.0" text="Time" />
                           </columns>
                         </TableView>
-                        <Button fx:id="start_button" layoutX="527.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />
-                        <TextField fx:id="param_field" layoutX="14.0" layoutY="17.0" prefHeight="25.0" prefWidth="363.0" />
-                        <Button fx:id="stop_all_button" layoutX="527.0" layoutY="227.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cancel all" />
-                        <Button fx:id="add_files_button" layoutX="527.0" layoutY="17.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Add files" />
-                        <Button fx:id="remove_files_button" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove files" />
-                        <Button fx:id="start_all_button" layoutX="527.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
-                        <Button fx:id="remove_all_files_button" layoutX="527.0" layoutY="122.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove all files" />
-                        <Button fx:id="clear_completed_button" layoutX="527.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Clear completed " />
+                        <Button fx:id="startButton" layoutX="527.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />
+                        <TextField fx:id="paramField" layoutX="14.0" layoutY="17.0" prefHeight="25.0" prefWidth="363.0" />
+                        <Button fx:id="stopAllButton" layoutX="527.0" layoutY="227.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cancel all" />
+                        <Button fx:id="addFilesButton" layoutX="527.0" layoutY="17.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Add files" />
+                        <Button fx:id="removeFilesButton" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove files" />
+                        <Button fx:id="startAllButton" layoutX="527.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
+                        <Button fx:id="removeAllFilesButton" layoutX="527.0" layoutY="122.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove all files" />
+                        <Button fx:id="clearCompletedButton" layoutX="527.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Clear completed " />
                         <Label layoutX="14.0" text="Parameters" />
                         <Label layoutX="405.0" text="Output file extension" />
-                        <ChoiceBox fx:id="output_file_extension_choice_box" layoutX="404.0" layoutY="17.0" prefHeight="25.0" prefWidth="61.0" />
+                        <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="404.0" layoutY="17.0" prefHeight="25.0" prefWidth="61.0" />
                         <Label layoutX="16.0" layoutY="52.0" text="List of files" />
-                        <Button fx:id="open_folder_button" layoutX="527.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Open folder" />
+                        <Button fx:id="openFolderButton" layoutX="527.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Open folder" />
                      </children>
                   </AnchorPane>
             </content>
@@ -91,8 +91,8 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="log_text_area" editable="false" layoutX="10.0" layoutY="13.0" prefHeight="320.0" prefWidth="681.0" />
-                        <Button fx:id="clear_log_button" layoutX="10.0" layoutY="349.0" mnemonicParsing="false" text="Clear log" />
+                        <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="13.0" prefHeight="320.0" prefWidth="681.0" />
+                        <Button fx:id="clearLogButton" layoutX="10.0" layoutY="349.0" mnemonicParsing="false" text="Clear log" />
                      </children></AnchorPane>
               </content>
             </Tab>
