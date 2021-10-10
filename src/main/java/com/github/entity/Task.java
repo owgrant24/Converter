@@ -9,16 +9,13 @@ public class Task {
     private String name;
     private File file;
     private String status;
+    private String time;
 
-    public Task(String name, File file) {
-        this.name = name;
-        this.file = file;
-    }
-
-    public Task(String name, File file, String status) {
+    public Task(String name, File file, String status, String time) {
         this.name = name;
         this.file = file;
         this.status = status;
+        this.time = time;
     }
 
     public String getName() {
@@ -43,6 +40,14 @@ public class Task {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     @Override

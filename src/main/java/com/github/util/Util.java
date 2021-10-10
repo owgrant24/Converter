@@ -62,6 +62,7 @@ public class Util {
 
     public void startTask(String param) {
         logger.debug("Задание стартовало: {}", tasks);
+        long startTime = System.currentTimeMillis();
         thread = new Thread(() -> {
             Task current;
             while ((current = tasks.poll()) != null) {
@@ -72,9 +73,7 @@ public class Util {
                         String input = "\"" + current.getFile().getPath() + "\" ";
 
                         Path outputParent = Path.of(current.getFile().getParent() + "/converted/");
-                        if (!outputParent.toFile().exists()) {
-                            Files.createDirectory(outputParent);
-                        }
+                        checkDirectoryForOutputFile(outputParent);
 
                         String output = " \"" + outputParent + File.separator
                                 + current.getName().replaceFirst("[.][^.]+$", "")
@@ -94,12 +93,13 @@ public class Util {
                         logger.debug("Работу выполнил над: {}", current.getName());
                         PROCESSES.remove(process);
                         current.setStatus("Done");
+                        long duration = (System.currentTimeMillis() - startTime);
+                        String timeOperation = (duration / 1_000) + " с.";
+                        current.setTime(timeOperation);
                         mainController.getTask_table().refresh();
 
-                    } catch (IOException e) {
-                        logger.info("Ошибка IOException: {}", e.getMessage());
-                    } catch (ExecutionException e) {
-                        logger.info("Ошибка ExecutionException: {}", e.getMessage());
+                    } catch (IOException | ExecutionException e) {
+                        logger.info("Ошибка выполнения задания: {}", e.getMessage());
                     } catch (InterruptedException e) {
                         logger.info("Ошибка InterruptedException: {}", e.getMessage());
                     }
@@ -107,6 +107,12 @@ public class Util {
             }
         });
         thread.start();
+    }
+
+    private void checkDirectoryForOutputFile(Path outputParent) throws IOException {
+        if (!outputParent.toFile().exists()) {
+            Files.createDirectory(outputParent);
+        }
     }
 
     public void cancel() {
