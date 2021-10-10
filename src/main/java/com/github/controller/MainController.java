@@ -147,7 +147,10 @@ public class MainController {
             Dragboard db = event.getDragboard();
             if (event.getDragboard().hasFiles()) {
                 List<File> files = db.getFiles();
-                files.stream().sorted().forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
+                files.stream()
+                        .sorted()
+                        .forEach(file -> util.getList()
+                        .add(new Task(file.getName(), file, "", "")));
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
             }
