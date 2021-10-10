@@ -32,47 +32,47 @@ public class MainController {
     private final Util util;
 
     @FXML
-    private MenuItem libx264_menu_item;
+    private MenuItem libx264MenuItem;
     @FXML
-    private MenuItem libx265_menu_item;
+    private MenuItem libx265MenuItem;
     @FXML
-    private MenuItem copy_menu_item;
+    private MenuItem copyMenuItem;
     @FXML
-    private BorderPane root_layout;
+    private BorderPane rootLayout;
     @FXML
-    private TableView<Task> task_table;
+    private TableView<Task> taskTable;
     @FXML
-    private TableColumn<Task, String> filename_column;
+    private TableColumn<Task, String> filenameColumn;
     @FXML
-    private TableColumn<Task, String> status_column;
+    private TableColumn<Task, String> statusColumn;
     @FXML
-    private TableColumn<Task, String> time_column;
+    private TableColumn<Task, String> timeColumn;
 
     @FXML
-    private TextField param_field;
+    private TextField paramField;
 
     @FXML
-    private Button start_button;
+    private Button startButton;
     @FXML
-    private Button stop_all_button;
+    private Button stopAllButton;
     @FXML
-    private Button add_files_button;
+    private Button addFilesButton;
     @FXML
-    private Button remove_files_button;
+    private Button removeFilesButton;
     @FXML
-    private Button remove_all_files_button;
+    private Button removeAllFilesButton;
     @FXML
-    private Button start_all_button;
+    private Button startAllButton;
     @FXML
-    private Button clear_completed_button;
+    private Button clearCompletedButton;
     @FXML
-    private Button clear_log_button;
+    private Button clearLogButton;
     @FXML
-    private Button open_folder_button;
+    private Button openFolderButton;
     @FXML
-    private TextArea log_text_area;
+    private TextArea logTextArea;
     @FXML
-    private ChoiceBox<Extension> output_file_extension_choice_box;
+    private ChoiceBox<Extension> outputFileExtensionChoiceBox;
 
     private ObservableList<Task> observableList;
 
@@ -96,16 +96,16 @@ public class MainController {
         return localFileChooser;
     }
 
-    public ChoiceBox<Extension> getOutput_file_extension_choice_box() {
-        return output_file_extension_choice_box;
+    public ChoiceBox<Extension> getOutputFileExtensionChoiceBox() {
+        return outputFileExtensionChoiceBox;
     }
 
-    public TableView<Task> getTask_table() {
-        return task_table;
+    public TableView<Task> getTaskTable() {
+        return taskTable;
     }
 
-    public TextArea getLog_text_area() {
-        return log_text_area;
+    public TextArea getLogTextArea() {
+        return logTextArea;
     }
 
     public static ObservableList<Task> getObservableList(List<Task> list) {
@@ -118,32 +118,31 @@ public class MainController {
         initializeButton();
         initializeMenu();
         initializeOutputFileExtensionChoiceBox();
-
     }
 
     private void initializeOutputFileExtensionChoiceBox() {
-        output_file_extension_choice_box.getItems().setAll(FXCollections.observableArrayList(Extension.values()));
-        output_file_extension_choice_box.setValue(Extension.MP4);
+        outputFileExtensionChoiceBox.getItems().setAll(FXCollections.observableArrayList(Extension.values()));
+        outputFileExtensionChoiceBox.setValue(Extension.MP4);
     }
 
     private void initializeMenu() {
-        libx265_menu_item.setOnAction(event -> param_field.setText("-c:v libx265"));
-        libx264_menu_item.setOnAction(event -> param_field.setText("-c:v libx264"));
-        copy_menu_item.setOnAction(event -> param_field.setText("-c copy"));
+        libx265MenuItem.setOnAction(event -> paramField.setText("-c:v libx265"));
+        libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
+        copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
     }
 
     private void initializeTable() {
         // Поддержка выбора нескольких строк через Ctrl, Shift
-        task_table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        taskTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         addDragAndDrop();
-        filename_column.setCellValueFactory(new PropertyValueFactory<>("name"));
-        status_column.setCellValueFactory(new PropertyValueFactory<>("status"));
-        time_column.setCellValueFactory(new PropertyValueFactory<>("time"));
+        filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
     }
 
     private void addDragAndDrop() {
-        task_table.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
-        task_table.setOnDragDropped(event -> {
+        taskTable.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
+        taskTable.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             if (event.getDragboard().hasFiles()) {
                 List<File> files = db.getFiles();
@@ -152,7 +151,7 @@ public class MainController {
                         .forEach(file -> util.getList()
                         .add(new Task(file.getName(), file, "", "")));
                 observableList = getObservableList(util.getList());
-                task_table.setItems(observableList);
+                taskTable.setItems(observableList);
             }
         });
     }
@@ -170,7 +169,7 @@ public class MainController {
     }
 
     private void actionOpenFolder() {
-        open_folder_button.setOnAction(event -> {
+        openFolderButton.setOnAction(event -> {
             if (directory != null){
                 Desktop desktop = Desktop.getDesktop();
                 try {
@@ -183,56 +182,54 @@ public class MainController {
     }
 
     private void actionCancelAllItems() {
-        stop_all_button.setOnAction(event -> {
+        stopAllButton.setOnAction(event -> {
             util.getTasks().clear();
             util.cancel();
-            task_table.getItems()
+            taskTable.getItems()
                     .filtered(task -> !task.getStatus().equals("Done"))
                     .forEach(task -> task.setStatus(""));
-            task_table.refresh();
+            taskTable.refresh();
         });
     }
 
     private void actionStartAllItems() {
-        start_all_button.setOnAction(event -> start(task_table.getItems()));
+        startAllButton.setOnAction(event -> start(taskTable.getItems()));
     }
 
     private void actionStartSelectedItem() {
-        start_button.setOnAction(event -> start(task_table.getSelectionModel().getSelectedItems()));
+        startButton.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
     }
 
     private void actionClearCompleted() {
-        clear_completed_button.setOnAction(
-                event -> task_table.getItems()
+        clearCompletedButton.setOnAction(
+                event -> taskTable.getItems()
                         .removeIf(task -> task.getStatus().equals("Done"))
         );
     }
 
     private void actionClearLog() {
-        clear_log_button.setOnAction(
-                event -> log_text_area.clear()
-        );
+        clearLogButton.setOnAction(event -> logTextArea.clear());
     }
 
     private void actionRemoveAllFilesFromTable() {
-        remove_all_files_button.setOnAction(event -> {
-            if (!task_table.getItems().isEmpty()) {
+        removeAllFilesButton.setOnAction(event -> {
+            if (!taskTable.getItems().isEmpty()) {
                 logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}", util.getList());
-                task_table.getItems().clear();
+                taskTable.getItems().clear();
                 logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}", util.getList());
-                task_table.refresh();
+                taskTable.refresh();
             }
         });
     }
 
     private void actionRemoveSelectedFilesFromTable() {
-        remove_files_button.setOnAction(event -> {
+        removeFilesButton.setOnAction(event -> {
             // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
-            if (!task_table.getSelectionModel().getSelectedItems().isEmpty()) {
+            if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
                 logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", util.getList());
-                task_table.getItems().removeAll(List.copyOf(task_table.getSelectionModel().getSelectedItems()));
+                taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
                 logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}", util.getList());
-                task_table.refresh();
+                taskTable.refresh();
             } else {
                 logger.debug("Не выбрано ни одного файла");
             }
@@ -241,9 +238,9 @@ public class MainController {
     }
 
     private void actionAddFilesInTable() {
-        add_files_button.setOnAction(event -> {
+        addFilesButton.setOnAction(event -> {
 
-            List<File> files = fileChooser.showOpenMultipleDialog(root_layout.getScene().getWindow());
+            List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
             if (files != null) {
                 logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", util.getList());
                 files.forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
@@ -253,14 +250,14 @@ public class MainController {
                     fileChooser.setInitialDirectory(directory);
                 }
                 observableList = getObservableList(util.getList());
-                task_table.setItems(observableList);
+                taskTable.setItems(observableList);
                 logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}", util.getList());
             }
         });
     }
 
     private void start(ObservableList<Task> items) {
-        if (!items.isEmpty() && !(param_field.getText().isBlank())) {
+        if (!items.isEmpty() && !(paramField.getText().isBlank())) {
             List<Task> tasks = new ArrayList<>(
                     items.filtered(
                             task -> !task.getStatus().equals("In queue")
@@ -268,10 +265,10 @@ public class MainController {
                                     && !task.getStatus().equals("Done")
                     )
             );
-            task_table.refresh();
+            taskTable.refresh();
             items.forEach(task -> task.setStatus("In queue"));
             util.getTasks().addAll(tasks);
-            util.startTask(param_field.getText());
+            util.startTask(paramField.getText());
         } else {
             logger.info("Error");
         }

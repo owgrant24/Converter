@@ -38,8 +38,8 @@ public class Util {
     private final MainController mainController;
 
     public static final Set<Process> PROCESSES = new HashSet<>();
-    private List<Task> list;
-    private Queue<Task> tasks;
+    private final List<Task> list;
+    private final Queue<Task> tasks;
     private String hideBanner = "-hide_banner";
 
     private static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
@@ -77,7 +77,7 @@ public class Util {
 
                         String output = " \"" + outputParent + File.separator
                                 + current.getName().replaceFirst("[.][^.]+$", "")
-                                + "." + mainController.getOutput_file_extension_choice_box().getValue().toString() + "\"";
+                                + "." + mainController.getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                         String parameters = input + param + output;
                         StartedProcess startedProcess = new ProcessExecutor()
                                 .command(ffmpeg.getAbsolutePath(), hideBanner, "-i", parameters)
@@ -88,7 +88,7 @@ public class Util {
                         Future<ProcessResult> future = startedProcess.getFuture();
 
                         String status = future.get().outputUTF8();
-                        mainController.getLog_text_area().appendText(status);
+                        mainController.getLogTextArea().appendText(status);
                         logger.debug("Информация о проведенной работе: {}\n", status);
                         logger.debug("Работу выполнил над: {}", current.getName());
                         PROCESSES.remove(process);
@@ -96,7 +96,7 @@ public class Util {
                         long duration = (System.currentTimeMillis() - startTime);
                         String timeOperation = (duration / 1_000) + " с.";
                         current.setTime(timeOperation);
-                        mainController.getTask_table().refresh();
+                        mainController.getTaskTable().refresh();
 
                     } catch (IOException | ExecutionException e) {
                         logger.info("Ошибка выполнения задания: {}", e.getMessage());
