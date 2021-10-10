@@ -39,6 +39,8 @@ public class MainController {
     private TableColumn<Task, String> filename_column;
     @FXML
     private TableColumn<Task, String> status_column;
+    @FXML
+    private TableColumn<?, ?> time_column;
 
     @FXML
     private TextField param_field;
@@ -126,6 +128,7 @@ public class MainController {
         addDragAndDrop();
         filename_column.setCellValueFactory(new PropertyValueFactory<>("name"));
         status_column.setCellValueFactory(new PropertyValueFactory<>("status"));
+        time_column.setCellValueFactory(new PropertyValueFactory<>("time"));
     }
 
     private void addDragAndDrop() {
@@ -134,7 +137,7 @@ public class MainController {
             Dragboard db = event.getDragboard();
             if (event.getDragboard().hasFiles()) {
                 List<File> files = db.getFiles();
-                files.stream().sorted().forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
+                files.stream().sorted().forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
             }
@@ -216,7 +219,7 @@ public class MainController {
             List<File> files = fileChooser.showOpenMultipleDialog(root_layout.getScene().getWindow());
             if (files != null) {
                 logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", util.getList());
-                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "")));
+                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
                 // Запоминаем последний путь
                 if (!files.isEmpty()) {
                     fileChooser.setInitialDirectory(new File(files.get(0).getParent()));
