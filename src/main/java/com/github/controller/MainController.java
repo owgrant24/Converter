@@ -46,7 +46,7 @@ public class MainController {
     @FXML
     private TableColumn<Task, String> status_column;
     @FXML
-    private TableColumn<?, ?> time_column;
+    private TableColumn<Task, String> time_column;
 
     @FXML
     private TextField param_field;
@@ -265,6 +265,7 @@ public class MainController {
                     items.filtered(
                             task -> !task.getStatus().equals("In queue")
                                     && !task.getStatus().equals("In process")
+                                    && !task.getStatus().equals("Done")
                     )
             );
             task_table.refresh();
@@ -277,4 +278,3 @@ public class MainController {
     }
 
 }
-
