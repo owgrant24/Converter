@@ -46,7 +46,7 @@ public class MainController {
     @FXML
     private TableColumn<Task, String> status_column;
     @FXML
-    private TableColumn<?, ?> time_column;
+    private TableColumn<Task, String> time_column;
 
     @FXML
     private TextField param_field;
@@ -147,7 +147,10 @@ public class MainController {
             Dragboard db = event.getDragboard();
             if (event.getDragboard().hasFiles()) {
                 List<File> files = db.getFiles();
-                files.stream().sorted().forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
+                files.stream()
+                        .sorted()
+                        .forEach(file -> util.getList()
+                        .add(new Task(file.getName(), file, "", "")));
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
             }
@@ -275,4 +278,3 @@ public class MainController {
     }
 
 }
-
