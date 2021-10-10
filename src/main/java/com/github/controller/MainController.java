@@ -7,6 +7,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -15,7 +19,9 @@ import javafx.stage.FileChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +68,8 @@ public class MainController {
     @FXML
     private Button clear_log_button;
     @FXML
+    private Button open_folder_button;
+    @FXML
     private TextArea log_text_area;
     @FXML
     private ChoiceBox<Extension> output_file_extension_choice_box;
@@ -69,6 +77,8 @@ public class MainController {
     private ObservableList<Task> observableList;
 
     private FileChooser fileChooser;
+
+    File directory = null;
 
     public MainController() {
         util = new Util(this);
@@ -153,6 +163,20 @@ public class MainController {
         actionCancelAllItems();
         actionClearCompleted();
         actionClearLog();
+        actionOpenFolder();
+    }
+
+    private void actionOpenFolder() {
+        open_folder_button.setOnAction(event -> {
+            if (directory != null){
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                    desktop.open(directory);
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                }
+            }
+        });
     }
 
     private void actionCancelAllItems() {
@@ -222,7 +246,8 @@ public class MainController {
                 files.forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
                 // Запоминаем последний путь
                 if (!files.isEmpty()) {
-                    fileChooser.setInitialDirectory(new File(files.get(0).getParent()));
+                    directory = new File(files.get(0).getParent());
+                    fileChooser.setInitialDirectory(directory);
                 }
                 observableList = getObservableList(util.getList());
                 task_table.setItems(observableList);
