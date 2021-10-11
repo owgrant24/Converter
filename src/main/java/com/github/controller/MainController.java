@@ -2,7 +2,7 @@ package com.github.controller;
 
 import com.github.entity.Extension;
 import com.github.entity.Task;
-import com.github.util.Util;
+import com.github.service.ConvService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ import java.util.List;
 public class MainController {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-    private final Util util;
+    private final ConvService convService;
 
     @FXML
     private MenuItem libx264MenuItem;
@@ -81,7 +81,7 @@ public class MainController {
     File directory = null;
 
     public MainController() {
-        util = new Util(this);
+        convService = new ConvService(this);
         fileChooser = getFileChooser();
     }
 
@@ -148,9 +148,9 @@ public class MainController {
                 List<File> files = db.getFiles();
                 files.stream()
                         .sorted()
-                        .forEach(file -> util.getList()
+                        .forEach(file -> convService.getList()
                         .add(new Task(file.getName(), file, "", "")));
-                observableList = getObservableList(util.getList());
+                observableList = getObservableList(convService.getList());
                 taskTable.setItems(observableList);
             }
         });
@@ -183,8 +183,8 @@ public class MainController {
 
     private void actionCancelAllItems() {
         stopAllButton.setOnAction(event -> {
-            util.getTasks().clear();
-            util.cancel();
+            convService.getTasks().clear();
+            convService.cancel();
             taskTable.getItems()
                     .filtered(task -> !task.getStatus().equals("Done"))
                     .forEach(task -> task.setStatus(""));
@@ -214,9 +214,9 @@ public class MainController {
     private void actionRemoveAllFilesFromTable() {
         removeAllFilesButton.setOnAction(event -> {
             if (!taskTable.getItems().isEmpty()) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}", util.getList());
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}", convService.getList());
                 taskTable.getItems().clear();
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}", util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}", convService.getList());
                 taskTable.refresh();
             }
         });
@@ -226,9 +226,9 @@ public class MainController {
         removeFilesButton.setOnAction(event -> {
             // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
             if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", util.getList());
+                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", convService.getList());
                 taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}", util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}", convService.getList());
                 taskTable.refresh();
             } else {
                 logger.debug("Не выбрано ни одного файла");
@@ -242,16 +242,16 @@ public class MainController {
 
             List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
             if (files != null) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", util.getList());
-                files.forEach(file -> util.getList().add(new Task(file.getName(), file, "", "")));
+                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", convService.getList());
+                files.forEach(file -> convService.getList().add(new Task(file.getName(), file, "", "")));
                 // Запоминаем последний путь
                 if (!files.isEmpty()) {
                     directory = new File(files.get(0).getParent());
                     fileChooser.setInitialDirectory(directory);
                 }
-                observableList = getObservableList(util.getList());
+                observableList = getObservableList(convService.getList());
                 taskTable.setItems(observableList);
-                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}", util.getList());
+                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}", convService.getList());
             }
         });
     }
@@ -267,8 +267,8 @@ public class MainController {
             );
             taskTable.refresh();
             items.forEach(task -> task.setStatus("In queue"));
-            util.getTasks().addAll(tasks);
-            util.startTask(paramField.getText());
+            convService.getTasks().addAll(tasks);
+            convService.startTask(paramField.getText());
         } else {
             logger.info("Error");
         }
