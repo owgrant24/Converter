@@ -30,8 +30,7 @@ public class Main extends Application {
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> {
-            // TODO Разработать удаление процесса, если он завис
-            Util.PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
+            Util.stopProcess();
             System.exit(0);
         });
     }

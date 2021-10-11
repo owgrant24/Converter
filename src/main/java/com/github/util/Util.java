@@ -37,7 +37,7 @@ public class Util {
 
     private final MainController mainController;
 
-    public static final Set<Process> PROCESSES = new HashSet<>();
+    private static final Set<Process> PROCESSES = new HashSet<>();
     private final List<Task> list;
     private final Queue<Task> tasks;
     private String hideBanner = "-hide_banner";
@@ -102,6 +102,7 @@ public class Util {
                         logger.info("Ошибка выполнения задания: {}", e.getMessage());
                     } catch (InterruptedException e) {
                         logger.info("Ошибка InterruptedException: {}", e.getMessage());
+                        Thread.currentThread().interrupt();
                     }
                 }
             }
@@ -120,6 +121,10 @@ public class Util {
         if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
+        stopProcess();
+    }
+
+    public static void stopProcess() {
         PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
     }
 
