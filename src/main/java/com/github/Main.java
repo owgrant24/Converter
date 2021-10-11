@@ -1,6 +1,6 @@
 package com.github;
 
-import com.github.util.Util;
+import com.github.service.ConvService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,13 +24,13 @@ public class Main extends Application {
         try {
             primaryStage.getIcons().add(new Image("/images/icon.png"));
         } catch (Exception e) {
-            logger.error("Иконка исчезла");
+            logger.error("Иконка исчезла. Причина - {}", e.getMessage());
         }
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> {
-            Util.stopProcess();
+            ConvService.stopProcesses();
             System.exit(0);
         });
     }

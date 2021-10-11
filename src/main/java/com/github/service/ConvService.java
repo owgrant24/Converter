@@ -1,4 +1,4 @@
-package com.github.util;
+package com.github.service;
 
 import com.github.controller.MainController;
 import com.github.entity.Task;
@@ -30,22 +30,20 @@ import java.util.concurrent.Future;
  * <p>
  * https://trofimovdigital.ru/blog/convert-video-with-ffmpeg
  */
-public class Util {
+public class ConvService {
 
     private Thread thread;
-    private static final Logger logger = LoggerFactory.getLogger(Util.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConvService.class);
+    private static final Set<Process> PROCESSES = new HashSet<>();
+    private static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
 
     private final MainController mainController;
 
-    private static final Set<Process> PROCESSES = new HashSet<>();
     private final List<Task> list;
     private final Queue<Task> tasks;
     private String hideBanner = "-hide_banner";
 
-    private static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
-
-
-    public Util(MainController mainController) {
+    public ConvService(MainController mainController) {
         this.mainController = mainController;
         this.tasks = new ConcurrentLinkedQueue<>();
         this.list = new ArrayList<>();
@@ -121,10 +119,10 @@ public class Util {
         if (thread != null && !thread.isInterrupted()) {
             thread.interrupt();
         }
-        stopProcess();
+        stopProcesses();
     }
 
-    public static void stopProcess() {
+    public static void stopProcesses() {
         PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
     }
 
