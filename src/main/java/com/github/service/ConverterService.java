@@ -36,8 +36,8 @@ public class ConverterService {
     private static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
 
     protected static final Set<Process> PROCESSES = new HashSet<>();
-    protected static final File ffmpeg = new File("./ffmpeg/ffmpeg.exe");
-    protected static String hideBanner = "-hide_banner";
+    protected static final File FFMPEG = new File("./ffmpeg/ffmpeg.exe");
+    protected static final String HIDE_BANNER = "-hide_banner";
 
     private final MainController mainController;
 
@@ -60,9 +60,13 @@ public class ConverterService {
         return tasks;
     }
 
+    public MainController getMainController() {
+        return mainController;
+    }
+
     public void startTask() {
         logger.debug("Задание стартовало: {}", tasks);
-        Consumer consumer = new Consumer(tasks, mainController);
+        Consumer consumer = new Consumer(this);
         thread = new Thread(consumer);
         thread.start();
     }
