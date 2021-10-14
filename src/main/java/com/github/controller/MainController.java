@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import static com.github.util.HelperUtil.printCollection;
+
 
 public class MainController {
 
@@ -217,12 +219,12 @@ public class MainController {
             if (!taskTable.getItems().isEmpty()) {
                 logger.debug(
                         "Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}",
-                        converterService.getList()
+                        printCollection(converterService.getList())
                 );
                 taskTable.getItems().clear();
                 logger.debug(
                         "Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}",
-                        converterService.getList()
+                        printCollection(converterService.getList())
                 );
                 taskTable.refresh();
             }
@@ -237,7 +239,7 @@ public class MainController {
                 taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
                 logger.debug(
                         "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
-                        converterService.getList()
+                        printCollection(converterService.getList())
                 );
                 taskTable.refresh();
             } else {
@@ -254,7 +256,7 @@ public class MainController {
             if (files != null) {
                 logger.debug(
                         "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
-                        converterService.getList()
+                        printCollection(converterService.getList())
                 );
                 files.forEach(file -> converterService.getList().add(new Task(file.getName(), file)));
                 // Запоминаем последний путь
@@ -266,7 +268,7 @@ public class MainController {
                 taskTable.setItems(observableList);
                 logger.debug(
                         "Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}",
-                        converterService.getList()
+                        printCollection(converterService.getList())
                 );
             }
         });

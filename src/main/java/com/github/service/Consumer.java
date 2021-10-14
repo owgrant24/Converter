@@ -17,6 +17,7 @@ import java.util.concurrent.Future;
 import static com.github.service.ConverterService.PROCESSES;
 import static com.github.service.ConverterService.FFMPEG;
 import static com.github.service.ConverterService.HIDE_BANNER;
+import static com.github.util.HelperUtil.printCollection;
 
 
 public class Consumer implements Runnable {
@@ -31,7 +32,7 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        logger.debug("Задание стартовало: {}", converterService.getTasks());
+        logger.debug("Задание стартовало: {}", printCollection(converterService.getTasks()));
         Task current;
         while ((current = converterService.getTasks().poll()) != null) {
             if (!Thread.currentThread().isInterrupted()) {
