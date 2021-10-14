@@ -20,6 +20,7 @@ import static com.github.service.ConverterService.HIDE_BANNER;
 
 
 public class Consumer implements Runnable {
+
     private ConverterService converterService;
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
@@ -30,6 +31,7 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
+        logger.debug("Задание стартовало: {}", converterService.getTasks());
         Task current;
         while ((current = converterService.getTasks().poll()) != null) {
             if (!Thread.currentThread().isInterrupted()) {
@@ -57,7 +59,6 @@ public class Consumer implements Runnable {
 
                     String status = future.get().outputUTF8();
                     converterService.getMainController().getLogTextArea().appendText(status);
-                    logger.debug("Информация о проведенной работе: {}\n", status);
                     logger.debug("Работу выполнил над: {}", current.getName());
                     PROCESSES.remove(process);
                     current.setStatus("Done");
@@ -74,10 +75,12 @@ public class Consumer implements Runnable {
                 }
             }
         }
+        logger.info("Все задания выполнены");
     }
 
     private void checkDirectoryForOutputFile(Path outputParent) throws IOException {
         if (!outputParent.toFile().exists()) {
+            logger.info("Создаю новую директорию {}", outputParent);
             Files.createDirectory(outputParent);
         }
     }

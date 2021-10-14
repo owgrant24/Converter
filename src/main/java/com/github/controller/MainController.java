@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 
 public class MainController {
@@ -214,7 +215,10 @@ public class MainController {
     private void actionRemoveAllFilesFromTable() {
         removeAllFilesButton.setOnAction(event -> {
             if (!taskTable.getItems().isEmpty()) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}", converterService.getList());
+                logger.debug(
+                        "Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}",
+                        converterService.getList()
+                );
                 taskTable.getItems().clear();
                 logger.debug(
                         "Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}",
@@ -231,7 +235,10 @@ public class MainController {
             if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
                 logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", converterService.getList());
                 taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
-                logger.debug("Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}", converterService.getList());
+                logger.debug(
+                        "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
+                        converterService.getList()
+                );
                 taskTable.refresh();
             } else {
                 logger.debug("Не выбрано ни одного файла");
@@ -245,7 +252,10 @@ public class MainController {
 
             List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
             if (files != null) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}", converterService.getList());
+                logger.debug(
+                        "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
+                        converterService.getList()
+                );
                 files.forEach(file -> converterService.getList().add(new Task(file.getName(), file)));
                 // Запоминаем последний путь
                 if (!files.isEmpty()) {
@@ -254,27 +264,28 @@ public class MainController {
                 }
                 observableList = getObservableList(converterService.getList());
                 taskTable.setItems(observableList);
-                logger.debug("Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}", converterService.getList());
+                logger.debug(
+                        "Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}",
+                        converterService.getList()
+                );
             }
         });
     }
 
     private void start(ObservableList<Task> items) {
         if (!items.isEmpty() && !(paramField.getText().isBlank())) {
-            List<Task> tasks = new ArrayList<>(
-                    items.filtered(
-                            task -> !task.getStatus().equals("In queue")
-                                    && !task.getStatus().equals("In process")
-                                    && !task.getStatus().equals("Done")
-                    )
-            );
+            Predicate<Task> predicate =
+                    task -> !task.getStatus().equals("In queue")
+                            && !task.getStatus().equals("In process")
+                            && !task.getStatus().equals("Done");
+            List<Task> tasks = new ArrayList<>(items.filtered(predicate));
             taskTable.refresh();
-            items.forEach(task -> task.setStatus("In queue"));
+            items.filtered(predicate).forEach(task -> task.setStatus("In queue"));
             tasks.forEach(task -> task.setParam(paramField.getText()));
             converterService.getTasks().addAll(tasks);
             converterService.startTask();
         } else {
-            logger.info("Error");
+            logger.info("Нет походяших заданий или параметры конвертации не заданы");
         }
     }
 
