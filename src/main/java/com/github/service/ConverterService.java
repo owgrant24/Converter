@@ -2,20 +2,13 @@ package com.github.service;
 
 import com.github.controller.MainController;
 import com.github.entity.Task;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.zeroturnaround.exec.ProcessExecutor;
-import org.zeroturnaround.exec.ProcessResult;
-import org.zeroturnaround.exec.StartedProcess;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -32,8 +25,6 @@ import java.util.concurrent.LinkedBlockingQueue;
  * https://trofimovdigital.ru/blog/convert-video-with-ffmpeg
  */
 public class ConverterService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
 
     protected static final Set<Process> PROCESSES = new HashSet<>();
     protected static final File FFMPEG = new File("./ffmpeg/ffmpeg.exe");
@@ -65,10 +56,10 @@ public class ConverterService {
     }
 
     public void startTask() {
-        logger.debug("Задание стартовало: {}", tasks);
-        Consumer consumer = new Consumer(this);
-        thread = new Thread(consumer);
-        thread.start();
+        if (thread == null || !thread.isAlive()) {
+            thread = new Thread(new Consumer(this));
+            thread.start();
+        }
     }
 
     public void cancel() {
