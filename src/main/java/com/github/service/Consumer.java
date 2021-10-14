@@ -49,7 +49,8 @@ public class Consumer implements Runnable {
                     String output = " \"" + outputParent + File.separator
                             + current.getName().replaceFirst("[.][^.]+$", "")
                             + "."
-                            + converterService.getMainController().getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
+                            + converterService.getMainController()
+                            .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                     String parameters = input + current.getParam() + output;
                     StartedProcess startedProcess = new ProcessExecutor()
                             .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)

@@ -6,16 +6,23 @@ import com.github.service.ConverterService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,13 +82,15 @@ public class MainController {
     @FXML
     private TextArea logTextArea;
     @FXML
+    private MenuItem aboutButton;
+    @FXML
     private ChoiceBox<Extension> outputFileExtensionChoiceBox;
 
     private ObservableList<Task> observableList;
 
     private FileChooser fileChooser;
 
-    File directory = null;
+    private File directory = null;
 
     public MainController() {
         converterService = new ConverterService(this);
@@ -169,6 +178,26 @@ public class MainController {
         actionClearCompleted();
         actionClearLog();
         actionOpenFolder();
+        actionAbout();
+    }
+
+    private void actionAbout() {
+        aboutButton.setOnAction(event -> {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("About the program");
+            dialog.setContentText("The program works on the basis of FFMPEG\nDeveloper - Aleksandr Shabelskii\n2021");
+            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            dialog.initOwner(aboutButton.getParentPopup().getScene().getWindow());
+            dialog.setX(aboutButton.getParentPopup().getScene().getWindow().getX());
+            dialog.setY(aboutButton.getParentPopup().getScene().getWindow().getY());
+            try {
+                ((Stage) dialog.getDialogPane().getScene().getWindow())
+                        .getIcons().add(new Image("/images/icon.png"));
+            } catch (Exception e) {
+                logger.error("Иконка исчезла. Причина - {}", e.getMessage());
+            }
+            dialog.showAndWait();
+        });
     }
 
     private void actionOpenFolder() {
