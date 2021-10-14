@@ -1,6 +1,5 @@
 package com.github.service;
 
-import com.github.controller.MainController;
 import com.github.entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,30 +11,27 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.github.service.ConverterService.PROCESSES;
-import static com.github.service.ConverterService.ffmpeg;
-import static com.github.service.ConverterService.hideBanner;
+import static com.github.service.ConverterService.FFMPEG;
+import static com.github.service.ConverterService.HIDE_BANNER;
 
 
 public class Consumer implements Runnable {
-    private Queue<Task> tasks;
-    private MainController mainController;
+    private ConverterService converterService;
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    public Consumer(Queue<Task> tasks, MainController mainController) {
-        this.tasks = tasks;
-        this.mainController = mainController;
+    public Consumer(ConverterService converterService) {
+        this.converterService = converterService;
     }
 
     @Override
     public void run() {
         Task current;
-        while ((current = tasks.poll()) != null) {
+        while ((current = converterService.getTasks().poll()) != null) {
             if (!Thread.currentThread().isInterrupted()) {
                 try {
                     long startTime = System.currentTimeMillis();
@@ -48,10 +44,11 @@ public class Consumer implements Runnable {
 
                     String output = " \"" + outputParent + File.separator
                             + current.getName().replaceFirst("[.][^.]+$", "")
-                            + "." + mainController.getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
+                            + "."
+                            + converterService.getMainController().getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                     String parameters = input + current.getParam() + output;
                     StartedProcess startedProcess = new ProcessExecutor()
-                            .command(ffmpeg.getAbsolutePath(), hideBanner, "-i", parameters)
+                            .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)
                             .readOutput(true)
                             .start();
                     Process process = startedProcess.getProcess();
@@ -59,7 +56,7 @@ public class Consumer implements Runnable {
                     Future<ProcessResult> future = startedProcess.getFuture();
 
                     String status = future.get().outputUTF8();
-                    mainController.getLogTextArea().appendText(status);
+                    converterService.getMainController().getLogTextArea().appendText(status);
                     logger.debug("Информация о проведенной работе: {}\n", status);
                     logger.debug("Работу выполнил над: {}", current.getName());
                     PROCESSES.remove(process);
@@ -67,7 +64,7 @@ public class Consumer implements Runnable {
                     long duration = (System.currentTimeMillis() - startTime);
                     String timeOperation = (duration / 1_000) + " с.";
                     current.setTime(timeOperation);
-                    mainController.getTaskTable().refresh();
+                    converterService.getMainController().getTaskTable().refresh();
 
                 } catch (IOException | ExecutionException e) {
                     logger.info("Ошибка выполнения задания: {}", e.getMessage());
