@@ -1,6 +1,6 @@
 package com.github;
 
-import com.github.service.ConvService;
+import com.github.service.ConverterService;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -30,7 +30,7 @@ public class Main extends Application {
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> {
-            ConvService.stopProcesses();
+            ConverterService.stopProcesses();
             System.exit(0);
         });
     }
