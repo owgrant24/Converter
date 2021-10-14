@@ -17,6 +17,7 @@ import java.util.concurrent.Future;
 import static com.github.service.ConverterService.PROCESSES;
 import static com.github.service.ConverterService.FFMPEG;
 import static com.github.service.ConverterService.HIDE_BANNER;
+import static com.github.util.HelperUtil.convertSecInMin;
 import static com.github.util.HelperUtil.printCollection;
 
 
@@ -65,7 +66,7 @@ public class Consumer implements Runnable {
                     current.setStatus("Done");
                     long duration = (System.currentTimeMillis() - startTime);
                     String timeOperation = (duration / 1_000) + " с.";
-                    current.setTime(timeOperation);
+                    current.setTime(convertSecInMin(timeOperation));
                     converterService.getMainController().getTaskTable().refresh();
 
                 } catch (IOException | ExecutionException e) {
