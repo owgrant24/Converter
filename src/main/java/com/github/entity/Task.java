@@ -10,12 +10,12 @@ public class Task {
     private File file;
     private String status;
     private String time;
+    private String param;
 
-    public Task(String name, File file, String status, String time) {
+    public Task(String name, File file) {
         this.name = name;
         this.file = file;
-        this.status = status;
-        this.time = time;
+        this.status = "";
     }
 
     public String getName() {
@@ -48,6 +48,14 @@ public class Task {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getParam() {
+        return param;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
     }
 
     @Override
