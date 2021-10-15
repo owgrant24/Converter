@@ -28,7 +28,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -284,10 +286,11 @@ public class MainController {
     }
 
     private void copyToFile() {
-        if(!logTextArea.getText().isBlank()){
+        if (!logTextArea.getText().isBlank()) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select directory for save");
-            fileChooser.setInitialFileName("log");
+            String nameFileDefault = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            fileChooser.setInitialFileName(nameFileDefault);
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
             File file = fileChooser.showSaveDialog(rootLayout.getScene().getWindow());
 
