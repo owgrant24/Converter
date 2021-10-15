@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import static com.github.util.HelperUtil.printCollection;
@@ -166,130 +168,72 @@ public class MainController {
     }
 
     private void initializeButton() {
-        actionAddFilesInTable();
-        actionRemoveSelectedFilesFromTable();
-        actionRemoveAllFilesFromTable();
-        actionStartSelectedItem();
-        actionStartAllItems();
-        actionCancelAllItems();
-        actionClearCompleted();
-        actionClearLog();
-        actionOpenFolder();
-        actionAbout();
-    }
-
-    private void actionAbout() {
-        aboutButton.setOnAction(event -> {
-            new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
-        });
-    }
-
-    private void actionOpenFolder() {
-        openFolderButton.setOnAction(event -> {
-            if (directory != null) {
-                Desktop desktop = Desktop.getDesktop();
-                try {
-                    desktop.open(directory);
-                } catch (IOException e) {
-                    logger.error(e.getMessage());
-                }
-            }
-        });
-    }
-
-    private void actionCancelAllItems() {
-        stopAllButton.setOnAction(event -> {
-            converterService.getTasks().clear();
-            converterService.cancel();
-            taskTable.getItems()
-                    .filtered(task -> !task.getStatus().equals("Done"))
-                    .forEach(task -> task.setStatus(""));
-            taskTable.refresh();
-        });
-    }
-
-    private void actionStartAllItems() {
-        startAllButton.setOnAction(event -> start(taskTable.getItems()));
-    }
-
-    private void actionStartSelectedItem() {
+        addFilesButton.setOnAction(event -> addFilesInTable());
+        removeFilesButton.setOnAction(event -> removeSelectedFilesFromTable());
+        removeAllFilesButton.setOnAction(event -> removeAllFilesFromTable());
         startButton.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
-    }
-
-    private void actionClearCompleted() {
-        clearCompletedButton.setOnAction(
-                event -> taskTable.getItems()
-                        .removeIf(task -> task.getStatus().equals("Done"))
-        );
-    }
-
-    private void actionClearLog() {
+        startAllButton.setOnAction(event -> start(taskTable.getItems()));
+        stopAllButton.setOnAction(event -> cancelAllItems());
+        clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
         clearLogButton.setOnAction(event -> logTextArea.clear());
+        openFolderButton.setOnAction(event -> openFolder());
+        aboutButton.setOnAction(event -> createNewAboutDialog());
     }
 
-    private void actionRemoveAllFilesFromTable() {
-        removeAllFilesButton.setOnAction(event -> {
-            if (!taskTable.getItems().isEmpty()) {
-                logger.debug(
-                        "Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}",
-                        printCollection(converterService.getList())
-                );
-                taskTable.getItems().clear();
-                logger.debug(
-                        "Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}",
-                        printCollection(converterService.getList())
-                );
-                taskTable.refresh();
+    private void addFilesInTable() {
+        List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
+        if (files != null) {
+            logger.debug(
+                    "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
+                    printCollection(converterService.getList())
+            );
+            files.stream().map(file -> new Task(file.getName(), file))
+                    .filter(task -> !(converterService.getList().contains(task)))
+                    .forEach(task -> converterService.getList().add(task));
+            // Запоминаем последний путь
+            if (!files.isEmpty()) {
+                directory = new File(files.get(0).getParent());
+                fileChooser.setInitialDirectory(directory);
             }
-        });
+            observableList = getObservableList(converterService.getList());
+            taskTable.setItems(observableList);
+            logger.debug(
+                    "Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}",
+                    printCollection(converterService.getList())
+            );
+        }
     }
 
-    private void actionRemoveSelectedFilesFromTable() {
-        removeFilesButton.setOnAction(event -> {
-            // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
-            if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
-                logger.debug(
-                        "Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}",
-                        converterService.getList()
-                );
-                taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
-                logger.debug(
-                        "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
-                        printCollection(converterService.getList())
-                );
-                taskTable.refresh();
-            } else {
-                logger.debug("Не выбрано ни одного файла");
-            }
-
-        });
+    public void removeSelectedFilesFromTable() {
+        if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
+            logger.debug(
+                    "Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}",
+                    converterService.getList()
+            );
+            taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
+            logger.debug(
+                    "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
+                    printCollection(converterService.getList())
+            );
+            taskTable.refresh();
+        } else {
+            logger.debug("Не выбрано ни одного файла");
+        }
     }
 
-    private void actionAddFilesInTable() {
-        addFilesButton.setOnAction(event -> {
-
-            List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
-            if (files != null) {
-                logger.debug(
-                        "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
-                        printCollection(converterService.getList())
-                );
-                files.stream().map(file -> new Task(file.getName(), file))
-                        .filter(task -> !(converterService.getList().contains(task)))
-                        .forEach(task -> converterService.getList().add(task));
-                // Запоминаем последний путь
-                if (!files.isEmpty()) {
-                    directory = new File(files.get(0).getParent());
-                    fileChooser.setInitialDirectory(directory);
-                }
-                observableList = getObservableList(converterService.getList());
-                taskTable.setItems(observableList);
-                logger.debug(
-                        "Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}",
-                        printCollection(converterService.getList())
-                );
-            }
-        });
+    private void removeAllFilesFromTable() {
+        if (!taskTable.getItems().isEmpty()) {
+            logger.debug(
+                    "Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}",
+                    printCollection(converterService.getList())
+            );
+            taskTable.getItems().clear();
+            logger.debug(
+                    "Содержимое taskList после нажатия кнопки \"Удалить все файлы\": {}",
+                    printCollection(converterService.getList())
+            );
+            taskTable.refresh();
+        }
     }
 
     private void start(ObservableList<Task> items) {
@@ -307,6 +251,35 @@ public class MainController {
         } else {
             logger.info("Нет походяших заданий или параметры конвертации не заданы");
         }
+    }
+
+    private void cancelAllItems() {
+        converterService.getTasks().clear();
+        converterService.cancel();
+        taskTable.getItems()
+                .filtered(task -> !task.getStatus().equals("Done"))
+                .forEach(task -> task.setStatus(""));
+        taskTable.refresh();
+    }
+
+    private boolean clearCompletedFromTable() {
+        return taskTable.getItems()
+                .removeIf(task -> task.getStatus().equals("Done"));
+    }
+
+    private void openFolder() {
+        if (directory != null) {
+            Desktop desktop = Desktop.getDesktop();
+            try {
+                desktop.open(directory);
+            } catch (IOException e) {
+                logger.error(e.getMessage());
+            }
+        }
+    }
+
+    private Optional<ButtonType> createNewAboutDialog() {
+        return new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
     }
 
 }
