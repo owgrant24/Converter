@@ -89,13 +89,11 @@ public class MainController {
 
     private ObservableList<Task> observableList;
 
-    private final FileChooser fileChooser;
 
     private File directory = null;
 
     public MainController() {
         converterService = new ConverterService(this);
-        fileChooser = getFileChooser();
     }
 
     private FileChooser getFileChooser() {
@@ -183,6 +181,7 @@ public class MainController {
     }
 
     private void addFilesInTable() {
+        FileChooser fileChooser = getFileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
         if (files != null) {
             logger.debug(
@@ -286,11 +285,11 @@ public class MainController {
 
     private void copyToFile() {
         if(!logTextArea.getText().isBlank()){
-            FileChooser fileChooserZ = new FileChooser();
-            fileChooserZ.setTitle("Select directory for save");
-            fileChooserZ.setInitialFileName("log");
-            fileChooserZ.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
-            File file = fileChooserZ.showSaveDialog(rootLayout.getScene().getWindow());
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select directory for save");
+            fileChooser.setInitialFileName("log");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
+            File file = fileChooser.showSaveDialog(rootLayout.getScene().getWindow());
 
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
                 bufferedWriter.write(logTextArea.getText());
