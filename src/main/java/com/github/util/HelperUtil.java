@@ -16,12 +16,11 @@ public class HelperUtil {
         return stringBuilder.toString();
     }
 
-    public static String convertSecInMin(String sec) {
-        int number = Integer.parseInt(sec);
-        int min = number / 60;
-        int minOst = number % 60;
+    public static String convertSecInMin(Long sec) {
+        long min = sec / 60;
+        long minOst = sec % 60;
         String result;
-        if (number < 60) {
+        if (sec < 60) {
             result = sec + " sec";
         } else if (minOst == 0) {
             result = min + " min ";

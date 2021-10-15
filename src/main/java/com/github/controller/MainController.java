@@ -8,7 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
@@ -25,11 +24,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import static com.github.util.HelperUtil.printCollection;
@@ -76,6 +76,8 @@ public class MainController {
     private Button clearCompletedButton;
     @FXML
     private Button clearLogButton;
+    @FXML
+    private Button copyToFile;
     @FXML
     private Button openFolderButton;
     @FXML
@@ -176,7 +178,8 @@ public class MainController {
         clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
         clearLogButton.setOnAction(event -> logTextArea.clear());
         openFolderButton.setOnAction(event -> openFolder());
-        aboutButton.setOnAction(event -> createNewAboutDialog());
+        aboutButton.setOnAction(event -> createAboutDialog());
+        copyToFile.setOnAction(event -> copyToFile());
     }
 
     private void addFilesInTable() {
@@ -277,8 +280,26 @@ public class MainController {
         }
     }
 
-    private Optional<ButtonType> createNewAboutDialog() {
-        return new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
+    private void createAboutDialog() {
+        new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
+    }
+
+    private void copyToFile() {
+        if(!logTextArea.getText().isBlank()){
+            FileChooser fileChooserZ = new FileChooser();
+            fileChooserZ.setTitle("Select directory for save");
+            fileChooserZ.setInitialFileName("log");
+            fileChooserZ.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
+            File file = fileChooserZ.showSaveDialog(rootLayout.getScene().getWindow());
+
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+                bufferedWriter.write(logTextArea.getText());
+            } catch (IOException e) {
+                logger.info("Запись в файл не получилась {}", e.getMessage());
+            }
+        } else {
+            logger.debug("Лог пустой");
+        }
     }
 
 }
