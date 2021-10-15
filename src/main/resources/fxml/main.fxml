@@ -93,6 +93,7 @@
                      <children>
                         <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="13.0" prefHeight="320.0" prefWidth="681.0" />
                         <Button fx:id="clearLogButton" layoutX="10.0" layoutY="349.0" mnemonicParsing="false" text="Clear log" />
+                        <Button fx:id="copyToFile" layoutX="85.0" layoutY="349.0" mnemonicParsing="false" text="Copy to file " />
                      </children></AnchorPane>
               </content>
             </Tab>
