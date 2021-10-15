@@ -87,7 +87,7 @@ public class MainController {
 
     private ObservableList<Task> observableList;
 
-    private FileChooser fileChooser;
+    private final FileChooser fileChooser;
 
     private File directory = null;
 
@@ -159,8 +159,7 @@ public class MainController {
                 List<File> files = db.getFiles();
                 files.stream()
                         .sorted()
-                        .forEach(file -> converterService.getList()
-                                .add(new Task(file.getName(), file)));
+                        .forEach(file -> converterService.getList().add(new Task(file.getName(), file)));
                 observableList = getObservableList(converterService.getList());
                 taskTable.setItems(observableList);
             }
