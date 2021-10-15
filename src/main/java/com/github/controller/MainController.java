@@ -3,9 +3,11 @@ package com.github.controller;
 import com.github.entity.Extension;
 import com.github.entity.Task;
 import com.github.service.ConverterService;
+import com.github.view.AboutDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -19,10 +21,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -183,20 +188,7 @@ public class MainController {
 
     private void actionAbout() {
         aboutButton.setOnAction(event -> {
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle("About the program");
-            dialog.setContentText("The program works on the basis of FFMPEG\nDeveloper - Aleksandr Shabelskii\n2021");
-            dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
-            dialog.initOwner(aboutButton.getParentPopup().getScene().getWindow());
-            dialog.setX(aboutButton.getParentPopup().getScene().getWindow().getX());
-            dialog.setY(aboutButton.getParentPopup().getScene().getWindow().getY());
-            try {
-                ((Stage) dialog.getDialogPane().getScene().getWindow())
-                        .getIcons().add(new Image("/images/icon.png"));
-            } catch (Exception e) {
-                logger.error("Иконка исчезла. Причина - {}", e.getMessage());
-            }
-            dialog.showAndWait();
+            new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
         });
     }
 
@@ -264,7 +256,10 @@ public class MainController {
         removeFilesButton.setOnAction(event -> {
             // https://coderoad.ru/52449706/JavaFX-%D1%83%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B8%D0%B7-TableView
             if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
-                logger.debug("Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}", converterService.getList());
+                logger.debug(
+                        "Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}",
+                        converterService.getList()
+                );
                 taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
                 logger.debug(
                         "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
