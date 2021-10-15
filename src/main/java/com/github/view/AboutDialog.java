@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class AboutDialog extends Dialog {
+public class AboutDialog extends Dialog<ButtonType> {
 
     private static final Logger logger = LoggerFactory.getLogger(AboutDialog.class);
 
