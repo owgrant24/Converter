@@ -287,7 +287,9 @@ public class MainController {
                         "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
                         printCollection(converterService.getList())
                 );
-                files.forEach(file -> converterService.getList().add(new Task(file.getName(), file)));
+                files.stream().map(file -> new Task(file.getName(), file))
+                        .filter(task -> !(converterService.getList().contains(task)))
+                        .forEach(task -> converterService.getList().add(task));
                 // Запоминаем последний путь
                 if (!files.isEmpty()) {
                     directory = new File(files.get(0).getParent());
