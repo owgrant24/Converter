@@ -87,6 +87,10 @@ public class MainController {
     @FXML
     private MenuItem aboutButton;
     @FXML
+    private MenuItem removeSelectedFilesFromSystemMenuItem;
+    @FXML
+    private MenuItem exitMenuItem;
+    @FXML
     private ChoiceBox<Extension> outputFileExtensionChoiceBox;
 
     private ObservableList<Task> observableList;
@@ -180,6 +184,8 @@ public class MainController {
         openFolderButton.setOnAction(event -> openFolder());
         aboutButton.setOnAction(event -> createAboutDialog());
         copyToFile.setOnAction(event -> copyToFile());
+        removeSelectedFilesFromSystemMenuItem.setOnAction(event -> removeSelectedFilesFromSystem());
+        exitMenuItem.setOnAction(event -> exitFromApp());
     }
 
     private void addFilesInTable() {
@@ -207,7 +213,7 @@ public class MainController {
         }
     }
 
-    public void removeSelectedFilesFromTable() {
+    private void removeSelectedFilesFromTable() {
         if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
             logger.debug(
                     "Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}",
@@ -288,7 +294,8 @@ public class MainController {
             fileChooser.setTitle("Select directory for save");
             String nameFileDefault = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
             fileChooser.setInitialFileName(nameFileDefault);
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
+            fileChooser.getExtensionFilters()
+                    .add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
             File file = fileChooser.showSaveDialog(rootLayout.getScene().getWindow());
 
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
@@ -299,6 +306,23 @@ public class MainController {
         } else {
             logger.debug("Лог пустой");
         }
+    }
+
+    private void removeSelectedFilesFromSystem() {
+        if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
+            if(Desktop.isDesktopSupported()){
+                logger.debug("Запушена команда на удаление файлов исходников из ФС");
+                List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
+                listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
+            }
+        } else {
+            logger.debug("Не выбрано ни одного файла");
+        }
+    }
+
+    private void exitFromApp() {
+        ConverterService.stopProcesses();
+        System.exit(0);
     }
 
 }

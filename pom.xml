@@ -24,12 +24,6 @@
             <artifactId>zt-exec</artifactId>
             <version>1.12</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.zeroturnaround/zt-process-killer -->
-        <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-process-killer</artifactId>
-            <version>1.10</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
