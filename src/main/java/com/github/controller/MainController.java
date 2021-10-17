@@ -268,19 +268,22 @@ public class MainController {
         taskTable.refresh();
     }
 
-    private boolean clearCompletedFromTable() {
-        return taskTable.getItems()
-                .removeIf(task -> task.getStatus().equals("Done"));
+    private void clearCompletedFromTable() {
+        taskTable.getItems().removeIf(task -> task.getStatus().equals("Done"));
     }
 
     private void openFolder() {
-        if (directory != null) {
-            Desktop desktop = Desktop.getDesktop();
-            try {
-                desktop.open(directory);
-            } catch (IOException e) {
-                logger.error(e.getMessage());
+        try {
+            File directoryCurrent = null;
+            if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
+                directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
+            } else if (directory != null) {
+                directoryCurrent = directory;
             }
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(directoryCurrent);
+        } catch (Exception e) {
+            logger.debug("Нет параметров для открытия директории {}", e.getMessage());
         }
     }
 
@@ -310,7 +313,7 @@ public class MainController {
 
     private void removeSelectedFilesFromSystem() {
         if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
-            if(Desktop.isDesktopSupported()){
+            if (Desktop.isDesktopSupported()) {
                 logger.debug("Запушена команда на удаление файлов исходников из ФС");
                 List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
                 listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
