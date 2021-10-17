@@ -146,6 +146,8 @@ public class MainController {
         libx265MenuItem.setOnAction(event -> paramField.setText("-c:v libx265"));
         libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
         copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
+        removeSelectedFilesFromSystemMenuItem.setOnAction(event -> removeSelectedFilesFromSystem());
+        exitMenuItem.setOnAction(event -> exitFromApp());
     }
 
     private void initializeTable() {
@@ -184,8 +186,6 @@ public class MainController {
         openFolderButton.setOnAction(event -> openFolder());
         aboutButton.setOnAction(event -> createAboutDialog());
         copyToFile.setOnAction(event -> copyToFile());
-        removeSelectedFilesFromSystemMenuItem.setOnAction(event -> removeSelectedFilesFromSystem());
-        exitMenuItem.setOnAction(event -> exitFromApp());
     }
 
     private void addFilesInTable() {
