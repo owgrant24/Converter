@@ -63,7 +63,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="346.0" prefWidth="538.0">
                      <children>
-                        <TableView fx:id="taskTable" layoutX="15.0" layoutY="73.0" prefHeight="283.0" prefWidth="496.0">
+                        <TableView fx:id="taskTable" layoutX="15.0" layoutY="73.0" prefHeight="300.0" prefWidth="496.0">
                           <columns>
                             <TableColumn fx:id="filenameColumn" maxWidth="329.0" prefWidth="329.0" text="Filename" />
                             <TableColumn fx:id="statusColumn" maxWidth="248.0" prefWidth="85.0" text="Status" />
