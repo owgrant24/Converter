@@ -216,12 +216,12 @@ public class MainController {
     private void removeSelectedFilesFromTable() {
         if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
             logger.debug(
-                    "Содержимое taskList до нажатия кнопки \"Удалить файлы\" {}",
+                    "Содержимое taskList до удаления {}",
                     converterService.getList()
             );
             taskTable.getItems().removeAll(List.copyOf(taskTable.getSelectionModel().getSelectedItems()));
             logger.debug(
-                    "Содержимое taskList после нажатия кнопки \"Удалить файлы\": {}",
+                    "Содержимое taskList после удаления: {}",
                     printCollection(converterService.getList())
             );
             taskTable.refresh();
@@ -317,6 +317,7 @@ public class MainController {
                 logger.debug("Запушена команда на удаление файлов исходников из ФС");
                 List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
                 listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
+                removeSelectedFilesFromTable();
             }
         } else {
             logger.debug("Не выбрано ни одного файла");
