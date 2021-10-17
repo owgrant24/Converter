@@ -241,10 +241,7 @@ public class MainController {
 
     private void start(ObservableList<Task> items) {
         if (!items.isEmpty() && !(paramField.getText().isBlank())) {
-            Predicate<Task> predicate =
-                    task -> !task.getStatus().equals("In queue")
-                            && !task.getStatus().equals("In process")
-                            && !task.getStatus().equals("Done");
+            Predicate<Task> predicate = task -> task.getStatus().equals("");
             List<Task> tasks = new ArrayList<>(items.filtered(predicate));
             taskTable.refresh();
             items.filtered(predicate).forEach(task -> task.setStatus("In queue"));

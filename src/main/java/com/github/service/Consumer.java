@@ -64,8 +64,9 @@ public class Consumer implements Runnable {
                     converterService.getMainController().getLogTextArea().appendText(status);
                     logger.debug("Работу выполнил над: {}", current.getName());
                     PROCESSES.remove(process);
-                    current.setStatus("Done");
-                    long timeOperation = (System.currentTimeMillis() - startTime)/1_000;
+                    String statusAfterCheck = CheckStatusService.checkStatus(status);
+                    current.setStatus(statusAfterCheck);
+                    long timeOperation = (System.currentTimeMillis() - startTime) / 1_000;
                     current.setTime(convertSecInMin(timeOperation));
                     converterService.getMainController().getTaskTable().refresh();
 
