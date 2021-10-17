@@ -193,7 +193,7 @@ public class MainController {
         List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
         if (files != null) {
             logger.debug(
-                    "Содержимое taskList до нажатия кнопки \"Добавить файлы\": {}",
+                    "Содержимое taskList до добавления файлов: {}",
                     printCollection(converterService.getList())
             );
             files.stream().map(file -> new Task(file.getName(), file))
@@ -207,7 +207,7 @@ public class MainController {
             observableList = getObservableList(converterService.getList());
             taskTable.setItems(observableList);
             logger.debug(
-                    "Содержимое taskList после нажатия кнопки \"Добавить файлы\": {}",
+                    "Содержимое taskList после добавления файлов: {}",
                     printCollection(converterService.getList())
             );
         }
