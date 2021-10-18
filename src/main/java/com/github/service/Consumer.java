@@ -14,6 +14,7 @@ import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import static com.github.service.ConverterService.NO_STATS;
 import static com.github.service.ConverterService.PROCESSES;
 import static com.github.service.ConverterService.FFMPEG;
 import static com.github.service.ConverterService.HIDE_BANNER;
@@ -53,7 +54,7 @@ public class Consumer implements Runnable {
                             .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                     String parameters = input + current.getParam() + output;
                     StartedProcess startedProcess = new ProcessExecutor()
-                            .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)
+                            .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, NO_STATS, "-i", parameters)
                             .readOutput(true)
                             .start();
                     Process process = startedProcess.getProcess();

@@ -29,6 +29,7 @@ public class ConverterService {
     protected static final Set<Process> PROCESSES = new HashSet<>();
     protected static final File FFMPEG = new File("./ffmpeg/ffmpeg.exe");
     protected static final String HIDE_BANNER = "-hide_banner";
+    protected static final String NO_STATS = "-nostats";
 
     private final MainController mainController;
 
