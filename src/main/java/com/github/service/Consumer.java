@@ -63,6 +63,7 @@ public class Consumer implements Runnable {
 
                     String status = future.get().outputUTF8();
                     converterService.getMainController().getLogTextArea().appendText(status);
+                    converterService.getMainController().getLogTextArea().appendText("\n\n\n");
                     logger.debug("Работу выполнил над: {}", current.getName());
                     PROCESSES.remove(process);
                     String statusAfterCheck = CheckStatusService.checkStatus(status);
