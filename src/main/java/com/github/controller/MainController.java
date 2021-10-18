@@ -277,8 +277,8 @@ public class MainController {
         if (!logTextArea.getText().isBlank()) {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Select directory for save");
-            String nameFileDefault = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-            fileChooser.setInitialFileName(nameFileDefault);
+            String format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
+            fileChooser.setInitialFileName("ffmpeg_log_" + format);
             fileChooser.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
             File file = fileChooser.showSaveDialog(rootLayout.getScene().getWindow());
@@ -307,7 +307,7 @@ public class MainController {
     }
 
     private void openDocumentationInBrowser() {
-        if(Desktop.isDesktopSupported()){
+        if (Desktop.isDesktopSupported()) {
             try {
                 Desktop.getDesktop().browse(URI.create("https://www.ffmpeg.org/ffmpeg.html"));
             } catch (IOException e) {
