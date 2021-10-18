@@ -28,6 +28,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class MainController {
     @FXML private MenuItem libx265MenuItem;
     @FXML private MenuItem copyMenuItem;
     @FXML private MenuItem aboutButton;
+    @FXML private MenuItem docMenuItem;
     @FXML private MenuItem removeSelectedFilesFromSystemMenuItem;
     @FXML private MenuItem exitMenuItem;
 
@@ -124,6 +126,7 @@ public class MainController {
         libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
         copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
         removeSelectedFilesFromSystemMenuItem.setOnAction(event -> removeSelectedFilesFromSystem());
+        docMenuItem.setOnAction(event -> openDocumentationInBrowser());
         exitMenuItem.setOnAction(event -> exitFromApp());
     }
 
@@ -300,6 +303,16 @@ public class MainController {
             }
         } else {
             logger.debug("Не выбрано ни одного файла");
+        }
+    }
+
+    private void openDocumentationInBrowser() {
+        if(Desktop.isDesktopSupported()){
+            try {
+                Desktop.getDesktop().browse(URI.create("https://www.ffmpeg.org/ffmpeg.html"));
+            } catch (IOException e) {
+                logger.error("Ошибка открытия документации в браузере: {}", e.getMessage());
+            }
         }
     }
 
