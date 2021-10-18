@@ -232,7 +232,7 @@ public class MainController {
             converterService.getTasks().addAll(tasks);
             converterService.startTask();
         } else {
-            logger.info("Нет походяших заданий или параметры конвертации не заданы");
+            logger.info("Нет подходяших заданий или параметры конвертации не заданы");
         }
     }
 
