@@ -250,17 +250,19 @@ public class MainController {
     }
 
     private void openFolder() {
-        try {
-            File directoryCurrent = null;
-            if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
-                directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
-            } else if (directory != null) {
-                directoryCurrent = directory;
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File directoryCurrent = null;
+                if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
+                    directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
+                } else if (directory != null) {
+                    directoryCurrent = directory;
+                }
+                Desktop desktop = Desktop.getDesktop();
+                desktop.open(directoryCurrent);
+            } catch (Exception e) {
+                logger.debug("Нет параметров для открытия директории {}", e.getMessage());
             }
-            Desktop desktop = Desktop.getDesktop();
-            desktop.open(directoryCurrent);
-        } catch (Exception e) {
-            logger.debug("Нет параметров для открытия директории {}", e.getMessage());
         }
     }
 
