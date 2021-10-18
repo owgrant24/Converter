@@ -42,59 +42,36 @@ public class MainController {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private final ConverterService converterService;
 
-    @FXML
-    private MenuItem libx264MenuItem;
-    @FXML
-    private MenuItem libx265MenuItem;
-    @FXML
-    private MenuItem copyMenuItem;
-    @FXML
-    private BorderPane rootLayout;
-    @FXML
-    private TableView<Task> taskTable;
-    @FXML
-    private TableColumn<Task, String> filenameColumn;
-    @FXML
-    private TableColumn<Task, String> statusColumn;
-    @FXML
-    private TableColumn<Task, String> timeColumn;
+    @FXML private BorderPane rootLayout;
 
-    @FXML
-    private TextField paramField;
+    @FXML private MenuItem libx264MenuItem;
+    @FXML private MenuItem libx265MenuItem;
+    @FXML private MenuItem copyMenuItem;
+    @FXML private MenuItem aboutButton;
+    @FXML private MenuItem removeSelectedFilesFromSystemMenuItem;
+    @FXML private MenuItem exitMenuItem;
 
-    @FXML
-    private Button startButton;
-    @FXML
-    private Button stopAllButton;
-    @FXML
-    private Button addFilesButton;
-    @FXML
-    private Button removeFilesButton;
-    @FXML
-    private Button removeAllFilesButton;
-    @FXML
-    private Button startAllButton;
-    @FXML
-    private Button clearCompletedButton;
-    @FXML
-    private Button clearLogButton;
-    @FXML
-    private Button copyToFile;
-    @FXML
-    private Button openFolderButton;
-    @FXML
-    private TextArea logTextArea;
-    @FXML
-    private MenuItem aboutButton;
-    @FXML
-    private MenuItem removeSelectedFilesFromSystemMenuItem;
-    @FXML
-    private MenuItem exitMenuItem;
-    @FXML
-    private ChoiceBox<Extension> outputFileExtensionChoiceBox;
+    @FXML private TableView<Task> taskTable;
+    @FXML private TableColumn<Task, String> filenameColumn;
+    @FXML private TableColumn<Task, String> statusColumn;
+    @FXML private TableColumn<Task, String> timeColumn;
+
+    @FXML private Button startButton;
+    @FXML private Button stopAllButton;
+    @FXML private Button addFilesButton;
+    @FXML private Button removeFilesButton;
+    @FXML private Button removeAllFilesButton;
+    @FXML private Button startAllButton;
+    @FXML private Button clearCompletedButton;
+    @FXML private Button clearLogButton;
+    @FXML private Button copyToFile;
+    @FXML private Button openFolderButton;
+
+    @FXML private TextField paramField;
+    @FXML private TextArea logTextArea;
+    @FXML private ChoiceBox<Extension> outputFileExtensionChoiceBox;
 
     private ObservableList<Task> observableList;
-
 
     private File directory = null;
 
