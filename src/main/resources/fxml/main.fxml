@@ -57,32 +57,32 @@
       </MenuBar>
    </top>
    <center>
-      <TabPane prefHeight="375.0" prefWidth="550.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane tabClosingPolicy="UNAVAILABLE" tabMaxHeight="200.0" tabMaxWidth="200.0" BorderPane.alignment="CENTER">
         <tabs>
           <Tab text="Main">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="346.0" prefWidth="538.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <TableView fx:id="taskTable" layoutX="15.0" layoutY="73.0" prefHeight="300.0" prefWidth="496.0">
+                        <TableView fx:id="taskTable" layoutX="15.0" layoutY="70.0" prefHeight="300.0" prefWidth="540.0">
                           <columns>
-                            <TableColumn fx:id="filenameColumn" maxWidth="329.0" prefWidth="329.0" text="Filename" />
-                            <TableColumn fx:id="statusColumn" maxWidth="248.0" prefWidth="85.0" text="Status" />
-                              <TableColumn fx:id="timeColumn" prefWidth="79.0" text="Time" />
+                            <TableColumn fx:id="filenameColumn" maxWidth="500.0" prefWidth="370.0" text="Filename" />
+                            <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0" text="Status" />
+                              <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" text="Time" />
                           </columns>
                         </TableView>
-                        <Button fx:id="startButton" layoutX="527.0" layoutY="157.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />
-                        <TextField fx:id="paramField" layoutX="14.0" layoutY="17.0" prefHeight="25.0" prefWidth="363.0" />
-                        <Button fx:id="stopAllButton" layoutX="527.0" layoutY="227.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cancel all" />
-                        <Button fx:id="addFilesButton" layoutX="527.0" layoutY="17.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Add files" />
-                        <Button fx:id="removeFilesButton" layoutX="527.0" layoutY="87.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove files" />
-                        <Button fx:id="startAllButton" layoutX="527.0" layoutY="192.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
-                        <Button fx:id="removeAllFilesButton" layoutX="527.0" layoutY="122.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove all files" />
-                        <Button fx:id="clearCompletedButton" layoutX="527.0" layoutY="262.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Clear completed " />
-                        <Label layoutX="14.0" text="Parameters" />
-                        <Label layoutX="405.0" text="Output file extension" />
-                        <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="404.0" layoutY="17.0" prefHeight="25.0" prefWidth="61.0" />
-                        <Label layoutX="16.0" layoutY="52.0" text="List of files" />
-                        <Button fx:id="openFolderButton" layoutX="527.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Open folder" />
+                        <Button fx:id="startButton" layoutX="565.0" layoutY="160.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />
+                        <TextField fx:id="paramField" layoutX="15.0" layoutY="20.0" prefWidth="370.0" />
+                        <Button fx:id="stopAllButton" layoutX="565.0" layoutY="230.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Cancel all" />
+                        <Button fx:id="addFilesButton" layoutX="565.0" layoutY="20.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Add files" />
+                        <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="90.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove files" />
+                        <Button fx:id="startAllButton" layoutX="565.0" layoutY="195.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start all" />
+                        <Button fx:id="removeAllFilesButton" layoutX="565.0" layoutY="125.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Remove all files" />
+                        <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Clear completed " />
+                        <Label layoutX="15.0" text="Parameters" />
+                        <Label layoutX="410.0" text="Output file extension" />
+                        <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="410.0" layoutY="20.0" prefHeight="25.0" prefWidth="61.0" />
+                        <Label layoutX="15.0" layoutY="50.0" text="List of files" />
+                        <Button fx:id="openFolderButton" layoutX="565.0" layoutY="55.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Open folder" />
                      </children>
                   </AnchorPane>
             </content>
@@ -91,9 +91,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="13.0" prefHeight="320.0" prefWidth="681.0" />
-                        <Button fx:id="clearLogButton" layoutX="10.0" layoutY="349.0" mnemonicParsing="false" text="Clear log" />
-                        <Button fx:id="copyToFile" layoutX="85.0" layoutY="349.0" mnemonicParsing="false" text="Copy to file " />
+                        <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="350.0" prefWidth="680.0" />
+                        <Button fx:id="clearLogButton" layoutX="10.0" layoutY="365.0" mnemonicParsing="false" text="Clear log" />
+                        <Button fx:id="copyToFile" layoutX="80.0" layoutY="365.0" mnemonicParsing="false" text="Copy to file " />
                      </children></AnchorPane>
               </content>
             </Tab>
