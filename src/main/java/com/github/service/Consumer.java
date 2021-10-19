@@ -1,6 +1,8 @@
 package com.github.service;
 
 import com.github.entity.Task;
+import java.io.OutputStream;
+import java.io.PipedOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
@@ -14,22 +16,22 @@ import java.nio.file.Path;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.github.service.ConverterService.NO_STATS;
 import static com.github.service.ConverterService.PROCESSES;
 import static com.github.service.ConverterService.FFMPEG;
 import static com.github.service.ConverterService.HIDE_BANNER;
-import static com.github.util.HelperUtil.convertSecInMin;
 import static com.github.util.HelperUtil.printCollection;
 
 
 public class Consumer implements Runnable {
 
     private ConverterService converterService;
+    private Duration duration;
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
     public Consumer(ConverterService converterService) {
         this.converterService = converterService;
+        this.duration = new Duration(converterService);
     }
 
     @Override
@@ -53,14 +55,17 @@ public class Consumer implements Runnable {
                             + converterService.getMainController()
                             .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                     String parameters = input + current.getParam() + output;
+                    OutputStream dur = new PipedOutputStream();
                     StartedProcess startedProcess = new ProcessExecutor()
-                            .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, NO_STATS, "-i", parameters)
+                            .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)
                             .readOutput(true)
+                            .redirectOutputAlsoTo(dur)
                             .start();
                     Process process = startedProcess.getProcess();
+                    duration.showDuration(dur, current, startTime);
+                    dur.close();
                     PROCESSES.add(process);
                     Future<ProcessResult> future = startedProcess.getFuture();
-
                     String status = future.get().outputUTF8();
                     converterService.getMainController().getLogTextArea().appendText(status);
                     converterService.getMainController().getLogTextArea().appendText("\n\n\n");
@@ -68,14 +73,11 @@ public class Consumer implements Runnable {
                     PROCESSES.remove(process);
                     String statusAfterCheck = CheckStatusService.checkStatus(status);
                     current.setStatus(statusAfterCheck);
-                    long timeOperation = (System.currentTimeMillis() - startTime) / 1_000;
-                    current.setTime(convertSecInMin(timeOperation));
                     converterService.getMainController().getTaskTable().refresh();
-
                 } catch (IOException | ExecutionException e) {
-                    logger.info("Ошибка выполнения задания: {}", e.getMessage());
+                    logger.error("Ошибка выполнения задания: {}", e.getMessage());
                 } catch (InterruptedException e) {
-                    logger.info("Ошибка InterruptedException: {}", e.getMessage());
+                    logger.error("Ошибка InterruptedException: {}", e.getMessage());
                     Thread.currentThread().interrupt();
                 }
             }
