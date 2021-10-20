@@ -223,6 +223,8 @@ public class MainController {
                     printCollection(converterService.getList())
             );
             taskTable.refresh();
+        } else {
+            logger.debug("Отсутствуют файлы в таблице");
         }
     }
 
