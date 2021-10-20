@@ -76,9 +76,11 @@ public class MainController {
     private ObservableList<Task> observableList;
 
     private File directory = null;
+    private FileChooser fileChooser;
 
     public MainController() {
         converterService = new ConverterService(this);
+        fileChooser = getFileChooser();
     }
 
     private FileChooser getFileChooser() {
@@ -169,7 +171,6 @@ public class MainController {
     }
 
     private void addFilesInTable() {
-        FileChooser fileChooser = getFileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(rootLayout.getScene().getWindow());
         if (files != null) {
             logger.debug(
@@ -275,13 +276,13 @@ public class MainController {
 
     private void copyToFile() {
         if (!logTextArea.getText().isBlank()) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select directory for save");
+            FileChooser fileSaveChooser = new FileChooser();
+            fileSaveChooser.setTitle("Select directory for save");
             String format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
-            fileChooser.setInitialFileName("ffmpeg_log_" + format);
-            fileChooser.getExtensionFilters()
+            fileSaveChooser.setInitialFileName("ffmpeg_log_" + format);
+            fileSaveChooser.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
-            File file = fileChooser.showSaveDialog(rootLayout.getScene().getWindow());
+            File file = fileSaveChooser.showSaveDialog(rootLayout.getScene().getWindow());
 
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
                 bufferedWriter.write(logTextArea.getText());
