@@ -24,7 +24,8 @@ public class AboutDialog extends Dialog<ButtonType> {
 
     private void initializePropertyDialog(Window window) {
         setTitle("About the program");
-        setContentText("The program works on the basis of FFMPEG\nDeveloper - Aleksandr Shabelskii\n2021");
+        setContentText("The program works on the basis of FFMPEG\n" +
+                "Developers:\nAleksandr Shabelskii\nBoris Makarov\n2021");
         getDialogPane().getButtonTypes().add(ButtonType.OK);
         initOwner(window);
         setX(window.getX());

@@ -32,6 +32,6 @@ slides/
 exp/
 lib/
 Other example/
-ffmpeg/ffmpeg.exe
+ffmpeg/
 
 *.iml

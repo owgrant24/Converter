@@ -3,16 +3,20 @@ package com.github.service;
 import static com.github.util.HelperUtil.convertSecInMin;
 
 import com.github.entity.Task;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 public class Duration {
+
     private ConverterService converterService;
 
     private static final Logger logger = LoggerFactory.getLogger(Duration.class);
@@ -24,7 +28,7 @@ public class Duration {
     public void showDuration(OutputStream stream, Task task, long startTime) {
         new Thread(() -> {
             try (PipedInputStream input = new PipedInputStream();
-                Scanner sc = new Scanner(input)){
+                 Scanner sc = new Scanner(input)) {
                 input.connect((PipedOutputStream) stream);
                 Pattern durPattern = Pattern.compile("(?<=Duration: )[^,]*");
                 String dur = sc.findWithinHorizon(durPattern, 0);
@@ -53,4 +57,5 @@ public class Duration {
             }
         }).start();
     }
+
 }

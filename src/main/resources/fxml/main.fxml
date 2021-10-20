@@ -67,8 +67,8 @@
                         <TableView fx:id="taskTable" layoutX="15.0" layoutY="70.0" prefHeight="300.0" prefWidth="540.0">
                           <columns>
                             <TableColumn fx:id="filenameColumn" maxWidth="500.0" prefWidth="368.0" text="Filename" />
-                            <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0" text="Status" />
-                              <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" text="Time" />
+                            <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="Status" />
+                              <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="Time" />
                           </columns>
                         </TableView>
                         <Button fx:id="startButton" layoutX="565.0" layoutY="160.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Start" />

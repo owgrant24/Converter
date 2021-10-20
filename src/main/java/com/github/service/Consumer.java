@@ -1,8 +1,10 @@
 package com.github.service;
 
 import com.github.entity.Task;
+
 import java.io.OutputStream;
 import java.io.PipedOutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
@@ -40,7 +42,7 @@ public class Consumer implements Runnable {
         Task current;
         while ((current = converterService.getTasks().poll()) != null) {
             if (!Thread.currentThread().isInterrupted()) {
-                try {
+                try (OutputStream dur = new PipedOutputStream()) {
                     long startTime = System.currentTimeMillis();
                     logger.debug("Взял в работу: {}", current.getName());
                     current.setStatus("In process");
@@ -55,7 +57,7 @@ public class Consumer implements Runnable {
                             + converterService.getMainController()
                             .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
                     String parameters = input + current.getParam() + output;
-                    OutputStream dur = new PipedOutputStream();
+
                     StartedProcess startedProcess = new ProcessExecutor()
                             .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)
                             .readOutput(true)
@@ -63,7 +65,6 @@ public class Consumer implements Runnable {
                             .start();
                     Process process = startedProcess.getProcess();
                     duration.showDuration(dur, current, startTime);
-                    dur.close();
                     PROCESSES.add(process);
                     Future<ProcessResult> future = startedProcess.getFuture();
                     String status = future.get().outputUTF8();

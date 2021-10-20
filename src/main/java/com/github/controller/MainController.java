@@ -136,9 +136,7 @@ public class MainController {
         addDragAndDrop();
         filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        statusColumn.setStyle("-fx-alignment: CENTER;");
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        timeColumn.setStyle("-fx-alignment: CENTER;");
     }
 
     private void addDragAndDrop() {
