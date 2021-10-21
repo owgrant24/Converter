@@ -29,7 +29,13 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-                  <MenuItem fx:id="docMenuItem" mnemonicParsing="false" text="Documentation" />
+                  <Menu mnemonicParsing="false" text="Documentation">
+                    <items>
+                        <MenuItem fx:id="docFFmpegMenuItem" mnemonicParsing="false" text="ffmpeg" />
+                        <MenuItem fx:id="docFFplayMenuItem" mnemonicParsing="false" text="ffplay" />
+                    </items>
+                  </Menu>
+                <MenuItem fx:id="examplesMenuItem" disable="true" mnemonicParsing="false" text="Examples" />
               <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="About" />
             </items>
           </Menu>

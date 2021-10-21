@@ -49,7 +49,9 @@ public class MainController {
     @FXML private MenuItem libx265MenuItem;
     @FXML private MenuItem copyMenuItem;
     @FXML private MenuItem aboutButton;
-    @FXML private MenuItem docMenuItem;
+    @FXML private MenuItem docFFmpegMenuItem;
+    @FXML private MenuItem docFFplayMenuItem;
+    @FXML private MenuItem examplesMenuItem;
     @FXML private MenuItem exitMenuItem;
 
     @FXML private TableView<Task> taskTable;
@@ -130,7 +132,8 @@ public class MainController {
         libx265MenuItem.setOnAction(event -> paramField.setText("-c:v libx265"));
         libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
         copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
-        docMenuItem.setOnAction(event -> openDocumentationInBrowser());
+        docFFmpegMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffmpeg.html"));
+        docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
     }
 
@@ -300,12 +303,14 @@ public class MainController {
             fileSaveChooser.getExtensionFilters()
                     .add(new FileChooser.ExtensionFilter("Text Document", "*.txt"));
             File file = fileSaveChooser.showSaveDialog(rootLayout.getScene().getWindow());
-
-            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
-                bufferedWriter.write(logTextArea.getText());
-            } catch (IOException e) {
-                logger.info("Запись в файл не получилась {}", e.getMessage());
+            if (file != null) {
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+                    bufferedWriter.write(logTextArea.getText());
+                } catch (IOException e) {
+                    logger.info("Запись в файл не получилась {}", e.getMessage());
+                }
             }
+
         } else {
             logger.debug("Лог пустой");
         }
@@ -324,10 +329,10 @@ public class MainController {
         }
     }
 
-    private void openDocumentationInBrowser() {
+    private void openDocumentationInBrowser(String link) {
         if (Desktop.isDesktopSupported()) {
             try {
-                Desktop.getDesktop().browse(URI.create("https://www.ffmpeg.org/ffmpeg.html"));
+                Desktop.getDesktop().browse(URI.create(link));
             } catch (IOException e) {
                 logger.error("Ошибка открытия документации в браузере: {}", e.getMessage());
             }
