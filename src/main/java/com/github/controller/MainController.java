@@ -50,7 +50,6 @@ public class MainController {
     @FXML private MenuItem copyMenuItem;
     @FXML private MenuItem aboutButton;
     @FXML private MenuItem docMenuItem;
-    @FXML private MenuItem removeSelectedFilesFromSystemMenuItem;
     @FXML private MenuItem exitMenuItem;
 
     @FXML private TableView<Task> taskTable;
@@ -68,7 +67,9 @@ public class MainController {
     @FXML private Button clearLogButton;
     @FXML private Button copyToFile;
     @FXML private Button openFolderButton;
-    @FXML private Button playButton;
+    @FXML private Button playButton480;
+    @FXML private Button playButton720;
+    @FXML private Button deleteSelectedFilesToTrashButton;
 
 
     @FXML private TextField paramField;
@@ -129,7 +130,6 @@ public class MainController {
         libx265MenuItem.setOnAction(event -> paramField.setText("-c:v libx265"));
         libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
         copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
-        removeSelectedFilesFromSystemMenuItem.setOnAction(event -> removeSelectedFilesFromSystem());
         docMenuItem.setOnAction(event -> openDocumentationInBrowser());
         exitMenuItem.setOnAction(event -> exitFromApp());
     }
@@ -170,12 +170,19 @@ public class MainController {
         openFolderButton.setOnAction(event -> openFolder());
         aboutButton.setOnAction(event -> createAboutDialog());
         copyToFile.setOnAction(event -> copyToFile());
-        playButton.setOnAction(event -> {
-            if(taskTable.getSelectionModel().getSelectedItems().size() == 1){
-                converterService.playFF(taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath());
-            }
+        playButton480.setOnAction(event -> playFFplay("480"));
+        playButton720.setOnAction(event -> playFFplay("720"));
+        deleteSelectedFilesToTrashButton.setOnAction(event -> deleteSelectedFilesToTrash());
+    }
 
-        });
+    private void playFFplay(String height) {
+        if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
+            converterService.playFF(
+                    taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath(), height
+            );
+        } else {
+            logger.debug("Не выбран файл или выбрано > 1");
+        }
     }
 
     private void addFilesInTable() {
@@ -304,7 +311,7 @@ public class MainController {
         }
     }
 
-    private void removeSelectedFilesFromSystem() {
+    private void deleteSelectedFilesToTrash() {
         if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
             if (Desktop.isDesktopSupported()) {
                 logger.debug("Запушена команда на удаление файлов исходников из ФС");

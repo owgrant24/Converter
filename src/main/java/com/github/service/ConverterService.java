@@ -87,10 +87,10 @@ public class ConverterService {
         PROCESSES.clear();
     }
 
-    public void playFF(String parameters) {
+    public void playFF(String parameters, String height) {
         try {
             new ProcessExecutor()
-                    .command(FFPLAY.getAbsolutePath(), HIDE_BANNER, "-nostats", "-x", "480", "-i", parameters)
+                    .command(FFPLAY.getAbsolutePath(), HIDE_BANNER, "-nostats", "-y", height, "-i", parameters)
                     .start();
         } catch (IOException e) {
             logger.error("ffplay отсутствует");
