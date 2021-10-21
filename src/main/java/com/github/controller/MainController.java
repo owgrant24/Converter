@@ -264,7 +264,8 @@ public class MainController {
         converterService.getTasks().clear();
         converterService.cancel();
         taskTable.getItems()
-                .filtered(task -> !task.getStatus().equals("Done") || !task.getStatus().equals("See log"))
+                .filtered(task -> !task.getStatus().equals("Done"))
+                .filtered(task -> !task.getStatus().equals("See log"))
                 .forEach(task -> task.setStatus(""));
         taskTable.refresh();
     }
