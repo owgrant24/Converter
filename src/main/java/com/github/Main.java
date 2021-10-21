@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")));
-        primaryStage.setTitle("Converter 0.3a");
+        primaryStage.setTitle("Converter 0.4");
         try {
             primaryStage.getIcons().add(new Image("/images/icon.png"));
         } catch (Exception e) {

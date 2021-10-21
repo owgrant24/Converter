@@ -68,6 +68,8 @@ public class MainController {
     @FXML private Button clearLogButton;
     @FXML private Button copyToFile;
     @FXML private Button openFolderButton;
+    @FXML private Button playButton;
+
 
     @FXML private TextField paramField;
     @FXML private TextArea logTextArea;
@@ -168,6 +170,12 @@ public class MainController {
         openFolderButton.setOnAction(event -> openFolder());
         aboutButton.setOnAction(event -> createAboutDialog());
         copyToFile.setOnAction(event -> copyToFile());
+        playButton.setOnAction(event -> {
+            if(taskTable.getSelectionModel().getSelectedItems().size() == 1){
+                converterService.playFF(taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath());
+            }
+
+        });
     }
 
     private void addFilesInTable() {

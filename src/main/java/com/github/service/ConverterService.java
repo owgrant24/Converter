@@ -2,8 +2,13 @@ package com.github.service;
 
 import com.github.controller.MainController;
 import com.github.entity.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zeroturnaround.exec.ProcessExecutor;
+import org.zeroturnaround.exec.StartedProcess;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,8 +31,11 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ConverterService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
+
     protected static final Set<Process> PROCESSES = new HashSet<>();
-    protected static final File FFMPEG = new File("./ffmpeg/ffmpeg.exe");
+    protected static final File FFMPEG = new File("./ffmpeg/bin/ffmpeg.exe");
+    protected static final File FFPLAY = new File("./ffmpeg/bin/ffplay.exe");
     protected static final String HIDE_BANNER = "-hide_banner";
 
     private final MainController mainController;
@@ -71,7 +79,22 @@ public class ConverterService {
     }
 
     public static void stopProcesses() {
-        PROCESSES.forEach(process -> process.descendants().forEach(ProcessHandle::destroy));
+        logger.info("Запущено убивание процесса");
+        for (Process process : PROCESSES) {
+            process.descendants().forEach(ProcessHandle::destroy);
+            process.destroy();
+        }
+        PROCESSES.clear();
+    }
+
+    public void playFF(String parameters) {
+        try {
+            new ProcessExecutor()
+                    .command(FFPLAY.getAbsolutePath(), HIDE_BANNER, "-nostats", "-x", "480", "-i", parameters)
+                    .start();
+        } catch (IOException e) {
+            logger.error("ffplay отсутствует");
+        }
     }
 
 }
