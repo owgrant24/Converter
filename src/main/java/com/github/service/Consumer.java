@@ -48,7 +48,7 @@ public class Consumer implements Runnable {
                     current.setStatus("In process");
                     String input = definingInputParameters(current);
                     String output = definingOutputParameters(current);
-                    String parameters = input + current.getParam() + output;
+                    String parameters = input + " " + current.getParam() + " " + output;
 
                     StartedProcess startedProcess = new ProcessExecutor()
                             .command(FFMPEG.getAbsolutePath(), HIDE_BANNER, "-i", parameters)
@@ -79,13 +79,13 @@ public class Consumer implements Runnable {
     }
 
     private String definingInputParameters(Task task) {
-        return "\"" + task.getFile().getPath() + "\" ";
+        return "\"" + task.getFile().getPath() + "\"";
     }
 
     private String definingOutputParameters(Task task) throws IOException {
         Path outputParent = Path.of(task.getFile().getParent() + "/converted/");
         checkDirectoryForOutputFile(outputParent);
-        return " \"" + outputParent + File.separator
+        return "\"" + outputParent + File.separator
                 + task.getName().replaceFirst("[.][^.]+$", "")
                 + "."
                 + converterService.getMainController()
