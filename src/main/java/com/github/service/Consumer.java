@@ -26,10 +26,10 @@ import static com.github.util.HelperUtil.printCollection;
 
 public class Consumer implements Runnable {
 
+    private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
+
     private ConverterService converterService;
     private Duration duration;
-
-    private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
     public Consumer(ConverterService converterService) {
         this.converterService = converterService;
@@ -46,16 +46,8 @@ public class Consumer implements Runnable {
                     long startTime = System.currentTimeMillis();
                     logger.debug("Взял в работу: {}", current.getName());
                     current.setStatus("In process");
-                    String input = "\"" + current.getFile().getPath() + "\" ";
-
-                    Path outputParent = Path.of(current.getFile().getParent() + "/converted/");
-                    checkDirectoryForOutputFile(outputParent);
-
-                    String output = " \"" + outputParent + File.separator
-                            + current.getName().replaceFirst("[.][^.]+$", "")
-                            + "."
-                            + converterService.getMainController()
-                            .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
+                    String input = definingInputParameters(current);
+                    String output = definingOutputParameters(current);
                     String parameters = input + current.getParam() + output;
 
                     StartedProcess startedProcess = new ProcessExecutor()
@@ -84,6 +76,20 @@ public class Consumer implements Runnable {
             }
         }
         logger.info("Все задания выполнены");
+    }
+
+    private String definingInputParameters(Task task) {
+        return "\"" + task.getFile().getPath() + "\" ";
+    }
+
+    private String definingOutputParameters(Task task) throws IOException {
+        Path outputParent = Path.of(task.getFile().getParent() + "/converted/");
+        checkDirectoryForOutputFile(outputParent);
+        return " \"" + outputParent + File.separator
+                + task.getName().replaceFirst("[.][^.]+$", "")
+                + "."
+                + converterService.getMainController()
+                .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
     }
 
     private void checkDirectoryForOutputFile(Path outputParent) throws IOException {
