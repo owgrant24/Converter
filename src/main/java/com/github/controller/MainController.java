@@ -75,6 +75,7 @@ public class MainController {
 
 
     @FXML private TextField paramField;
+    @FXML private TextField beforeInputField;
     @FXML private TextArea logTextArea;
     @FXML private ChoiceBox<Extension> outputFileExtensionChoiceBox;
 
@@ -253,6 +254,7 @@ public class MainController {
             taskTable.refresh();
             items.filtered(predicate).forEach(task -> task.setStatus("In queue"));
             tasks.forEach(task -> task.setParam(paramField.getText()));
+            tasks.forEach(task -> task.setBeforeInput(beforeInputField.getText()));
             converterService.getTasks().addAll(tasks);
             converterService.startTask();
         } else {

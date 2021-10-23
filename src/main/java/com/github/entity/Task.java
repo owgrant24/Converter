@@ -11,6 +11,7 @@ public class Task {
     private String status;
     private String time;
     private String param;
+    private String beforeInput;
 
     public Task(String name, File file) {
         this.name = name;
@@ -52,6 +53,14 @@ public class Task {
 
     public String getParam() {
         return param;
+    }
+
+    public String getBeforeInput() {
+        return beforeInput;
+    }
+
+    public void setBeforeInput(String beforeInput) {
+        this.beforeInput = beforeInput;
     }
 
     public void setParam(String param) {
