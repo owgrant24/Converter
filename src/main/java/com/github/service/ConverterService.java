@@ -17,18 +17,6 @@ import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
-/**
- * ffmpeg [опции источника] -i [источник] [основные опции] [кодеки] [преемник]
- * <p>
- * Опции источника - указывают параметры чтения файла, настройки и так далее;
- * Источник - опция -i задает источник, откуда будет читаться файл, источников может быть несколько
- * и это может быть не только файл, но и устройство;
- * Основные опции - задают параметры работы всей утилиты;
- * Кодеки - кодек, который будет использоваться для сохранения видео и аудио;
- * Преемник - файл или устройство, куда будут записаны данные.
- * <p>
- * https://trofimovdigital.ru/blog/convert-video-with-ffmpeg
- */
 public class ConverterService {
 
     private static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
@@ -87,10 +75,10 @@ public class ConverterService {
         PROCESSES.clear();
     }
 
-    public void playFF(String parameters, String height) {
+    public void playFF(String input, String height) {
         try {
             new ProcessExecutor()
-                    .command(FFPLAY.getAbsolutePath(), HIDE_BANNER, "-nostats", "-y", height, "-i", parameters)
+                    .command(FFPLAY.getAbsolutePath(), HIDE_BANNER, "-nostats", "-y", height, "-i", input)
                     .start();
         } catch (IOException e) {
             logger.error("ffplay отсутствует");
