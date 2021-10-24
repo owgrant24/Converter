@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 
 public class Main extends Application {
@@ -19,7 +20,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")));
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")));
+        fxmlLoader.setResources(ResourceBundle.getBundle("bundles.resources"));
+        Parent root = fxmlLoader.load();
+
         primaryStage.setTitle("Converter 0.5");
         try {
             primaryStage.getIcons().add(new Image("/images/icon.png"));

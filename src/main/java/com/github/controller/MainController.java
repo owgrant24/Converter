@@ -7,8 +7,10 @@ import com.github.view.AboutDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -29,16 +31,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 import static com.github.util.HelperUtil.printCollection;
 
 
-public class MainController {
+public class MainController implements Initializable {
 
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private final ConverterService converterService;
@@ -83,6 +87,7 @@ public class MainController {
 
     private File directory = null;
     private FileChooser fileChooser;
+    private ResourceBundle resources;
 
     public MainController() {
         converterService = new ConverterService(this);
@@ -116,8 +121,9 @@ public class MainController {
         return FXCollections.observableList(list);
     }
 
-    @FXML
-    void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.resources = resources;
         initializeTable();
         initializeButton();
         initializeMenu();
@@ -141,6 +147,7 @@ public class MainController {
     private void initializeTable() {
         // Поддержка выбора нескольких строк через Ctrl, Shift
         taskTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        taskTable.setPlaceholder(new Label(resources.getString("task_table_placeholder")));
         addDragAndDrop();
         filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
