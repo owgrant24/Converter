@@ -153,7 +153,7 @@ public class MainController implements Initializable {
         docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
         settingsMenuItem.setOnAction(event -> openSettings());
-        if(!definitionLanguage().equals(Language.RUSSIAN)){
+        if (!definitionLanguage().equals(Language.RUSSIAN)) {
             examplesMenuItem.setDisable(true);
         }
         examplesMenuItem.setOnAction(event -> openExamples());
@@ -173,7 +173,7 @@ public class MainController implements Initializable {
             window.setResizable(false);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Ошибка открытия вкладки: Настройки");
         }
     }
 
@@ -189,7 +189,7 @@ public class MainController implements Initializable {
             window.setResizable(false);
             window.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Ошибка открытия вкладки: Примеры");
         }
     }
 
