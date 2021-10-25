@@ -19,6 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+import static com.github.util.HelperUtil.definitionLanguage;
 import static com.github.util.HelperUtil.readProperties;
 
 
@@ -57,14 +58,6 @@ public class SettingsController implements Initializable {
         }
 
     }
-
-    private Language definitionLanguage() {
-        if (Main.locale.getLanguage().equalsIgnoreCase("ru")) {
-            return Language.RUSSIAN;
-        }
-        return Language.ENGLISH;
-    }
-
 
 }
 

@@ -1,6 +1,7 @@
 package com.github.controller;
 
 import com.github.entity.Extension;
+import com.github.entity.Language;
 import com.github.entity.Task;
 import com.github.service.ConverterService;
 import com.github.view.AboutDialog;
@@ -46,6 +47,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+import static com.github.util.HelperUtil.definitionLanguage;
 import static com.github.util.HelperUtil.printCollection;
 
 
@@ -151,30 +153,54 @@ public class MainController implements Initializable {
         docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
         settingsMenuItem.setOnAction(event -> openSettings());
+        if(!definitionLanguage().equals(Language.RUSSIAN)){
+            examplesMenuItem.setDisable(true);
+        }
+        examplesMenuItem.setOnAction(event -> openExamples());
     }
 
     private void openSettings() {
         try {
-            ResourceBundle resourceBundle = resources;
             Parent root = FXMLLoader.load(
-                    Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")), resourceBundle
+                    Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")), resources
             );
             Stage window = new Stage();
             window.setScene(new Scene(root));
             window.setTitle(resources.getString("settings"));
-            try {
-                window.getIcons().add(new Image("/images/icon.png"));
-            } catch (Exception e) {
-                logger.error("Иконка исчезла. Причина - {}", e.getMessage());
-            }
+            initializeIcon(window);
             window.initModality(Modality.APPLICATION_MODAL);
-            window.initOwner(aboutButton.getParentPopup().getScene().getWindow());
+            window.initOwner(settingsMenuItem.getParentPopup().getScene().getWindow());
             window.setResizable(false);
             window.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void openExamples() {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/docRU.fxml")));
+            Stage window = new Stage();
+            window.setScene(new Scene(root));
+            window.setTitle("Примеры");
+            initializeIcon(window);
+            window.initModality(Modality.NONE);
+            window.initOwner(examplesMenuItem.getParentPopup().getScene().getWindow());
+            window.setResizable(false);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeIcon(Stage window) {
+        try {
+            window.getIcons().add(new Image("/images/icon.png"));
+        } catch (Exception e) {
+            logger.error("Иконка исчезла. Причина - {}", e.getMessage());
+        }
+    }
+
 
     private void initializeTable() {
         // Поддержка выбора нескольких строк через Ctrl, Shift

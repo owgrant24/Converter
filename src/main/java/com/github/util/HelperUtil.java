@@ -1,5 +1,8 @@
 package com.github.util;
 
+import com.github.Main;
+import com.github.entity.Language;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -50,6 +53,13 @@ public class HelperUtil {
                 new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
             bufferedWriter.write("locale=en");
         }
+    }
+
+    public static Language definitionLanguage() {
+        if (Main.locale.getLanguage().equalsIgnoreCase("ru")) {
+            return Language.RUSSIAN;
+        }
+        return Language.ENGLISH;
     }
 
 }
