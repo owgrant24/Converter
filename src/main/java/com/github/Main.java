@@ -10,20 +10,29 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.ResourceBundle;
+
+import static com.github.util.HelperUtil.createSettings;
+import static com.github.util.HelperUtil.readProperties;
 
 
 public class Main extends Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    public static Locale locale;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")));
-        fxmlLoader.setResources(ResourceBundle.getBundle("bundles.resources"));
-        Parent root = fxmlLoader.load();
+        locale = loadLocale();
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("bundles.resources", locale);
+
+        Parent root = FXMLLoader.load(
+                Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")), resourceBundle
+        );
 
         primaryStage.setTitle("Converter 0.5");
         try {
@@ -38,6 +47,20 @@ public class Main extends Application {
             ConverterService.stopProcesses();
             System.exit(0);
         });
+    }
+
+    private static Locale loadLocale() throws IOException {
+        Properties properties;
+        try {
+            properties = readProperties("./settings.properties");
+        } catch (IOException e) {
+            logger.info("Файл настроек не существует");
+            createSettings();
+            return new Locale("en");
+        }
+        String lang = (String) properties.get("locale");
+        return new Locale(lang);
+
     }
 
     public static void main(String[] args) {

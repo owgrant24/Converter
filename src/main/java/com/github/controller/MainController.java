@@ -7,7 +7,10 @@ import com.github.view.AboutDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -18,10 +21,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -57,6 +64,7 @@ public class MainController implements Initializable {
     @FXML private MenuItem docFFplayMenuItem;
     @FXML private MenuItem examplesMenuItem;
     @FXML private MenuItem exitMenuItem;
+    @FXML private MenuItem settingsMenuItem;
 
     @FXML private TableView<Task> taskTable;
     @FXML private TableColumn<Task, String> filenameColumn;
@@ -142,6 +150,30 @@ public class MainController implements Initializable {
         docFFmpegMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffmpeg.html"));
         docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
+        settingsMenuItem.setOnAction(event -> openSettings());
+    }
+
+    private void openSettings() {
+        try {
+            ResourceBundle resourceBundle = resources;
+            Parent root = FXMLLoader.load(
+                    Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")), resourceBundle
+            );
+            Stage window = new Stage();
+            window.setScene(new Scene(root));
+            window.setTitle(resources.getString("settings"));
+            try {
+                window.getIcons().add(new Image("/images/icon.png"));
+            } catch (Exception e) {
+                logger.error("Иконка исчезла. Причина - {}", e.getMessage());
+            }
+            window.initModality(Modality.APPLICATION_MODAL);
+            window.initOwner(aboutButton.getParentPopup().getScene().getWindow());
+            window.setResizable(false);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeTable() {

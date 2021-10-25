@@ -1,6 +1,13 @@
 package com.github.util;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Properties;
 
 
 public class HelperUtil {
@@ -28,6 +35,21 @@ public class HelperUtil {
             result = min + " min " + minOst + " sec";
         }
         return result;
+    }
+
+    public static Properties readProperties(String path) throws IOException {
+        Properties properties = new Properties();
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
+            properties.load(bufferedReader);
+        }
+        return properties;
+    }
+
+    public static void createSettings() throws IOException {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(
+                new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
+            bufferedWriter.write("locale=en");
+        }
     }
 
 }
