@@ -32,13 +32,13 @@
         </Menu>
         <Menu mnemonicParsing="false" text="%help">
           <items>
-            <Menu mnemonicParsing="false" text="%documentation">
+            <Menu disable="true" mnemonicParsing="false" text="%documentation" visible="false">
               <items>
                 <MenuItem fx:id="docFFmpegMenuItem" mnemonicParsing="false" text="ffmpeg"/>
                 <MenuItem fx:id="docFFplayMenuItem" mnemonicParsing="false" text="ffplay"/>
               </items>
             </Menu>
-            <MenuItem fx:id="examplesMenuItem" mnemonicParsing="false" text="%examples"/>
+            <MenuItem fx:id="examplesMenuItem" mnemonicParsing="false" text="%help"/>
             <MenuItem fx:id="aboutButton" mnemonicParsing="false" text="%about"/>
           </items>
         </Menu>
@@ -52,19 +52,17 @@
           <content>
             <AnchorPane minHeight="0.0" minWidth="0.0">
               <children>
-                <TableView fx:id="taskTable" layoutX="15.0" layoutY="85.0" prefHeight="300.0"
-                           prefWidth="540.0">
+                <TableView fx:id="taskTable" layoutX="15.0" layoutY="85.0" prefHeight="300.0" prefWidth="540.0">
                   <columns>
-                    <TableColumn fx:id="filenameColumn" maxWidth="500.0" prefWidth="368.0"
-                                 text="%filename"/>
-                    <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0"
-                                 style="-fx-alignment: CENTER;" text="%status"/>
-                    <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0"
-                                 style="-fx-alignment: CENTER;" text="%time"/>
+                    <TableColumn fx:id="filenameColumn" maxWidth="500.0" prefWidth="368.0" text="%filename"/>
+                    <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;"
+                                 text="%status"/>
+                    <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;"
+                                 text="%time"/>
                   </columns>
                 </TableView>
-                <Button fx:id="startButton" layoutX="565.0" layoutY="225.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="125.0" text="%start">
+                <Button fx:id="startButton" layoutX="565.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="125.0" text="%start">
                   <tooltip>
                     <Tooltip text="%start_selected_tasks">
                       <font>
@@ -73,10 +71,9 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <TextField fx:id="paramField" layoutX="305.0" layoutY="7.0" prefHeight="25.0"
-                           prefWidth="435.0"/>
-                <Button fx:id="stopAllButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="175.0" text="%cancel_all_tasks">
+                <TextField fx:id="paramField" layoutX="305.0" layoutY="7.0" prefHeight="25.0" prefWidth="435.0"/>
+                <Button fx:id="stopAllButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="175.0" text="%cancel_all_tasks">
                   <tooltip>
                     <Tooltip text="%cancel_all_tasks">
                       <font>
@@ -85,8 +82,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="addFilesButton" layoutX="565.0" layoutY="85.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="175.0" text="%add_source_files">
+                <Button fx:id="addFilesButton" layoutX="565.0" layoutY="85.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="175.0" text="%add_source_files">
                   <tooltip>
                     <Tooltip text="%add_source_files_to_the_task_table">
                       <font>
@@ -95,8 +92,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="155.0"
-                        mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%clear_tasks">
+                <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="155.0" mnemonicParsing="false"
+                        prefHeight="25.0" prefWidth="125.0" text="%clear_tasks">
                   <tooltip>
                     <Tooltip text="%clear_selected_tasks">
                       <font>
@@ -105,8 +102,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="removeAllFilesButton" layoutX="695.0" layoutY="155.0"
-                        mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
+                <Button fx:id="removeAllFilesButton" layoutX="695.0" layoutY="155.0" mnemonicParsing="false"
+                        prefHeight="25.0" prefWidth="45.0" text="%all">
                   <tooltip>
                     <Tooltip text="%clear_all_tasks">
                       <font>
@@ -115,8 +112,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="startAllButton" layoutX="695.0" layoutY="225.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="45.0" text="%all">
+                <Button fx:id="startAllButton" layoutX="695.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="45.0" text="%all">
                   <tooltip>
                     <Tooltip text="%start_all_tasks">
                       <font>
@@ -125,9 +122,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="190.0"
-                        mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0"
-                        text="%clear_completed">
+                <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="190.0" mnemonicParsing="false"
+                        prefHeight="25.0" prefWidth="175.0" text="%clear_completed">
                   <tooltip>
                     <Tooltip text="%clear_completed_tasks">
                       <font>
@@ -136,17 +132,15 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Label layoutX="225.0" layoutY="3.0" prefWidth="80.0" text="%parameters"
-                       wrapText="true"/>
-                <Label layoutX="565.0" layoutY="35.0" prefWidth="110.0" text="%output_file_extension"
-                       wrapText="true"/>
-                <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="680.0" layoutY="42.0"
-                           prefHeight="25.0" prefWidth="60.0"/>
+                <Label layoutX="225.0" layoutY="3.0" prefWidth="80.0" text="%parameters" wrapText="true"/>
+                <Label layoutX="565.0" layoutY="35.0" prefWidth="110.0" text="%output_file_extension" wrapText="true"/>
+                <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="680.0" layoutY="42.0" prefHeight="25.0"
+                           prefWidth="60.0"/>
                 <Label layoutX="15.0" layoutY="65.0" text="%task_list"/>
                 <Button fx:id="openFolderButton" layoutX="565.0" layoutY="120.0" mnemonicParsing="false"
                         prefHeight="25.0" prefWidth="175.0" text="%open_folder"/>
-                <Button fx:id="playButton480" layoutX="565.0" layoutY="295.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="125.0" text="%play">
+                <Button fx:id="playButton480" layoutX="565.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="125.0" text="%play">
                   <tooltip>
                     <Tooltip text="%play_file_with_displayed_height_480">
                       <font>
@@ -155,8 +149,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="playButton720" layoutX="695.0" layoutY="295.0" mnemonicParsing="false"
-                        prefHeight="25.0" prefWidth="45.0" text="720">
+                <Button fx:id="playButton720" layoutX="695.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0"
+                        prefWidth="45.0" text="720">
                   <tooltip>
                     <Tooltip text="%play_file_with_displayed_height_720">
                       <font>
@@ -165,9 +159,8 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="330.0"
-                        mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0"
-                        text="%delete_files_to_trash">
+                <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="330.0" mnemonicParsing="false"
+                        prefHeight="25.0" prefWidth="175.0" text="%delete_files_to_trash">
                   <tooltip>
                     <Tooltip text="%delete_selected_files_to_trash">
                       <font>
@@ -176,19 +169,17 @@
                     </Tooltip>
                   </tooltip>
                 </Button>
-                <MenuButton layoutX="470.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0"
-                            prefWidth="85.0" text="%presets">
+                <MenuButton layoutX="470.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0"
+                            text="%presets">
                   <items>
                     <Menu mnemonicParsing="false" text="H264">
                       <items>
-                        <MenuItem fx:id="libx264MenuItem" mnemonicParsing="false"
-                                  text="-c:v libx264"/>
+                        <MenuItem fx:id="libx264MenuItem" mnemonicParsing="false" text="-c:v libx264"/>
                       </items>
                     </Menu>
                     <Menu mnemonicParsing="false" text="H265">
                       <items>
-                        <MenuItem fx:id="libx265MenuItem" mnemonicParsing="false"
-                                  text="-c:v libx265"/>
+                        <MenuItem fx:id="libx265MenuItem" mnemonicParsing="false" text="-c:v libx265"/>
                       </items>
                     </Menu>
                     <Menu mnemonicParsing="false" text="other">
@@ -198,10 +189,8 @@
                     </Menu>
                   </items>
                 </MenuButton>
-                <TextField fx:id="beforeInputField" layoutX="110.0" layoutY="7.0" prefHeight="25.0"
-                           prefWidth="100.0"/>
-                <Label layoutX="15.0" layoutY="3.0" prefWidth="80.0" text="%special_parameters"
-                       wrapText="true"/>
+                <TextField fx:id="beforeInputField" layoutX="110.0" layoutY="7.0" prefHeight="25.0" prefWidth="100.0"/>
+                <Label layoutX="15.0" layoutY="3.0" prefWidth="80.0" text="%special_parameters" wrapText="true"/>
               </children>
             </AnchorPane>
           </content>
@@ -210,12 +199,12 @@
           <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="10.0"
-                          prefHeight="350.0" prefWidth="705.0"/>
-                <Button fx:id="clearLogButton" layoutX="10.0" layoutY="365.0" mnemonicParsing="false"
-                        prefWidth="130.0" text="%clear_log"/>
-                <Button fx:id="copyToFile" layoutX="150.0" layoutY="365.0" mnemonicParsing="false"
-                        prefWidth="130.0" text="%copy_to_file"/>
+                <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="350.0"
+                          prefWidth="705.0"/>
+                <Button fx:id="clearLogButton" layoutX="10.0" layoutY="365.0" mnemonicParsing="false" prefWidth="130.0"
+                        text="%clear_log"/>
+                <Button fx:id="copyToFile" layoutX="150.0" layoutY="365.0" mnemonicParsing="false" prefWidth="130.0"
+                        text="%copy_to_file"/>
               </children>
             </AnchorPane>
           </content>

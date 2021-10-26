@@ -11,21 +11,25 @@ import javafx.stage.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ResourceBundle;
+
 
 public class AboutDialog extends Dialog<ButtonType> {
 
     private static final Logger logger = LoggerFactory.getLogger(AboutDialog.class);
+    private final ResourceBundle resource;
 
-    public AboutDialog(Window window) {
+    public AboutDialog(Window window, ResourceBundle resource) {
+        this.resource = resource;
         initializePropertyDialog(window);
         initializeIcon();
         addKeyEvent();
     }
 
     private void initializePropertyDialog(Window window) {
-        setTitle("About the program");
-        setContentText("The program works on the basis of FFMPEG\n" +
-                "Developers:\nAleksandr Shabelskii\nBoris Makarov\n2021");
+        setTitle(resource.getString("about_dialog.about"));
+        setContentText(resource.getString("about_dialog.text"));
+
         getDialogPane().getButtonTypes().add(ButtonType.OK);
         initOwner(window);
         setX(window.getX());

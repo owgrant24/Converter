@@ -182,7 +182,7 @@ public class MainController implements Initializable {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/docRU.fxml")));
             Stage window = new Stage();
             window.setScene(new Scene(root));
-            window.setTitle("Примеры");
+            window.setTitle("Справка");
             initializeIcon(window);
             window.initModality(Modality.NONE);
             window.initOwner(examplesMenuItem.getParentPopup().getScene().getWindow());
@@ -359,7 +359,7 @@ public class MainController implements Initializable {
     }
 
     private void createAboutDialog() {
-        new AboutDialog(aboutButton.getParentPopup().getScene().getWindow()).showAndWait();
+        new AboutDialog(aboutButton.getParentPopup().getScene().getWindow(), resources).showAndWait();
     }
 
     private void copyToFile() {
