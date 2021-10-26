@@ -337,7 +337,7 @@ public class MainController implements Initializable {
             taskTable.refresh();
             items.filtered(predicate).forEach(task -> task.setStatus("In queue"));
             tasks.forEach(task -> task.setParam(paramField.getText()));
-            tasks.forEach(task -> task.setBeforeInput(beforeInputField.getText()));
+            tasks.forEach(task -> task.setSpecParam(beforeInputField.getText()));
             converterService.getTasks().addAll(tasks);
             converterService.startTask();
         } else {

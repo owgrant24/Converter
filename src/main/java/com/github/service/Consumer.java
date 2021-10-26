@@ -80,7 +80,7 @@ public class Consumer implements Runnable {
         List<String> parameters = new ArrayList<>();
         parameters.add(FFMPEG.getAbsolutePath());                                   // path ffmpeg
         parameters.add(HIDE_BANNER);                                                // -hide_banner
-        List<String> beforeInputList = parserParam(current.getBeforeInput());
+        List<String> beforeInputList = parserParam(current.getSpecParam());
         if (!beforeInputList.isEmpty() && !beforeInputList.get(0).isBlank()) {
             parameters.addAll(beforeInputList);                                     // beforeInput
         }
