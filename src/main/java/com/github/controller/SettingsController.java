@@ -1,6 +1,5 @@
 package com.github.controller;
 
-import com.github.Main;
 import com.github.entity.Language;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -26,7 +25,6 @@ import static com.github.util.HelperUtil.readProperties;
 public class SettingsController implements Initializable {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsController.class);
-    private ResourceBundle resources;
 
     @FXML private ChoiceBox<Language> languageChoiceBox;
 
@@ -34,7 +32,6 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.resources = resources;
         languageChoiceBox.setItems(FXCollections.observableArrayList(Language.values()));
         languageChoiceBox.setValue(definitionLanguage());
         applyButton.setOnAction(event -> applyLanguage());

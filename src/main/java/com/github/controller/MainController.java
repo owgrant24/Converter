@@ -58,9 +58,28 @@ public class MainController implements Initializable {
 
     @FXML private BorderPane rootLayout;
 
-    @FXML private MenuItem libx264MenuItem;
-    @FXML private MenuItem libx265MenuItem;
-    @FXML private MenuItem copyMenuItem;
+    @FXML private MenuItem changeVideoSettingsMenuItem1;
+    @FXML private MenuItem changeVideoSettingsMenuItem2;
+    @FXML private MenuItem changeVideoSettingsMenuItem3;
+    @FXML private MenuItem copyMenuItem1;
+    @FXML private MenuItem copyMenuItem2;
+    @FXML private MenuItem copyMenuItem3;
+    @FXML private MenuItem timeTrimMenuItem1;
+    @FXML private MenuItem timeTrimMenuItem2;
+    @FXML private MenuItem timeTrimMenuItem3;
+    @FXML private MenuItem timeTrimMenuItem4;
+    @FXML private MenuItem timeTrimMenuItem5;
+    @FXML private MenuItem resolutionChangesMenuItem;
+    @FXML private MenuItem cropMenuItem1;
+    @FXML private MenuItem cropMenuItem2;
+    @FXML private MenuItem setptsMenuItem1;
+    @FXML private MenuItem setptsMenuItem2;
+    @FXML private MenuItem setptsMenuItem3;
+    @FXML private MenuItem setptsMenuItem4;
+    @FXML private MenuItem transposeMenuItem1;
+    @FXML private MenuItem transposeMenuItem2;
+    @FXML private MenuItem aspectMenuItem;
+
     @FXML private MenuItem aboutButton;
     @FXML private MenuItem docFFmpegMenuItem;
     @FXML private MenuItem docFFplayMenuItem;
@@ -146,9 +165,7 @@ public class MainController implements Initializable {
     }
 
     private void initializeMenu() {
-        libx265MenuItem.setOnAction(event -> paramField.setText("-c:v libx265"));
-        libx264MenuItem.setOnAction(event -> paramField.setText("-c:v libx264"));
-        copyMenuItem.setOnAction(event -> paramField.setText("-c copy"));
+        initializePresets();
         docFFmpegMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffmpeg.html"));
         docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
@@ -158,6 +175,7 @@ public class MainController implements Initializable {
         }
         examplesMenuItem.setOnAction(event -> openExamples());
     }
+
 
     private void openSettings() {
         try {
@@ -410,6 +428,97 @@ public class MainController implements Initializable {
     private void exitFromApp() {
         ConverterService.stopProcesses();
         System.exit(0);
+    }
+
+    private void initializePresets() {
+        changeVideoSettingsMenuItem1.setOnAction(event -> {
+            paramField.setText("-c:v libx264");
+            beforeInputField.setText("");
+        });
+        changeVideoSettingsMenuItem2.setOnAction(event -> {
+            paramField.setText("-c:v libx265");
+            beforeInputField.setText("");
+        });
+        changeVideoSettingsMenuItem3.setOnAction(event -> {
+            paramField.setText("-c:v libx265 -c:a aac -b:v 1500k -b:a 320k");
+            beforeInputField.setText("");
+        });
+        copyMenuItem1.setOnAction(event -> {
+            paramField.setText("-c copy");
+            beforeInputField.setText("");
+        });
+        copyMenuItem2.setOnAction(event -> {
+            paramField.setText("-c:v copy");
+            beforeInputField.setText("");
+        });
+        copyMenuItem3.setOnAction(event -> {
+            paramField.setText("-c:a copy");
+            beforeInputField.setText("");
+        });
+        timeTrimMenuItem1.setOnAction(event -> {
+            beforeInputField.setText("-ss 00:00:05");
+            paramField.setText("-t 00:05:15 -c copy");
+        });
+        timeTrimMenuItem2.setOnAction(event -> {
+            beforeInputField.setText("-ss 00:42:00");
+            paramField.setText("-t 10*60 -c copy");
+        });
+        timeTrimMenuItem3.setOnAction(event -> {
+            beforeInputField.setText("-ss 00:14:00");
+            paramField.setText("-to 00:28:00");
+        });
+        timeTrimMenuItem4.setOnAction(event -> {
+            beforeInputField.setText("-sseof 30");
+            paramField.setText("");
+        });
+        timeTrimMenuItem5.setOnAction(event -> {
+            beforeInputField.setText("-sseof 60");
+            paramField.setText("-t 30");
+        });
+        timeTrimMenuItem5.setOnAction(event -> {
+            beforeInputField.setText("-sseof 60");
+            paramField.setText("-t 30");
+        });
+        resolutionChangesMenuItem.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-s 1280x720");
+        });
+        cropMenuItem1.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf crop=640:480:200:150");
+        });
+        cropMenuItem2.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf crop=300:220");
+        });
+        setptsMenuItem1.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-an -vf setpts=5*PTS");
+        });
+        setptsMenuItem2.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-an -vf setpts=0.25*PTS");
+        });
+        setptsMenuItem3.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf setpts=PTS/2 -af atempo=2");
+        });
+        setptsMenuItem4.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf setpts=PTS*2 -af atempo=0.5");
+        });
+        transposeMenuItem1.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf transpose=0");
+        });
+        transposeMenuItem2.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-vf rotate=45*PI/180");
+        });
+        aspectMenuItem.setOnAction(event -> {
+            beforeInputField.setText("");
+            paramField.setText("-aspect 16:9");
+        });
     }
 
 }
