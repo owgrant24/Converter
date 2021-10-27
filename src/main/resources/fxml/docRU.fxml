@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane prefHeight="500.0" prefWidth="700.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="200.0" tabMaxWidth="200.0">
         <tabs>
@@ -35,7 +35,7 @@
                                     </AnchorPane>
                               </content>
                             </Tab>
-                            <Tab text="Перепаковка файла">
+                            <Tab text="Копирование потоков">
                               <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>

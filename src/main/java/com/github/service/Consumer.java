@@ -29,8 +29,8 @@ public class Consumer implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    private ConverterService converterService;
-    private Duration duration;
+    private final ConverterService converterService;
+    private final Duration duration;
 
     public Consumer(ConverterService converterService) {
         this.converterService = converterService;
@@ -82,7 +82,7 @@ public class Consumer implements Runnable {
         parameters.add(HIDE_BANNER);                                                // -hide_banner
         List<String> beforeInputList = parserParam(current.getSpecParam());
         if (!beforeInputList.isEmpty() && !beforeInputList.get(0).isBlank()) {
-            parameters.addAll(beforeInputList);                                     // beforeInput
+            parameters.addAll(beforeInputList);                                     // special parameters
         }
         parameters.add(definingInputParameters(current));                           // -i input
         parameters.addAll(parserParam(current.getParam()));                         // parameters

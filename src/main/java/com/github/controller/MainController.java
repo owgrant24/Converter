@@ -115,7 +115,7 @@ public class MainController implements Initializable {
     private ObservableList<Task> observableList;
 
     private File directory = null;
-    private FileChooser fileChooser;
+    private final FileChooser fileChooser;
     private ResourceBundle resources;
 
     public MainController() {
