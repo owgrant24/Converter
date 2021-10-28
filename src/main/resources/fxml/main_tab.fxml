@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootMainTabLayout" minHeight="0.0" minWidth="0.0" prefHeight="396.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.MainTabController">
+   <children>
+      <TableView fx:id="taskTable" layoutX="15.0" layoutY="85.0" prefHeight="300.0" prefWidth="540.0">
+         <columns>
+            <TableColumn fx:id="filenameColumn" maxWidth="500.0" prefWidth="368.0" text="%filename" />
+            <TableColumn fx:id="statusColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="%status" />
+            <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="%time" />
+         </columns>
+      </TableView>
+      <Button fx:id="startButton" layoutX="565.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%start">
+         <tooltip>
+            <Tooltip text="%start_selected_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <TextField fx:id="paramField" layoutX="305.0" layoutY="7.0" prefHeight="25.0" prefWidth="435.0" />
+      <Button fx:id="stopAllButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%cancel_all_tasks">
+         <tooltip>
+            <Tooltip text="%cancel_all_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="addFilesButton" layoutX="565.0" layoutY="85.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%add_source_files">
+         <tooltip>
+            <Tooltip text="%add_source_files_to_the_task_table">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%clear_tasks">
+         <tooltip>
+            <Tooltip text="%clear_selected_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="removeAllFilesButton" layoutX="695.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
+         <tooltip>
+            <Tooltip text="%clear_all_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="startAllButton" layoutX="695.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
+         <tooltip>
+            <Tooltip text="%start_all_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%clear_completed">
+         <tooltip>
+            <Tooltip text="%clear_completed_tasks">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Label layoutX="225.0" layoutY="3.0" prefWidth="80.0" text="%parameters" wrapText="true" />
+      <Label layoutX="565.0" layoutY="35.0" prefWidth="110.0" text="%output_file_extension" wrapText="true" />
+      <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="680.0" layoutY="42.0" prefHeight="25.0" prefWidth="60.0" />
+      <Label layoutX="15.0" layoutY="65.0" text="%task_list" />
+      <Button fx:id="openFolderButton" layoutX="565.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%open_folder" />
+      <Button fx:id="playButton480" layoutX="565.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%play">
+         <tooltip>
+            <Tooltip text="%play_file_with_displayed_height_480">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="playButton720" layoutX="695.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="720">
+         <tooltip>
+            <Tooltip text="%play_file_with_displayed_height_720">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="330.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%delete_files_to_trash">
+         <tooltip>
+            <Tooltip text="%delete_selected_files_to_trash">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Tooltip>
+         </tooltip>
+      </Button>
+      <MenuButton layoutX="470.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="%presets">
+         <items>
+            <Menu mnemonicParsing="false" text="%change_video_settings">
+               <items>
+                  <MenuItem fx:id="changeVideoSettingsMenuItem1" mnemonicParsing="false" text="-c:v libx264" />
+                  <MenuItem fx:id="changeVideoSettingsMenuItem2" mnemonicParsing="false" text="-c:v libx265" />
+                  <MenuItem fx:id="changeVideoSettingsMenuItem3" mnemonicParsing="false" text="-c:v libx265 -c:a aac -b:v 1500k -b:a 320k" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%copying_streams">
+               <items>
+                  <MenuItem fx:id="copyMenuItem1" mnemonicParsing="false" text="-c copy" />
+                  <MenuItem fx:id="copyMenuItem2" mnemonicParsing="false" text="-c:v copy" />
+                  <MenuItem fx:id="copyMenuItem3" mnemonicParsing="false" text="-c:a copy" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%time_trim">
+               <items>
+                  <MenuItem fx:id="timeTrimMenuItem1" mnemonicParsing="false" text="-ss 00:00:05 -t 00:05:15 -c copy" />
+                  <MenuItem fx:id="timeTrimMenuItem2" mnemonicParsing="false" text="-ss 00:42:00 -t 10*60 -c copy" />
+                  <MenuItem fx:id="timeTrimMenuItem3" mnemonicParsing="false" text="-ss 00:14:00 -to 00:28:00" />
+                  <MenuItem fx:id="timeTrimMenuItem4" mnemonicParsing="false" text="-sseof 30" />
+                  <MenuItem fx:id="timeTrimMenuItem5" mnemonicParsing="false" text="-sseof 60 -t 30" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%resolution_changes">
+               <items>
+                  <MenuItem fx:id="resolutionChangesMenuItem" mnemonicParsing="false" text="-s 1280x720" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%crop">
+               <items>
+                  <MenuItem fx:id="cropMenuItem1" mnemonicParsing="false" text="-vf crop=640:480:200:150" />
+                  <MenuItem fx:id="cropMenuItem2" mnemonicParsing="false" text="-vf crop=300:220" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%setpts">
+               <items>
+                  <MenuItem fx:id="setptsMenuItem1" mnemonicParsing="false" text="-an -vf setpts=5*PTS" />
+                  <MenuItem fx:id="setptsMenuItem2" mnemonicParsing="false" text="-an -vf setpts=0.25*PTS" />
+                  <MenuItem fx:id="setptsMenuItem3" mnemonicParsing="false" text="-vf setpts=PTS/2 -af atempo=2" />
+                  <MenuItem fx:id="setptsMenuItem4" mnemonicParsing="false" text="-vf setpts=PTS*2 -af atempo=0.5" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%transpose">
+               <items>
+                  <MenuItem fx:id="transposeMenuItem1" mnemonicParsing="false" text="-vf transpose=0" />
+                  <MenuItem fx:id="transposeMenuItem2" mnemonicParsing="false" text="-vf rotate=45*PI/180" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%aspect">
+               <items>
+                  <MenuItem fx:id="aspectMenuItem" mnemonicParsing="false" text="-aspect 16:9" />
+               </items>
+            </Menu>
+         </items>
+      </MenuButton>
+      <TextField fx:id="beforeInputField" layoutX="110.0" layoutY="7.0" prefHeight="25.0" prefWidth="100.0" />
+      <Label layoutX="15.0" layoutY="3.0" prefWidth="80.0" text="%special_parameters" wrapText="true" />
+   </children>
+</AnchorPane>

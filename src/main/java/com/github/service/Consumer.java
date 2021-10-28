@@ -1,5 +1,8 @@
 package com.github.service;
 
+import com.github.controller.ControllerMediator;
+import com.github.controller.LogTabController;
+import com.github.controller.MainTabController;
 import com.github.entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +34,15 @@ public class Consumer implements Runnable {
 
     private final ConverterService converterService;
     private final Duration duration;
+    private final MainTabController mainTabController;
+    private final LogTabController logTabController;
 
     public Consumer(ConverterService converterService) {
+        this.mainTabController = ControllerMediator.getInstance().getMainTabController();
+        this.logTabController = ControllerMediator.getInstance().getLogTabController();
         this.converterService = converterService;
-        this.duration = new Duration(converterService);
+        this.duration = new Duration();
+
     }
 
     @Override
@@ -58,13 +66,13 @@ public class Consumer implements Runnable {
                     PROCESSES.add(process);
                     Future<ProcessResult> future = startedProcess.getFuture();
                     String status = future.get().outputUTF8();
-                    converterService.getMainController().getLogTextArea().appendText(status);
-                    converterService.getMainController().getLogTextArea().appendText("\n\n\n");
+                    logTabController.getLogTextArea().appendText(status);
+                    logTabController.getLogTextArea().appendText("\n\n\n");
                     logger.debug("Работу выполнил над: {}", current.getName());
                     PROCESSES.remove(process);
                     String statusAfterCheck = CheckStatusService.checkStatus(status);
                     current.setStatus(statusAfterCheck);
-                    converterService.getMainController().getTaskTable().refresh();
+                    mainTabController.getTaskTable().refresh();
                 } catch (IOException | ExecutionException e) {
                     logger.error("Ошибка выполнения задания: {}", e.getMessage());
                 } catch (InterruptedException e) {
@@ -104,7 +112,7 @@ public class Consumer implements Runnable {
         return "\"" + outputParent + File.separator
                 + task.getName().replaceFirst("[.][^.]+$", "")
                 + "."
-                + converterService.getMainController()
+                + mainTabController
                 .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
     }
 

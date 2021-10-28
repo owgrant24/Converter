@@ -1,6 +1,8 @@
 package com.github.service;
 
+import com.github.controller.LogTabController;
 import com.github.controller.MainController;
+import com.github.controller.MainTabController;
 import com.github.entity.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +27,12 @@ public class ConverterService {
     protected static final File FFPLAY = new File("./ffmpeg/bin/ffplay.exe");
     protected static final String HIDE_BANNER = "-hide_banner";
 
-    private final MainController mainController;
-
     private final List<Task> list;
     private final Queue<Task> tasks;
     private Thread thread;
 
 
-    public ConverterService(MainController mainController) {
-        this.mainController = mainController;
+    public ConverterService() {
         this.tasks = new LinkedBlockingQueue<>();
         this.list = new ArrayList<>();
     }
@@ -44,10 +43,6 @@ public class ConverterService {
 
     public Queue<Task> getTasks() {
         return tasks;
-    }
-
-    public MainController getMainController() {
-        return mainController;
     }
 
     public void startTask() {

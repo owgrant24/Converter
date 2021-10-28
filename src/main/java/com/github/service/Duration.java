@@ -2,6 +2,8 @@ package com.github.service;
 
 import static com.github.util.HelperUtil.convertSecInMin;
 
+import com.github.controller.ControllerMediator;
+import com.github.controller.MainTabController;
 import com.github.entity.Task;
 
 import java.io.IOException;
@@ -17,12 +19,12 @@ import org.slf4j.LoggerFactory;
 
 public class Duration {
 
-    private ConverterService converterService;
+    private MainTabController mainTabController;
 
     private static final Logger logger = LoggerFactory.getLogger(Duration.class);
 
-    public Duration(ConverterService converterService) {
-        this.converterService = converterService;
+    public Duration() {
+        this.mainTabController = ControllerMediator.getInstance().getMainTabController();
     }
 
     public void showDuration(OutputStream stream, Task task, long startTime) {
@@ -50,7 +52,7 @@ public class Duration {
                     task.setStatus(String.format("%.2f %%", progress * 100));
                     long timeOperation = (System.currentTimeMillis() - startTime) / 1_000;
                     task.setTime(convertSecInMin(timeOperation));
-                    converterService.getMainController().getTaskTable().refresh();
+                    mainTabController.getTaskTable().refresh();
                 }
             } catch (IOException e) {
                 logger.error("Ошибка выполнения задания при расчете длительности: {}", e.getMessage());

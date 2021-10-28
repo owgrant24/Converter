@@ -46,7 +46,7 @@ public class SettingsController implements Initializable {
                         new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
                     properties.setProperty("locale", languageChoiceBox.getValue().getLocale());
                     properties.store(bufferedWriter, null);
-                    logger.debug("Произошло сохранение в файл");
+                    logger.debug("Cохранение в файл произведено");
                 }
 
             }
