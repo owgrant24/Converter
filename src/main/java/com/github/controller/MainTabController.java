@@ -38,9 +38,6 @@ public class MainTabController implements Initializable {
 
     private static final Logger logger = LoggerFactory.getLogger(MainTabController.class);
 
-    private LogTabController logTabController;
-    private MainTabController mainTabController;
-
     @FXML private AnchorPane rootMainTabLayout;
 
     @FXML private MenuItem changeVideoSettingsMenuItem1;

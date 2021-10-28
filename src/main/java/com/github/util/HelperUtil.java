@@ -1,5 +1,6 @@
 package com.github.util;
 
+import com.github.CustomLocale;
 import com.github.Main;
 import com.github.entity.Language;
 
@@ -56,7 +57,7 @@ public class HelperUtil {
     }
 
     public static Language definitionLanguage() {
-        if (Main.locale.getLanguage().equalsIgnoreCase("ru")) {
+        if (CustomLocale.getInstance().getLocale().getLanguage().equalsIgnoreCase("ru")) {
             return Language.RUSSIAN;
         }
         return Language.ENGLISH;
