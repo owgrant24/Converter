@@ -11,11 +11,7 @@
          <tabs>
             <Tab text="%main">
                <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0">
-                     <children>
-                        <fx:include fx:id="mainTab" source="main_tab.fxml" />
-                     </children>
-                  </AnchorPane>
+                  <fx:include fx:id="mainTab" source="main_tab.fxml" />
                </content>
             </Tab>
             <Tab text="%log">

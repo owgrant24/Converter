@@ -1,36 +1,9 @@
 package com.github.controller;
 
-public class ControllerMediator implements IMediateControllers {
+public interface ControllerMediator {
 
-    private MainTabController mainTabController;
-    private LogTabController logTabController;
+    void registerMainTabController(MainTabController controller);
 
-    @Override
-    public void registerMainTabController(MainTabController controller) {
-        this.mainTabController = controller;
-    }
-
-    @Override
-    public void registerLogTabController(LogTabController controller) {
-        this.logTabController = controller;
-    }
-
-    public MainTabController getMainTabController() {
-        return mainTabController;
-    }
-
-    public LogTabController getLogTabController() {
-        return logTabController;
-    }
-
-    public static ControllerMediator getInstance() {
-        return ControllerMediatorHolder.INSTANCE;
-    }
-
-    private static class ControllerMediatorHolder {
-
-        private static final ControllerMediator INSTANCE = new ControllerMediator();
-
-    }
+    void registerLogTabController(LogTabController controller);
 
 }

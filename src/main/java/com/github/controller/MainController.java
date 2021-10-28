@@ -14,8 +14,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ControllerMediator.getInstance().registerMainTabController(mainTabController);
-        ControllerMediator.getInstance().registerLogTabController(logTabController);
+        ControllerMediatorImpl.getInstance().registerMainTabController(mainTabController);
+        ControllerMediatorImpl.getInstance().registerLogTabController(logTabController);
     }
 
 }

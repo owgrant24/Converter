@@ -2,7 +2,7 @@ package com.github.service;
 
 import static com.github.util.HelperUtil.convertSecInMin;
 
-import com.github.controller.ControllerMediator;
+import com.github.controller.ControllerMediatorImpl;
 import com.github.controller.MainTabController;
 import com.github.entity.Task;
 
@@ -24,7 +24,7 @@ public class Duration {
     private static final Logger logger = LoggerFactory.getLogger(Duration.class);
 
     public Duration() {
-        this.mainTabController = ControllerMediator.getInstance().getMainTabController();
+        this.mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
     }
 
     public void showDuration(OutputStream stream, Task task, long startTime) {

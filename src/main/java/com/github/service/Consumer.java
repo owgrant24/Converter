@@ -1,6 +1,6 @@
 package com.github.service;
 
-import com.github.controller.ControllerMediator;
+import com.github.controller.ControllerMediatorImpl;
 import com.github.controller.LogTabController;
 import com.github.controller.MainTabController;
 import com.github.entity.Task;
@@ -38,8 +38,8 @@ public class Consumer implements Runnable {
     private final LogTabController logTabController;
 
     public Consumer(ConverterService converterService) {
-        this.mainTabController = ControllerMediator.getInstance().getMainTabController();
-        this.logTabController = ControllerMediator.getInstance().getLogTabController();
+        this.mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
+        this.logTabController = ControllerMediatorImpl.getInstance().getLogTabController();
         this.converterService = converterService;
         this.duration = new Duration();
 
