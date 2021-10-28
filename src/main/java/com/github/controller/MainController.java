@@ -1,17 +1,12 @@
 package com.github.controller;
 
 import com.github.entity.Extension;
-import com.github.entity.Language;
 import com.github.entity.Task;
 import com.github.service.ConverterService;
-import com.github.view.AboutDialog;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -22,13 +17,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,17 +29,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
-import static com.github.util.HelperUtil.definitionLanguage;
 import static com.github.util.HelperUtil.printCollection;
 
 
@@ -56,7 +45,7 @@ public class MainController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
     private final ConverterService converterService;
 
-    @FXML private BorderPane rootLayout;
+    @FXML private AnchorPane rootLayout;
 
     @FXML private MenuItem changeVideoSettingsMenuItem1;
     @FXML private MenuItem changeVideoSettingsMenuItem2;
@@ -79,13 +68,6 @@ public class MainController implements Initializable {
     @FXML private MenuItem transposeMenuItem1;
     @FXML private MenuItem transposeMenuItem2;
     @FXML private MenuItem aspectMenuItem;
-
-    @FXML private MenuItem aboutButton;
-    @FXML private MenuItem docFFmpegMenuItem;
-    @FXML private MenuItem docFFplayMenuItem;
-    @FXML private MenuItem examplesMenuItem;
-    @FXML private MenuItem exitMenuItem;
-    @FXML private MenuItem settingsMenuItem;
 
     @FXML private TableView<Task> taskTable;
     @FXML private TableColumn<Task, String> filenameColumn;
@@ -155,7 +137,7 @@ public class MainController implements Initializable {
         this.resources = resources;
         initializeTable();
         initializeButton();
-        initializeMenu();
+        initializePresets();
         initializeOutputFileExtensionChoiceBox();
     }
 
@@ -163,62 +145,6 @@ public class MainController implements Initializable {
         outputFileExtensionChoiceBox.getItems().setAll(FXCollections.observableArrayList(Extension.values()));
         outputFileExtensionChoiceBox.setValue(Extension.MP4);
     }
-
-    private void initializeMenu() {
-        initializePresets();
-        docFFmpegMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffmpeg.html"));
-        docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
-        exitMenuItem.setOnAction(event -> exitFromApp());
-        settingsMenuItem.setOnAction(event -> openSettings());
-        if (!definitionLanguage().equals(Language.RUSSIAN)) {
-            examplesMenuItem.setDisable(true);
-        }
-        examplesMenuItem.setOnAction(event -> openExamples());
-    }
-
-
-    private void openSettings() {
-        try {
-            Parent root = FXMLLoader.load(
-                    Objects.requireNonNull(getClass().getResource("/fxml/settings.fxml")), resources
-            );
-            Stage window = new Stage();
-            window.setScene(new Scene(root));
-            window.setTitle(resources.getString("settings"));
-            initializeIcon(window);
-            window.initModality(Modality.APPLICATION_MODAL);
-            window.initOwner(settingsMenuItem.getParentPopup().getScene().getWindow());
-            window.setResizable(false);
-            window.show();
-        } catch (IOException e) {
-            logger.error("Ошибка открытия вкладки: Настройки");
-        }
-    }
-
-    private void openExamples() {
-        try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/docRU.fxml")));
-            Stage window = new Stage();
-            window.setScene(new Scene(root));
-            window.setTitle("Справка");
-            initializeIcon(window);
-            window.initModality(Modality.NONE);
-            window.initOwner(examplesMenuItem.getParentPopup().getScene().getWindow());
-            window.setResizable(false);
-            window.show();
-        } catch (IOException e) {
-            logger.error("Ошибка открытия вкладки: Примеры");
-        }
-    }
-
-    private void initializeIcon(Stage window) {
-        try {
-            window.getIcons().add(new Image("/images/icon.png"));
-        } catch (Exception e) {
-            logger.error("Иконка исчезла. Причина - {}", e.getMessage());
-        }
-    }
-
 
     private void initializeTable() {
         // Поддержка выбора нескольких строк через Ctrl, Shift
@@ -255,7 +181,6 @@ public class MainController implements Initializable {
         clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
         clearLogButton.setOnAction(event -> logTextArea.clear());
         openFolderButton.setOnAction(event -> openFolder());
-        aboutButton.setOnAction(event -> createAboutDialog());
         copyToFile.setOnAction(event -> copyToFile());
         playButton480.setOnAction(event -> playFFplay("480"));
         playButton720.setOnAction(event -> playFFplay("720"));
@@ -376,9 +301,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void createAboutDialog() {
-        new AboutDialog(aboutButton.getParentPopup().getScene().getWindow(), resources).showAndWait();
-    }
+
 
     private void copyToFile() {
         if (!logTextArea.getText().isBlank()) {
@@ -415,20 +338,6 @@ public class MainController implements Initializable {
         }
     }
 
-    private void openDocumentationInBrowser(String link) {
-        if (Desktop.isDesktopSupported()) {
-            try {
-                Desktop.getDesktop().browse(URI.create(link));
-            } catch (IOException e) {
-                logger.error("Ошибка открытия документации в браузере: {}", e.getMessage());
-            }
-        }
-    }
-
-    private void exitFromApp() {
-        ConverterService.stopProcesses();
-        System.exit(0);
-    }
 
     private void initializePresets() {
         changeVideoSettingsMenuItem1.setOnAction(event -> {

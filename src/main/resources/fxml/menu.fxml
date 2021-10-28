@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.MenuController">
+   <children>
+      <MenuBar prefWidth="750.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="%file">
+               <items>
+                  <MenuItem fx:id="settingsMenuItem" mnemonicParsing="false" text="%settings" />
+                  <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="%exit" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="%help">
+               <items>
+                  <Menu disable="true" mnemonicParsing="false" text="%documentation" visible="false">
+                     <items>
+                        <MenuItem fx:id="docFFmpegMenuItem" mnemonicParsing="false" text="ffmpeg" />
+                        <MenuItem fx:id="docFFplayMenuItem" mnemonicParsing="false" text="ffplay" />
+                     </items>
+                  </Menu>
+                  <MenuItem fx:id="helpMenuItem" mnemonicParsing="false" text="%help" />
+                  <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="%about" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
