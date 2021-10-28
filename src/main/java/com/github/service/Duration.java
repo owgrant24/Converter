@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class Duration {
 
-    private MainTabController mainTabController;
+    private final MainTabController mainTabController;
 
     private static final Logger logger = LoggerFactory.getLogger(Duration.class);
 
