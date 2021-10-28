@@ -15,7 +15,7 @@ public class CustomLocale {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomLocale.class);
 
-    private Locale locale;
+    private Locale locale = new Locale("en");
 
     public Locale getLocale() {
         return locale;
@@ -25,14 +25,14 @@ public class CustomLocale {
         Properties properties;
         try {
             properties = readProperties("./settings.properties");
+            String lang = (String) properties.get("locale");
+            locale = new Locale(lang);
+            return locale;
         } catch (IOException e) {
             logger.info("Файл настроек не существует");
             createSettings();
-            return new Locale("en");
+            return locale;
         }
-        String lang = (String) properties.get("locale");
-        locale = new Locale(lang);
-        return locale;
     }
 
     public static CustomLocale getInstance() {
