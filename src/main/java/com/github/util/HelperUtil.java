@@ -1,7 +1,6 @@
 package com.github.util;
 
 import com.github.CustomLocale;
-import com.github.Main;
 import com.github.entity.Language;
 
 import java.io.BufferedReader;

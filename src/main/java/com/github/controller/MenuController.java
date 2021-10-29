@@ -71,7 +71,7 @@ public class MenuController implements Initializable {
 
     private void openExamples() {
         try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/docRU.fxml")));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/doc_ru.fxml")));
             Stage window = new Stage();
             window.setScene(new Scene(root));
             window.setTitle("Справка");
@@ -81,7 +81,7 @@ public class MenuController implements Initializable {
             window.setResizable(false);
             window.show();
         } catch (IOException e) {
-            logger.error("Ошибка открытия вкладки: Примеры");
+            logger.error("Ошибка открытия вкладки: Справка");
         }
     }
 
