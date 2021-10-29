@@ -22,9 +22,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static com.github.service.ConverterService.FFMPEG;
-import static com.github.service.ConverterService.HIDE_BANNER;
-import static com.github.service.ConverterService.PROCESSES;
 import static com.github.util.HelperUtil.printCollection;
 
 
@@ -32,17 +29,14 @@ public class Consumer implements Runnable {
 
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-    private final ConverterService converterService;
+    private final ConverterService converterService = ConverterService.getInstance();
+    private final MainTabController mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
+    private final LogTabController logTabController = ControllerMediatorImpl.getInstance().getLogTabController();
     private final Duration duration;
-    private final MainTabController mainTabController;
-    private final LogTabController logTabController;
 
-    public Consumer(ConverterService converterService) {
-        this.mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
-        this.logTabController = ControllerMediatorImpl.getInstance().getLogTabController();
-        this.converterService = converterService;
+
+    public Consumer() {
         this.duration = new Duration();
-
     }
 
     @Override
@@ -63,13 +57,13 @@ public class Consumer implements Runnable {
                             .start();
                     Process process = startedProcess.getProcess();
                     duration.showDuration(dur, current, startTime);
-                    PROCESSES.add(process);
+                    converterService.getProcesses().add(process);
                     Future<ProcessResult> future = startedProcess.getFuture();
                     String status = future.get().outputUTF8();
                     logTabController.getLogTextArea().appendText(status);
                     logTabController.getLogTextArea().appendText("\n\n\n");
                     logger.debug("Работу выполнил над: {}", current.getName());
-                    PROCESSES.remove(process);
+                    converterService.getProcesses().remove(process);
                     String statusAfterCheck = CheckStatusService.checkStatus(status);
                     current.setStatus(statusAfterCheck);
                     mainTabController.getTaskTable().refresh();
@@ -86,8 +80,8 @@ public class Consumer implements Runnable {
 
     private List<String> getParameters(Task current) throws IOException {
         List<String> parameters = new ArrayList<>();
-        parameters.add(FFMPEG.getAbsolutePath());                                   // path ffmpeg
-        parameters.add(HIDE_BANNER);                                                // -hide_banner
+        parameters.add(converterService.getFfmpeg().getAbsolutePath());             // path ffmpeg
+        parameters.add(ConverterService.HIDE_BANNER);                               // -hide_banner
         List<String> beforeInputList = parserParam(current.getSpecParam());
         if (!beforeInputList.isEmpty() && !beforeInputList.get(0).isBlank()) {
             parameters.addAll(beforeInputList);                                     // special parameters

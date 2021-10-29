@@ -19,7 +19,6 @@ public class Main extends Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         Locale locale = CustomLocale.getInstance().loadLocale();
@@ -39,7 +38,7 @@ public class Main extends Application {
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> {
-            ConverterService.stopProcesses();
+            ConverterService.getInstance().stopProcesses();
             System.exit(0);
         });
     }

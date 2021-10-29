@@ -19,13 +19,9 @@ import org.slf4j.LoggerFactory;
 
 public class Duration {
 
-    private final MainTabController mainTabController;
+    private final MainTabController mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
 
     private static final Logger logger = LoggerFactory.getLogger(Duration.class);
-
-    public Duration() {
-        this.mainTabController = ControllerMediatorImpl.getInstance().getMainTabController();
-    }
 
     public void showDuration(OutputStream stream, Task task, long startTime) {
         new Thread(() -> {

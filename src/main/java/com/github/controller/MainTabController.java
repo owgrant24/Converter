@@ -115,7 +115,7 @@ public class MainTabController implements Initializable {
     }
 
     public MainTabController() {
-        converterService = new ConverterService();
+        converterService = ConverterService.getInstance();
         fileChooser = getFileChooser();
     }
 

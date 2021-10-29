@@ -108,7 +108,7 @@ public class MenuController implements Initializable {
     }
 
     private void exitFromApp() {
-        ConverterService.stopProcesses();
+        ConverterService.getInstance().stopProcesses();
         System.exit(0);
     }
 
