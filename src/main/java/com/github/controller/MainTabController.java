@@ -49,8 +49,6 @@ public class MainTabController implements Initializable {
     @FXML private MenuItem timeTrimMenuItem1;
     @FXML private MenuItem timeTrimMenuItem2;
     @FXML private MenuItem timeTrimMenuItem3;
-    @FXML private MenuItem timeTrimMenuItem4;
-    @FXML private MenuItem timeTrimMenuItem5;
     @FXML private MenuItem resolutionChangesMenuItem;
     @FXML private MenuItem cropMenuItem1;
     @FXML private MenuItem cropMenuItem2;
@@ -338,18 +336,6 @@ public class MainTabController implements Initializable {
         timeTrimMenuItem3.setOnAction(event -> {
             beforeInputField.setText("-ss 00:14:00");
             paramField.setText("-to 00:28:00");
-        });
-        timeTrimMenuItem4.setOnAction(event -> {
-            beforeInputField.setText("-sseof 30");
-            paramField.setText("");
-        });
-        timeTrimMenuItem5.setOnAction(event -> {
-            beforeInputField.setText("-sseof 60");
-            paramField.setText("-t 30");
-        });
-        timeTrimMenuItem5.setOnAction(event -> {
-            beforeInputField.setText("-sseof 60");
-            paramField.setText("-t 30");
         });
         resolutionChangesMenuItem.setOnAction(event -> {
             beforeInputField.setText("");

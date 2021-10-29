@@ -139,8 +139,6 @@
                   <MenuItem fx:id="timeTrimMenuItem1" mnemonicParsing="false" text="-ss 00:00:05 -t 00:05:15 -c copy" />
                   <MenuItem fx:id="timeTrimMenuItem2" mnemonicParsing="false" text="-ss 00:42:00 -t 10*60 -c copy" />
                   <MenuItem fx:id="timeTrimMenuItem3" mnemonicParsing="false" text="-ss 00:14:00 -to 00:28:00" />
-                  <MenuItem fx:id="timeTrimMenuItem4" mnemonicParsing="false" text="-sseof 30" />
-                  <MenuItem fx:id="timeTrimMenuItem5" mnemonicParsing="false" text="-sseof 60 -t 30" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="%resolution_changes">
