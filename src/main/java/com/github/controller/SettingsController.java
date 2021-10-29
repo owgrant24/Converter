@@ -40,11 +40,12 @@ public class SettingsController implements Initializable {
     private void applyLanguage() {
         try {
             Properties properties = readProperties("./settings.properties");
-            String locale = (String) properties.get("locale");
-            if (!locale.equals(languageChoiceBox.getValue().getLocale())) {
+            String localeFromFile = (String) properties.get("locale");
+            String localeFromGui = languageChoiceBox.getValue().getLocale();
+            if (!localeFromFile.equals(localeFromGui)) {
                 try (Writer bufferedWriter = new BufferedWriter(
                         new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
-                    properties.setProperty("locale", languageChoiceBox.getValue().getLocale());
+                    properties.setProperty("locale", localeFromGui);
                     properties.store(bufferedWriter, null);
                     logger.debug("Cохранение в файл произведено");
                 }
