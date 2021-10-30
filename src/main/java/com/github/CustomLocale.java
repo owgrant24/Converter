@@ -1,14 +1,11 @@
 package com.github;
 
+import com.github.util.SettingsCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Properties;
-
-import static com.github.util.HelperUtil.createSettings;
-import static com.github.util.HelperUtil.readProperties;
 
 
 public class CustomLocale {
@@ -22,17 +19,10 @@ public class CustomLocale {
     }
 
     public Locale loadLocale() throws IOException {
-        Properties properties;
-        try {
-            properties = readProperties("./settings.properties");
-            String lang = (String) properties.get("locale");
-            locale = new Locale(lang);
-            return locale;
-        } catch (IOException e) {
-            logger.info("Файл настроек не существует");
-            createSettings();
-            return locale;
-        }
+        String lang = (String) SettingsCreator.getProperties().get("locale");
+        locale = new Locale(lang);
+        logger.info("Загружен язык - {}", locale.getLanguage());
+        return locale;
     }
 
     public static CustomLocale getInstance() {

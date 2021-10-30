@@ -19,7 +19,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import static com.github.util.HelperUtil.definitionLanguage;
-import static com.github.util.HelperUtil.readProperties;
+import static com.github.util.SettingsCreator.readPropertiesFromFile;
 
 
 public class SettingsController implements Initializable {
@@ -39,7 +39,7 @@ public class SettingsController implements Initializable {
 
     private void applyLanguage() {
         try {
-            Properties properties = readProperties("./settings.properties");
+            Properties properties = readPropertiesFromFile();
             String localeFromFile = (String) properties.get("locale");
             String localeFromGui = languageChoiceBox.getValue().getLocale();
             if (!localeFromFile.equals(localeFromGui)) {
@@ -47,7 +47,7 @@ public class SettingsController implements Initializable {
                         new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
                     properties.setProperty("locale", localeFromGui);
                     properties.store(bufferedWriter, null);
-                    logger.debug("Cохранение в файл произведено");
+                    logger.debug("Cохранение в файл произведено успешно");
                 }
 
             }

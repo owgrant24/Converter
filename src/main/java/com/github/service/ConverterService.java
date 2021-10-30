@@ -1,6 +1,7 @@
 package com.github.service;
 
 import com.github.entity.Task;
+import com.github.util.SettingsCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.zeroturnaround.exec.ProcessExecutor;
@@ -22,8 +23,8 @@ public class ConverterService {
     private final Set<Process> processes = new HashSet<>();
     private final File ffmpeg = new File("./ffmpeg/bin/ffmpeg.exe");
     private final File ffplay = new File("./ffmpeg/bin/ffplay.exe");
-    private final File vlc = new File("C:/Program Files/VideoLAN/VLC/vlc.exe");
-    private final File avidemux = new File("C:/Program Files/Avidemux 2.7 VC++ 64bits/avidemux.exe");
+    private final File vlc = new File((String) SettingsCreator.getProperties().get("vlc"));
+    private final File avidemux = new File((String) SettingsCreator.getProperties().get("avidemux"));
     public static final String HIDE_BANNER = "-hide_banner";
 
     private final List<Task> list = new ArrayList<>();
