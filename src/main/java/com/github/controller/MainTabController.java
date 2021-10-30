@@ -14,6 +14,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -69,13 +70,14 @@ public class MainTabController implements Initializable {
     @FXML private TableColumn<Task, String> statusColumn;
     @FXML private TableColumn<Task, String> timeColumn;
 
-    @FXML private Button startButton;
-    @FXML private Button stopAllButton;
     @FXML private Button addFilesButton;
-    @FXML private Button removeFilesButton;
-    @FXML private Button removeAllFilesButton;
-    @FXML private Button startAllButton;
-    @FXML private Button clearCompletedButton;
+    @FXML private Button stopAllTasksButton;
+    @FXML private SplitMenuButton removeSelectedTasksButton;
+    @FXML private MenuItem removeAllTasksButton;
+    @FXML private MenuItem removeCompletedTasksButton;
+    @FXML private SplitMenuButton startSelectedTasksButton;
+    @FXML private MenuItem startAllTasksMenuItem;
+
 
     @FXML private TextField paramField;
     @FXML private TextField beforeInputField;
@@ -196,12 +198,12 @@ public class MainTabController implements Initializable {
 
     private void initializeButton() {
         addFilesButton.setOnAction(event -> addFilesInTable());
-        removeFilesButton.setOnAction(event -> removeSelectedFilesFromTable());
-        removeAllFilesButton.setOnAction(event -> removeAllFilesFromTable());
-        startButton.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
-        startAllButton.setOnAction(event -> start(taskTable.getItems()));
-        stopAllButton.setOnAction(event -> cancelAllItems());
-        clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
+        removeSelectedTasksButton.setOnAction(event -> removeSelectedTasksFromTable());
+        removeAllTasksButton.setOnAction(event -> removeAllTasksFromTable());
+        removeCompletedTasksButton.setOnAction(event -> removeCompletedTasksFromTable());
+        startSelectedTasksButton.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
+        startAllTasksMenuItem.setOnAction(event -> start(taskTable.getItems()));
+        stopAllTasksButton.setOnAction(event -> stopAllTasks());
     }
 
     private void playFFplay(String height) {
@@ -238,7 +240,7 @@ public class MainTabController implements Initializable {
         }
     }
 
-    private void removeSelectedFilesFromTable() {
+    private void removeSelectedTasksFromTable() {
         if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
             logger.debug(
                     "Содержимое taskList до удаления {}",
@@ -255,7 +257,7 @@ public class MainTabController implements Initializable {
         }
     }
 
-    private void removeAllFilesFromTable() {
+    private void removeAllTasksFromTable() {
         if (!taskTable.getItems().isEmpty()) {
             logger.debug(
                     "Содержимое taskList до нажатия кнопки \"Удалить все файлы\" {}",
@@ -287,7 +289,7 @@ public class MainTabController implements Initializable {
         }
     }
 
-    private void cancelAllItems() {
+    private void stopAllTasks() {
         converterService.getTasks().clear();
         converterService.cancel();
         taskTable.getItems()
@@ -297,7 +299,7 @@ public class MainTabController implements Initializable {
         taskTable.refresh();
     }
 
-    private void clearCompletedFromTable() {
+    private void removeCompletedTasksFromTable() {
         taskTable.getItems().removeIf(task -> task.getStatus().equals("Done"));
     }
 
@@ -318,7 +320,7 @@ public class MainTabController implements Initializable {
             logger.debug("Запушена команда на удаление файлов исходников из ФС");
             List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
             listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
-            removeSelectedFilesFromTable();
+            removeSelectedTasksFromTable();
         }
     }
 
