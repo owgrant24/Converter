@@ -104,10 +104,17 @@ public class Consumer implements Runnable {
         Path outputParent = Path.of(task.getFile().getParent() + "/converted/");
         checkDirectoryForOutputFile(outputParent);
         return "\"" + outputParent + File.separator
-                + task.getName().replaceFirst("[.][^.]+$", "")
-                + "."
-                + mainTabController
-                .getOutputFileExtensionChoiceBox().getValue().toString() + "\"";
+                + changeFilenameExtensionToExtensionFromGui(task.getName())
+                + "\"";
+    }
+
+    private String changeFilenameExtensionToExtensionFromGui(String fileName) {
+        String nameWithoutExtension = getFileNameWithoutExtension(fileName);
+        return nameWithoutExtension + "." + mainTabController.getOutputFileExtensionChoiceBox().getValue().toString();
+    }
+
+    private String getFileNameWithoutExtension(String fileName) {
+        return fileName.replaceFirst("[.][^.]+$", "");
     }
 
     private void checkDirectoryForOutputFile(Path outputParent) throws IOException {
