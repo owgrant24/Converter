@@ -76,8 +76,6 @@ public class MainTabController implements Initializable {
     @FXML private Button removeAllFilesButton;
     @FXML private Button startAllButton;
     @FXML private Button clearCompletedButton;
-    @FXML private Button openFolderButton;
-    @FXML private Button deleteSelectedFilesToTrashButton;
 
     @FXML private TextField paramField;
     @FXML private TextField beforeInputField;
@@ -147,6 +145,8 @@ public class MainTabController implements Initializable {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem startItem = new MenuItem(resources.getString("start"));
             startItem.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
+            MenuItem deleteInTrashItem = new MenuItem(resources.getString("delete_files_to_trash"));
+            deleteInTrashItem.setOnAction(event -> deleteSelectedFilesToTrash());
             MenuItem menuItem1 = new MenuItem(resources.getString("play_ffplay_360"));
             menuItem1.setOnAction(event -> playFFplay("360"));
             MenuItem menuItem2 = new MenuItem(resources.getString("play_ffplay_480"));
@@ -161,12 +161,15 @@ public class MainTabController implements Initializable {
                     taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath()));
             MenuItem menuItem6 = new MenuItem(resources.getString("open_folder"));
             menuItem6.setOnAction(event -> openFolder());
-            MenuItem[] menuItems = {startItem};
-            MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5,menuItem6};
+            MenuItem[] menuItems1 = {startItem};
+            MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6};
+            MenuItem[] menuItems2 = {deleteInTrashItem};
             Arrays.stream(menuItemsForOneRow).forEach(menuItem -> menuItem.visibleProperty()
                     .bind(Bindings.size(taskTable.getSelectionModel().getSelectedItems()).isEqualTo(1)));
-            contextMenu.getItems().addAll(menuItems);
+            contextMenu.getItems().addAll(menuItems1);
             contextMenu.getItems().addAll(menuItemsForOneRow);
+            contextMenu.getItems().addAll(menuItems2);
+
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
                             .then((ContextMenu) null)
@@ -199,7 +202,6 @@ public class MainTabController implements Initializable {
         startAllButton.setOnAction(event -> start(taskTable.getItems()));
         stopAllButton.setOnAction(event -> cancelAllItems());
         clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
-        deleteSelectedFilesToTrashButton.setOnAction(event -> deleteSelectedFilesToTrash());
     }
 
     private void playFFplay(String height) {
@@ -302,12 +304,7 @@ public class MainTabController implements Initializable {
     private void openFolder() {
         if (Desktop.isDesktopSupported()) {
             try {
-                File directoryCurrent = null;
-                if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
-                    directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
-                } else if (directory != null) {
-                    directoryCurrent = directory;
-                }
+                File directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
                 Desktop desktop = Desktop.getDesktop();
                 desktop.open(directoryCurrent);
             } catch (Exception e) {
@@ -317,15 +314,11 @@ public class MainTabController implements Initializable {
     }
 
     private void deleteSelectedFilesToTrash() {
-        if (!taskTable.getSelectionModel().getSelectedItems().isEmpty()) {
-            if (Desktop.isDesktopSupported()) {
-                logger.debug("Запушена команда на удаление файлов исходников из ФС");
-                List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
-                listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
-                removeSelectedFilesFromTable();
-            }
-        } else {
-            logger.debug("Не выбрано ни одного файла");
+        if (Desktop.isDesktopSupported()) {
+            logger.debug("Запушена команда на удаление файлов исходников из ФС");
+            List<Task> listTasks = taskTable.getSelectionModel().getSelectedItems();
+            listTasks.forEach(task -> Desktop.getDesktop().moveToTrash(task.getFile()));
+            removeSelectedFilesFromTable();
         }
     }
 

@@ -90,15 +90,6 @@
       <Label layoutX="565.0" layoutY="35.0" prefWidth="110.0" text="%output_file_extension" wrapText="true" />
       <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="680.0" layoutY="42.0" prefHeight="25.0" prefWidth="60.0" />
       <Label layoutX="15.0" layoutY="65.0" text="%task_list" />
-      <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%delete_files_to_trash">
-         <tooltip>
-            <Tooltip text="%delete_selected_files_to_trash">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Tooltip>
-         </tooltip>
-      </Button>
       <MenuButton layoutX="470.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="%presets">
          <items>
             <Menu mnemonicParsing="false" text="%change_video_settings">
