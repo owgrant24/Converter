@@ -3,6 +3,7 @@ package com.github.controller;
 import com.github.entity.Extension;
 import com.github.entity.Task;
 import com.github.service.ConverterService;
+import com.github.util.HelperUtil;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -70,6 +71,7 @@ public class MainTabController implements Initializable {
 
     @FXML private TableView<Task> taskTable;
     @FXML private TableColumn<Task, String> filenameColumn;
+    @FXML private TableColumn<Task, String> sizeColumn;
     @FXML private TableColumn<Task, String> statusColumn;
     @FXML private TableColumn<Task, String> timeColumn;
 
@@ -142,6 +144,7 @@ public class MainTabController implements Initializable {
         taskTable.setPlaceholder(new Label(resources.getString("task_table_placeholder")));
         addDragAndDrop();
         filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 
@@ -192,7 +195,8 @@ public class MainTabController implements Initializable {
                 List<File> files = db.getFiles();
                 files.stream()
                         .sorted()
-                        .forEach(file -> converterService.getList().add(new Task(file.getName(), file)));
+                        .forEach(file -> converterService.getList().add(
+                                new Task(file, HelperUtil.formatSizeFile(file.length()))));
                 observableList = getObservableList(converterService.getList());
                 taskTable.setItems(observableList);
             }
@@ -226,7 +230,7 @@ public class MainTabController implements Initializable {
                     "Содержимое taskList до добавления файлов: {}",
                     printCollection(converterService.getList())
             );
-            files.stream().map(file -> new Task(file.getName(), file))
+            files.stream().map(file -> new Task(file, HelperUtil.formatSizeFile(file.length())))
                     .filter(task -> !(converterService.getList().contains(task)))
                     .forEach(task -> converterService.getList().add(task));
             // Запоминаем последний путь
@@ -327,7 +331,6 @@ public class MainTabController implements Initializable {
         if (option.isPresent() && option.get() == ButtonType.OK) {
             deleteSelectedFilesToTrash();
         }
-
 
     }
 

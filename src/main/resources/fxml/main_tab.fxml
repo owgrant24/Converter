@@ -18,9 +18,10 @@
    <children>
       <TableView fx:id="taskTable" layoutX="10.0" layoutY="85.0" prefHeight="300.0" prefWidth="535.0">
          <columns>
-            <TableColumn fx:id="filenameColumn" maxWidth="700.0" minWidth="50.0" prefWidth="360.0" text="%filename" />
-            <TableColumn fx:id="statusColumn" maxWidth="90.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="%status" />
-            <TableColumn fx:id="timeColumn" maxWidth="90.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="%time" />
+            <TableColumn fx:id="filenameColumn" maxWidth="700.0" minWidth="50.0" prefWidth="274.0" text="%filename" />
+            <TableColumn fx:id="sizeColumn" prefWidth="89.0" style="-fx-alignment: CENTER_RIGHT;" text="%size" />
+            <TableColumn fx:id="statusColumn" maxWidth="183.0" prefWidth="75.0" style="-fx-alignment: CENTER;" text="%status" />
+            <TableColumn fx:id="timeColumn" maxWidth="181.0" prefWidth="87.0" style="-fx-alignment: CENTER;" text="%time" />
          </columns>
       </TableView>
       <TextField fx:id="paramField" layoutX="305.0" layoutY="7.0" prefHeight="25.0" prefWidth="440.0" />

@@ -40,4 +40,8 @@ public class HelperUtil {
         return Language.ENGLISH;
     }
 
+    public static String formatSizeFile(long size) {
+        return String.format("%,d kB", size / 1_000);
+    }
+
 }

@@ -12,10 +12,12 @@ public class Task {
     private String time;
     private String param;
     private String specParam;
+    private String size;
 
-    public Task(String name, File file) {
-        this.name = name;
+    public Task(File file, String formatSize) {
         this.file = file;
+        this.name = file.getName();
+        this.size = formatSize;
         this.status = "";
     }
 
@@ -65,6 +67,14 @@ public class Task {
 
     public void setParam(String param) {
         this.param = param;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 
     @Override
