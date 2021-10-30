@@ -28,7 +28,7 @@ public class Main extends Application {
                 Objects.requireNonNull(getClass().getResource("/fxml/main.fxml")), resourceBundle
         );
 
-        primaryStage.setTitle("Converter 0.5 Beta");
+        primaryStage.setTitle("Converter 0.5");
         try {
             primaryStage.getIcons().add(new Image("/images/icon.png"));
         } catch (Exception e) {
