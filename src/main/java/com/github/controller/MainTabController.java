@@ -272,7 +272,7 @@ public class MainTabController implements Initializable {
 
     private void start(ObservableList<Task> items) {
         if (!items.isEmpty() && !(paramField.getText().isBlank())) {
-            Predicate<Task> predicate = task -> task.getStatus().equals("");
+            Predicate<Task> predicate = task -> task.getStatus().equals("") || task.getStatus().equals("See log");
             List<Task> tasks = new ArrayList<>(items.filtered(predicate));
             taskTable.refresh();
             items.filtered(predicate).forEach(task -> task.setStatus("In queue"));
