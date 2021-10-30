@@ -22,6 +22,8 @@ public class ConverterService {
     private final Set<Process> processes = new HashSet<>();
     private final File ffmpeg = new File("./ffmpeg/bin/ffmpeg.exe");
     private final File ffplay = new File("./ffmpeg/bin/ffplay.exe");
+    private final File vlc = new File("C:/Program Files/VideoLAN/VLC/vlc.exe");
+    private final File avidemux = new File("C:/Program Files/Avidemux 2.7 VC++ 64bits/avidemux.exe");
     public static final String HIDE_BANNER = "-hide_banner";
 
     private final List<Task> list = new ArrayList<>();
@@ -83,13 +85,37 @@ public class ConverterService {
         processes.clear();
     }
 
-    public void playFF(String input, String height) {
+    public void playInFF(String input, String height) {
         try {
             new ProcessExecutor()
                     .command(ffplay.getAbsolutePath(), HIDE_BANNER, "-nostats", "-y", height, "-i", input)
                     .start();
         } catch (IOException e) {
             logger.error("ffplay отсутствует");
+        }
+    }
+
+    public void playInVlc(String input) {
+        try {
+            new ProcessExecutor()
+                    .command(vlc.getAbsolutePath(), input)
+                    .start();
+        } catch (IOException e) {
+            logger.error("VLC отсутствует");
+        }
+    }
+
+    /**
+     * Редактировать в Avidemux
+     * https://www.avidemux.org/admWiki/doku.php?id=using:command_line_usage
+     */
+    public void editInAvidemux(String input) {
+        try {
+            new ProcessExecutor()
+                    .command(avidemux.getAbsolutePath(), "--load", input)
+                    .start();
+        } catch (IOException e) {
+            logger.error("Avidemux отсутствует");
         }
     }
 

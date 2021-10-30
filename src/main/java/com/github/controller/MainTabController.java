@@ -3,16 +3,19 @@ package com.github.controller;
 import com.github.entity.Extension;
 import com.github.entity.Task;
 import com.github.service.ConverterService;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +30,7 @@ import java.awt.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -73,8 +77,6 @@ public class MainTabController implements Initializable {
     @FXML private Button startAllButton;
     @FXML private Button clearCompletedButton;
     @FXML private Button openFolderButton;
-    @FXML private Button playButton480;
-    @FXML private Button playButton720;
     @FXML private Button deleteSelectedFilesToTrashButton;
 
     @FXML private TextField paramField;
@@ -139,7 +141,38 @@ public class MainTabController implements Initializable {
         filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+        taskTable.setRowFactory(param -> {
+            TableRow<Task> row = new TableRow<>();
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem startItem = new MenuItem(resources.getString("start"));
+            startItem.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
+            MenuItem menuItem1 = new MenuItem(resources.getString("play_ffplay_360"));
+            menuItem1.setOnAction(event -> playFFplay("360"));
+            MenuItem menuItem2 = new MenuItem(resources.getString("play_ffplay_480"));
+            menuItem2.setOnAction(event -> playFFplay("480"));
+            MenuItem menuItem3 = new MenuItem(resources.getString("play_ffplay_720"));
+            menuItem3.setOnAction(event -> playFFplay("720"));
+            MenuItem menuItem4 = new MenuItem(resources.getString("play_vlc"));
+            menuItem4.setOnAction(event -> converterService.playInVlc(
+                    taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath()));
+            MenuItem menuItem5 = new MenuItem(resources.getString("edit_avidemux"));
+            menuItem5.setOnAction(event -> converterService.editInAvidemux(
+                    taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath()));
+            MenuItem[] menuItems = {startItem};
+            MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5};
+            Arrays.stream(menuItemsForOneRow).forEach(menuItem -> menuItem.visibleProperty()
+                    .bind(Bindings.size(taskTable.getSelectionModel().getSelectedItems()).isEqualTo(1)));
+            contextMenu.getItems().addAll(menuItems);
+            contextMenu.getItems().addAll(menuItemsForOneRow);
+            row.contextMenuProperty().bind(
+                    Bindings.when(row.emptyProperty())
+                            .then((ContextMenu) null)
+                            .otherwise(contextMenu));
+            return row;
+        });
     }
+
 
     private void addDragAndDrop() {
         taskTable.setOnDragOver(event -> event.acceptTransferModes(TransferMode.LINK));
@@ -166,15 +199,12 @@ public class MainTabController implements Initializable {
         clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
 
         openFolderButton.setOnAction(event -> openFolder());
-
-        playButton480.setOnAction(event -> playFFplay("480"));
-        playButton720.setOnAction(event -> playFFplay("720"));
         deleteSelectedFilesToTrashButton.setOnAction(event -> deleteSelectedFilesToTrash());
     }
 
     private void playFFplay(String height) {
         if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
-            converterService.playFF(
+            converterService.playInFF(
                     taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath(), height
             );
         } else {
