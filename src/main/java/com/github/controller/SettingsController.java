@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import static com.github.util.HelperUtil.definitionLanguage;
+import static com.github.util.HelperUtil.defineLanguage;
 import static com.github.util.SettingsCreator.readPropertiesFromFile;
 
 
@@ -33,7 +33,7 @@ public class SettingsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         languageChoiceBox.setItems(FXCollections.observableArrayList(Language.values()));
-        languageChoiceBox.setValue(definitionLanguage());
+        languageChoiceBox.setValue(defineLanguage());
         applyButton.setOnAction(event -> applyLanguage());
     }
 

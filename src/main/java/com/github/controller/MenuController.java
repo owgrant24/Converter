@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static com.github.util.HelperUtil.definitionLanguage;
+import static com.github.util.HelperUtil.defineLanguage;
 
 
 public class MenuController implements Initializable {
@@ -44,7 +44,7 @@ public class MenuController implements Initializable {
         docFFplayMenuItem.setOnAction(event -> openDocumentationInBrowser("https://www.ffmpeg.org/ffplay.html"));
         exitMenuItem.setOnAction(event -> exitFromApp());
         settingsMenuItem.setOnAction(event -> openSettings());
-        if (!definitionLanguage().equals(Language.RUSSIAN)) {
+        if (!defineLanguage().equals(Language.RUSSIAN)) {
             helpMenuItem.setDisable(true);
         }
         helpMenuItem.setOnAction(event -> openExamples());

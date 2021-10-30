@@ -214,13 +214,9 @@ public class MainTabController implements Initializable {
     }
 
     private void playFFplay(String height) {
-        if (taskTable.getSelectionModel().getSelectedItems().size() == 1) {
-            converterService.playInFF(
-                    taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath(), height
-            );
-        } else {
-            logger.debug("Не выбран файл или выбрано > 1");
-        }
+        converterService.playInFF(
+                taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath(), height
+        );
     }
 
     private void addFilesInTable() {

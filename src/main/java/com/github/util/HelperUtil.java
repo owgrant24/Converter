@@ -33,7 +33,7 @@ public class HelperUtil {
         return result;
     }
 
-    public static Language definitionLanguage() {
+    public static Language defineLanguage() {
         if (CustomLocale.getInstance().getLocale().getLanguage().equalsIgnoreCase("ru")) {
             return Language.RUSSIAN;
         }
