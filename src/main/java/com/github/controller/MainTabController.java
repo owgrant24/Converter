@@ -159,8 +159,10 @@ public class MainTabController implements Initializable {
             MenuItem menuItem5 = new MenuItem(resources.getString("edit_avidemux"));
             menuItem5.setOnAction(event -> converterService.editInAvidemux(
                     taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath()));
+            MenuItem menuItem6 = new MenuItem(resources.getString("open_folder"));
+            menuItem6.setOnAction(event -> openFolder());
             MenuItem[] menuItems = {startItem};
-            MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5};
+            MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5,menuItem6};
             Arrays.stream(menuItemsForOneRow).forEach(menuItem -> menuItem.visibleProperty()
                     .bind(Bindings.size(taskTable.getSelectionModel().getSelectedItems()).isEqualTo(1)));
             contextMenu.getItems().addAll(menuItems);
@@ -197,8 +199,6 @@ public class MainTabController implements Initializable {
         startAllButton.setOnAction(event -> start(taskTable.getItems()));
         stopAllButton.setOnAction(event -> cancelAllItems());
         clearCompletedButton.setOnAction(event -> clearCompletedFromTable());
-
-        openFolderButton.setOnAction(event -> openFolder());
         deleteSelectedFilesToTrashButton.setOnAction(event -> deleteSelectedFilesToTrash());
     }
 

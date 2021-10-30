@@ -22,7 +22,7 @@
             <TableColumn fx:id="timeColumn" maxWidth="150.0" prefWidth="85.0" style="-fx-alignment: CENTER;" text="%time" />
          </columns>
       </TableView>
-      <Button fx:id="startButton" layoutX="565.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%start">
+      <Button fx:id="startButton" layoutX="565.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%start">
          <tooltip>
             <Tooltip text="%start_selected_tasks">
                <font>
@@ -32,7 +32,7 @@
          </tooltip>
       </Button>
       <TextField fx:id="paramField" layoutX="305.0" layoutY="7.0" prefHeight="25.0" prefWidth="435.0" />
-      <Button fx:id="stopAllButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%cancel_all_tasks">
+      <Button fx:id="stopAllButton" layoutX="565.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%cancel_all_tasks">
          <tooltip>
             <Tooltip text="%cancel_all_tasks">
                <font>
@@ -50,7 +50,7 @@
             </Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%clear_tasks">
+      <Button fx:id="removeFilesButton" layoutX="565.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="%clear_tasks">
          <tooltip>
             <Tooltip text="%clear_selected_tasks">
                <font>
@@ -59,7 +59,7 @@
             </Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="removeAllFilesButton" layoutX="695.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
+      <Button fx:id="removeAllFilesButton" layoutX="695.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
          <tooltip>
             <Tooltip text="%clear_all_tasks">
                <font>
@@ -68,7 +68,7 @@
             </Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="startAllButton" layoutX="695.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
+      <Button fx:id="startAllButton" layoutX="695.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="45.0" text="%all">
          <tooltip>
             <Tooltip text="%start_all_tasks">
                <font>
@@ -77,7 +77,7 @@
             </Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="190.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%clear_completed">
+      <Button fx:id="clearCompletedButton" layoutX="565.0" layoutY="155.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%clear_completed">
          <tooltip>
             <Tooltip text="%clear_completed_tasks">
                <font>
@@ -90,8 +90,7 @@
       <Label layoutX="565.0" layoutY="35.0" prefWidth="110.0" text="%output_file_extension" wrapText="true" />
       <ChoiceBox fx:id="outputFileExtensionChoiceBox" layoutX="680.0" layoutY="42.0" prefHeight="25.0" prefWidth="60.0" />
       <Label layoutX="15.0" layoutY="65.0" text="%task_list" />
-      <Button fx:id="openFolderButton" layoutX="565.0" layoutY="120.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%open_folder" />
-      <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="295.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%delete_files_to_trash">
+      <Button fx:id="deleteSelectedFilesToTrashButton" layoutX="565.0" layoutY="260.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" text="%delete_files_to_trash">
          <tooltip>
             <Tooltip text="%delete_selected_files_to_trash">
                <font>

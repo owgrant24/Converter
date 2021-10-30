@@ -4,7 +4,6 @@ import com.github.util.SettingsCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Locale;
 
 
@@ -18,7 +17,7 @@ public class CustomLocale {
         return locale;
     }
 
-    public Locale loadLocale() throws IOException {
+    public Locale loadLocale() {
         String lang = (String) SettingsCreator.getProperties().get("locale");
         locale = new Locale(lang);
         logger.info("Загружен язык - {}", locale.getLanguage());
