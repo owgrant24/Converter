@@ -8,7 +8,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -33,6 +35,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -148,7 +151,7 @@ public class MainTabController implements Initializable {
             MenuItem startItem = new MenuItem(resources.getString("start"));
             startItem.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
             MenuItem deleteInTrashItem = new MenuItem(resources.getString("delete_files_to_trash"));
-            deleteInTrashItem.setOnAction(event -> deleteSelectedFilesToTrash());
+            deleteInTrashItem.setOnAction(event -> showFileDeletionWarning());
             MenuItem menuItem1 = new MenuItem(resources.getString("play_ffplay_360"));
             menuItem1.setOnAction(event -> playFFplay("360"));
             MenuItem menuItem2 = new MenuItem(resources.getString("play_ffplay_480"));
@@ -313,6 +316,19 @@ public class MainTabController implements Initializable {
                 logger.debug("Нет параметров для открытия директории {}", e.getMessage());
             }
         }
+    }
+
+    private void showFileDeletionWarning() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resources.getString("confirmation"));
+        alert.setHeaderText(resources.getString("are_you_sure_you_want_to_move_the_files_to_the_trash"));
+
+        Optional<ButtonType> option = alert.showAndWait();
+        if (option.isPresent() && option.get() == ButtonType.OK) {
+            deleteSelectedFilesToTrash();
+        }
+
+
     }
 
     private void deleteSelectedFilesToTrash() {
