@@ -4,9 +4,9 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="logTabAnchorPaneTabLayout" minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="830.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.LogTabController">
+<AnchorPane fx:id="logTabAnchorPaneTabLayout" minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.controller.LogTabController">
    <children>
-      <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="375.0" prefWidth="810.0" />
+      <TextArea fx:id="logTextArea" editable="false" layoutX="10.0" layoutY="10.0" prefHeight="375.0" prefWidth="910.0" />
       <Button fx:id="clearLogButton" layoutX="10.0" layoutY="393.0" mnemonicParsing="false" prefWidth="130.0" text="%clear_log" />
       <Button fx:id="copyToFile" layoutX="150.0" layoutY="393.0" mnemonicParsing="false" prefWidth="130.0" text="%copy_to_file" />
    </children>

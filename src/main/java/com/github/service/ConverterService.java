@@ -1,5 +1,6 @@
 package com.github.service;
 
+import com.github.controller.ControllerMediatorImpl;
 import com.github.entity.Task;
 import com.github.util.SettingsCreator;
 import org.slf4j.Logger;
@@ -9,10 +10,10 @@ import org.zeroturnaround.exec.ProcessExecutor;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -20,12 +21,13 @@ public class ConverterService {
 
     private static final Logger logger = LoggerFactory.getLogger(ConverterService.class);
 
-    private final Set<Process> processes = new HashSet<>();
+    private final Map<Task, Process> processes = new HashMap<>();
     private final File ffmpeg = new File("./ffmpeg/bin/ffmpeg.exe");
     private final File ffplay = new File("./ffmpeg/bin/ffplay.exe");
     private final File vlc = new File((String) SettingsCreator.getProperties().get("vlc"));
     private final File avidemux = new File((String) SettingsCreator.getProperties().get("avidemux"));
     public static final String HIDE_BANNER = "-hide_banner";
+
 
     private final List<Task> list = new ArrayList<>();
     private final Queue<Task> tasks = new LinkedBlockingQueue<>();
@@ -50,7 +52,7 @@ public class ConverterService {
         return tasks;
     }
 
-    public Set<Process> getProcesses() {
+    public Map<Task, Process> getProcesses() {
         return processes;
     }
 
@@ -69,6 +71,18 @@ public class ConverterService {
         }
     }
 
+    public void stopSelectedTasks(List<Task> list) {
+        list.stream().filter(task -> !task.getStatus().equals("Done")).forEach(task -> {
+            if (processes.containsKey(task)) {
+                stopProcesses();
+            } else {
+                tasks.remove(task);
+                task.setStatus("");
+            }
+        });
+        ControllerMediatorImpl.getInstance().getMainTabController().getTaskTable().refresh();
+    }
+
     public void cancel() {
 
         if (thread != null && !thread.isInterrupted()) {
@@ -79,9 +93,9 @@ public class ConverterService {
 
     public void stopProcesses() {
         logger.info("Запущено убивание процесса");
-        for (Process process : processes) {
-            process.descendants().forEach(ProcessHandle::destroy);
-            process.destroy();
+        for (Map.Entry<Task, Process> task : processes.entrySet()) {
+            task.getValue().descendants().forEach(ProcessHandle::destroy);
+            task.getValue().destroy();
         }
         processes.clear();
     }

@@ -57,13 +57,13 @@ public class Consumer implements Runnable {
                             .start();
                     Process process = startedProcess.getProcess();
                     duration.showDuration(dur, current, startTime);
-                    converterService.getProcesses().add(process);
+                    converterService.getProcesses().put(current, process);
                     Future<ProcessResult> future = startedProcess.getFuture();
                     String status = future.get().outputUTF8();
                     logTabController.getLogTextArea().appendText(status);
                     logTabController.getLogTextArea().appendText("\n\n\n");
                     logger.debug("Работу выполнил над: {}", current.getName());
-                    converterService.getProcesses().remove(process);
+                    converterService.getProcesses().remove(current);
                     String statusAfterCheck = CheckStatusService.checkStatus(status);
                     current.setStatus(statusAfterCheck);
                     mainTabController.getTaskTable().refresh();

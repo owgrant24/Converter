@@ -76,7 +76,8 @@ public class MainTabController implements Initializable {
     @FXML private TableColumn<Task, String> timeColumn;
 
     @FXML private Button addFilesButton;
-    @FXML private Button stopAllTasksButton;
+    @FXML private SplitMenuButton stopSelectedTasksButton;
+    @FXML private MenuItem stopAllTasksMenuItem;
     @FXML private SplitMenuButton removeSelectedTasksButton;
     @FXML private MenuItem removeAllTasksButton;
     @FXML private MenuItem removeCompletedTasksButton;
@@ -93,7 +94,6 @@ public class MainTabController implements Initializable {
 
     private ResourceBundle resources;
 
-    private File directory = null;
     private FileChooser fileChooser;
 
     private FileChooser getFileChooser() {
@@ -169,14 +169,12 @@ public class MainTabController implements Initializable {
                     taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getAbsolutePath()));
             MenuItem menuItem6 = new MenuItem(resources.getString("open_folder"));
             menuItem6.setOnAction(event -> openFolder());
-            MenuItem[] menuItems1 = {startItem};
             MenuItem[] menuItemsForOneRow = {menuItem1, menuItem2, menuItem3, menuItem4, menuItem5, menuItem6};
-            MenuItem[] menuItems2 = {deleteInTrashItem};
             Arrays.stream(menuItemsForOneRow).forEach(menuItem -> menuItem.visibleProperty()
                     .bind(Bindings.size(taskTable.getSelectionModel().getSelectedItems()).isEqualTo(1)));
-            contextMenu.getItems().addAll(menuItems1);
+            contextMenu.getItems().add(startItem);
             contextMenu.getItems().addAll(menuItemsForOneRow);
-            contextMenu.getItems().addAll(menuItems2);
+            contextMenu.getItems().add(deleteInTrashItem);
 
             row.contextMenuProperty().bind(
                     Bindings.when(row.emptyProperty())
@@ -210,8 +208,11 @@ public class MainTabController implements Initializable {
         removeCompletedTasksButton.setOnAction(event -> removeCompletedTasksFromTable());
         startSelectedTasksButton.setOnAction(event -> start(taskTable.getSelectionModel().getSelectedItems()));
         startAllTasksMenuItem.setOnAction(event -> start(taskTable.getItems()));
-        stopAllTasksButton.setOnAction(event -> stopAllTasks());
+        stopAllTasksMenuItem.setOnAction(event -> stopAllTasks());
+        stopSelectedTasksButton.setOnAction(event -> converterService
+                .stopSelectedTasks(taskTable.getSelectionModel().getSelectedItems()));
     }
+
 
     private void playFFplay(String height) {
         converterService.playInFF(
@@ -231,7 +232,7 @@ public class MainTabController implements Initializable {
                     .forEach(task -> converterService.getList().add(task));
             // Запоминаем последний путь
             if (!files.isEmpty()) {
-                directory = new File(files.get(0).getParent());
+                File directory = new File(files.get(0).getParent());
                 fileChooser.setInitialDirectory(directory);
             }
             observableList = getObservableList(converterService.getList());
@@ -309,7 +310,8 @@ public class MainTabController implements Initializable {
     private void openFolder() {
         if (Desktop.isDesktopSupported()) {
             try {
-                File directoryCurrent = taskTable.getSelectionModel().getSelectedItems().get(0).getFile().getParentFile();
+                File directoryCurrent = taskTable.getSelectionModel().getSelectedItems()
+                        .get(0).getFile().getParentFile();
                 Desktop desktop = Desktop.getDesktop();
                 desktop.open(directoryCurrent);
             } catch (Exception e) {
