@@ -35,6 +35,7 @@ public class Main extends Application {
             logger.error("Иконка исчезла. Причина - {}", e.getMessage());
         }
         primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         primaryStage.setOnCloseRequest(event -> {
