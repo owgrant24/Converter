@@ -3,7 +3,9 @@ package com.github.util;
 import com.github.CustomLocale;
 import com.github.entity.Language;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 
 public class HelperUtil {
@@ -42,6 +44,10 @@ public class HelperUtil {
 
     public static String formatSizeFile(long size) {
         return String.format("%,d kB", size / 1_000);
+    }
+
+    public static String formatModified(long lastModified) {
+        return new SimpleDateFormat("dd.MM.yyyy H:mm:ss").format(new Date(lastModified));
     }
 
 }

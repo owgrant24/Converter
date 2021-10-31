@@ -18,8 +18,9 @@
    <children>
       <TableView fx:id="taskTable" layoutX="10.0" layoutY="85.0" prefHeight="300.0" prefWidth="910.0">
          <columns>
-            <TableColumn fx:id="filenameColumn" maxWidth="700.0" minWidth="50.0" prefWidth="590.0" text="%filename" />
+            <TableColumn fx:id="filenameColumn" maxWidth="700.0" minWidth="50.0" prefWidth="460.0" text="%filename" />
             <TableColumn fx:id="sizeColumn" prefWidth="100.0" style="-fx-alignment: CENTER_RIGHT;" text="%size" />
+            <TableColumn fx:id="modifiedColumn" maxWidth="300.0" minWidth="50.0" prefWidth="130.0" style="-fx-alignment: CENTER;" text="%modified" />
             <TableColumn fx:id="statusColumn" maxWidth="353.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="%status" />
             <TableColumn fx:id="timeColumn" maxWidth="362.0" prefWidth="100.0" style="-fx-alignment: CENTER;" text="%time" />
          </columns>

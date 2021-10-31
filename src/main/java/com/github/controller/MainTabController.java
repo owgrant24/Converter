@@ -72,6 +72,7 @@ public class MainTabController implements Initializable {
     @FXML private TableView<Task> taskTable;
     @FXML private TableColumn<Task, String> filenameColumn;
     @FXML private TableColumn<Task, String> sizeColumn;
+    @FXML private TableColumn<Task, String> modifiedColumn;
     @FXML private TableColumn<Task, String> statusColumn;
     @FXML private TableColumn<Task, String> timeColumn;
 
@@ -145,6 +146,7 @@ public class MainTabController implements Initializable {
         addDragAndDrop();
         filenameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         sizeColumn.setCellValueFactory(new PropertyValueFactory<>("size"));
+        modifiedColumn.setCellValueFactory(new PropertyValueFactory<>("modified"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 
@@ -194,7 +196,11 @@ public class MainTabController implements Initializable {
                 files.stream()
                         .sorted()
                         .forEach(file -> converterService.getList().add(
-                                new Task(file, HelperUtil.formatSizeFile(file.length()))));
+                                new Task(
+                                        file,
+                                        HelperUtil.formatSizeFile(file.length()),
+                                        HelperUtil.formatModified(file.lastModified())
+                                )));
                 observableList = getObservableList(converterService.getList());
                 taskTable.setItems(observableList);
             }
@@ -227,7 +233,11 @@ public class MainTabController implements Initializable {
                     "Содержимое taskList до добавления файлов: {}",
                     printCollection(converterService.getList())
             );
-            files.stream().map(file -> new Task(file, HelperUtil.formatSizeFile(file.length())))
+            files.stream().map(file -> new Task(
+                            file,
+                            HelperUtil.formatSizeFile(file.length()),
+                            HelperUtil.formatModified(file.lastModified())
+                    ))
                     .filter(task -> !(converterService.getList().contains(task)))
                     .forEach(task -> converterService.getList().add(task));
             // Запоминаем последний путь

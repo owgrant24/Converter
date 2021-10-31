@@ -13,11 +13,13 @@ public class Task {
     private String param;
     private String specParam;
     private String size;
+    private String modified;
 
-    public Task(File file, String formatSize) {
+    public Task(File file, String formatSize, String modified) {
         this.file = file;
         this.name = file.getName();
         this.size = formatSize;
+        this.modified = modified;
         this.status = "";
     }
 
@@ -75,6 +77,14 @@ public class Task {
 
     public void setSize(String size) {
         this.size = size;
+    }
+
+    public String getModified() {
+        return modified;
+    }
+
+    public void setModified(String modified) {
+        this.modified = modified;
     }
 
     @Override
