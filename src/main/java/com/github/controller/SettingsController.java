@@ -1,25 +1,21 @@
 package com.github.controller;
 
 import com.github.entity.Language;
+import com.github.util.SettingsCreator;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import static com.github.util.HelperUtil.defineLanguage;
-import static com.github.util.SettingsCreator.readPropertiesFromFile;
 
 
 public class SettingsController implements Initializable {
@@ -39,19 +35,16 @@ public class SettingsController implements Initializable {
 
     private void applyLanguage() {
         try {
-            Properties properties = readPropertiesFromFile();
-            String localeFromFile = (String) properties.get("locale");
+            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration();
+            SettingsCreator.readConfigurationFromFile(propertiesConfiguration);
+            String localeFromFile = propertiesConfiguration.getString("locale");
             String localeFromGui = languageChoiceBox.getValue().getLocale();
             if (!localeFromFile.equals(localeFromGui)) {
-                try (Writer bufferedWriter = new BufferedWriter(
-                        new FileWriter("./settings.properties", StandardCharsets.UTF_8))) {
-                    properties.setProperty("locale", localeFromGui);
-                    properties.store(bufferedWriter, null);
-                    logger.debug("Cохранение в файл произведено успешно");
-                }
-
+                propertiesConfiguration.setProperty("locale", localeFromGui);
+                SettingsCreator.saveConfigurationInFile(propertiesConfiguration);
+                logger.debug("Cохранение в файл произведено успешно");
             }
-        } catch (IOException e) {
+        } catch (ConfigurationException e) {
             logger.error("Ошибка сохранения настроек в файл");
         }
 

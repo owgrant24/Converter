@@ -24,8 +24,8 @@ public class ConverterService {
     private final Map<Task, Process> processes = new HashMap<>();
     private final File ffmpeg = new File("./ffmpeg/bin/ffmpeg.exe");
     private final File ffplay = new File("./ffmpeg/bin/ffplay.exe");
-    private final File vlc = new File((String) SettingsCreator.getProperties().get("vlc"));
-    private final File avidemux = new File((String) SettingsCreator.getProperties().get("avidemux"));
+    private final File vlc = new File(SettingsCreator.readStringValueFromConfiguration("vlc"));
+    private final File avidemux = new File(SettingsCreator.readStringValueFromConfiguration("avidemux"));
     public static final String HIDE_BANNER = "-hide_banner";
 
 

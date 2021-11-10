@@ -18,7 +18,7 @@ public class CustomLocale {
     }
 
     public Locale loadLocale() {
-        String lang = (String) SettingsCreator.getProperties().get("locale");
+        String lang = SettingsCreator.readStringValueFromConfiguration("locale");
         locale = new Locale(lang);
         logger.info("Загружен язык - {}", locale.getLanguage());
         return locale;

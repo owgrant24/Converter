@@ -1,58 +1,67 @@
 package com.github.util;
 
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
+import java.io.File;
 
 
 public class SettingsCreator {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsCreator.class);
-    private static final Properties properties = new Properties();
-    public static final String SETTINGS_PROPERTIES = "./settings.properties";
+    private static PropertiesConfiguration config = new PropertiesConfiguration();
+    private static final String SETTINGS_PROPERTIES = "./settings.properties";
 
     static {
         try {
-            properties.load(new BufferedReader(new FileReader(SETTINGS_PROPERTIES)));
-        } catch (IOException e) {
+            readConfigurationFromFile(config);
+            checkConfiguration(config);
+        } catch (ConfigurationException e) {
             logger.info("Файл настроек не существует");
-            properties.put("locale", "en");
-            properties.put("vlc", "C:/Program Files/VideoLAN/VLC/vlc.exe");
-            properties.put("avidemux", "C:/Program Files/Avidemux 2.7 VC++ 64bits/avidemux.exe");
-            createSettings();
+            config = createDefaultConfiguration();
+            saveConfigurationInFile(config);
+        }
+    }
+
+    private static void checkConfiguration(PropertiesConfiguration configuration) {
+        if (!configuration.containsKey("vlc") || !configuration.containsKey("avidemux")
+                || !configuration.containsKey("locale")) {
+            PropertiesConfiguration defaultConfiguration = createDefaultConfiguration();
+            saveConfigurationInFile(defaultConfiguration);
+            config = defaultConfiguration;
         }
     }
 
     private SettingsCreator() {
     }
 
-    public static Properties getProperties() {
-        return properties;
+    public static String readStringValueFromConfiguration(String key) {
+        return config.getString(key);
     }
 
-    public static Properties readPropertiesFromFile() throws IOException {
-        Properties properties = new Properties();
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(SETTINGS_PROPERTIES))) {
-            properties.load(bufferedReader);
-        }
-        return properties;
+    public static void readConfigurationFromFile(PropertiesConfiguration configuration) throws ConfigurationException {
+        new FileHandler(configuration).load(SETTINGS_PROPERTIES);
     }
 
+    public static PropertiesConfiguration createDefaultConfiguration() {
+        PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration();
+        propertiesConfiguration.setProperty("locale", "en");
+        propertiesConfiguration.setProperty("vlc", "C:/Program Files/VideoLAN/VLC/vlc.exe");
+        propertiesConfiguration.setProperty("avidemux", "C:/Program Files/Avidemux 2.7 VC++ 64bits/avidemux.exe");
+        return propertiesConfiguration;
+    }
 
-    private static void createSettings() {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(
-                new FileWriter(SETTINGS_PROPERTIES, StandardCharsets.UTF_8))) {
-            properties.store(bufferedWriter, null);
+    public static void saveConfigurationInFile(PropertiesConfiguration config) {
+        FileHandler fileHandler = new FileHandler(config);
+        File out = new File(SETTINGS_PROPERTIES);
+        try {
+            fileHandler.save(out);
             logger.info("Стандартные настройки записаны в {}", SETTINGS_PROPERTIES);
-        } catch (IOException e) {
-            logger.error("Ошибка сохранения настроек");
+        } catch (ConfigurationException e) {
+            logger.error("Ошибка сохранения настроек {}", e.getMessage());
         }
     }
 
