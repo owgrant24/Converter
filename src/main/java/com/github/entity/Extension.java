@@ -9,7 +9,7 @@ public enum Extension {
     WAV("wav"),
     OGG("ogg");
 
-    private String label;
+    private final String label;
 
     Extension(String label) {
         this.label = label;
